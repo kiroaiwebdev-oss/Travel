@@ -4,6 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+// NOTE: runs BEFORE the wallet/cashback migration (000300) because `cashbacks`
+// has a foreign key to `bookings`. MySQL requires the referenced table to exist
+// first, so booking tables must be created earlier.
 return new class extends Migration
 {
     public function up(): void
