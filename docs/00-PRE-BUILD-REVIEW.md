@@ -77,7 +77,7 @@ Index strategy and the full ER overview live in `docs/02-DATABASE.md`.
 | A04 Insecure Design | Cashback ledger states + postback verification + idempotency keys. |
 | A05 Security Misconfig | Hardened Nginx headers, separate `.env`, debug off in prod. |
 | A06 Vulnerable Components | Pinned composer/pip versions; Dependabot-ready. |
-| A07 Auth Failures | Laravel auth, JWT for API, OAuth (Google) ready, MFA-ready columns, login throttling. |
+| A07 Auth Failures | Laravel auth, Sanctum tokens for API, OAuth (Google) ready, MFA-ready columns, login throttling. |
 | A08 Data Integrity | Signed affiliate redirect URLs, HMAC-verified postbacks. |
 | A09 Logging Failures | `audit_logs` + structured app logs + login/device tracking. |
 | A10 SSRF | Provider base URLs allow-listed; outbound HTTP via a guarded client. |

@@ -1,6 +1,6 @@
 # API Reference
 
-Base URL: `/api/v1`. JSON in/out. Authenticated routes use a **JWT** bearer token
+Base URL: `/api/v1`. JSON in/out. Authenticated routes use a **Sanctum** bearer token
 (`Authorization: Bearer <token>`). Rate limits are per-route (shown below).
 
 ## Auth

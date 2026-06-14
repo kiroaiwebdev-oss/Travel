@@ -9,7 +9,7 @@ on one VPS via Docker Compose.
 ```
                          ┌─────────────────────────────────────────┐
    Cloudflare ──► Nginx ─┤  PHP-FPM (Laravel 12)                    │
-                         │   • web (Blade) + REST API (JWT/Sanctum) │
+                         │   • web (Blade) + REST API (Sanctum)     │
                          │   • SearchService → ProviderManager      │
                          │   • Cashback / Wallet / Affiliate engines│
                          └───┬───────────┬───────────┬─────────────┘

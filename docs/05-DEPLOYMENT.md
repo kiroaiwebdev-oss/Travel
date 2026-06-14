@@ -25,7 +25,6 @@ cp ai-service/.env.example ai-service/.env
 ```bash
 docker compose up -d --build
 docker compose exec app php artisan key:generate
-docker compose exec app php artisan jwt:secret        # tymon/jwt-auth
 docker compose exec app php artisan migrate --seed
 docker compose exec app php artisan storage:link
 docker compose exec app php artisan scout:import "App\Models\CachedOffer"   # optional: warm index

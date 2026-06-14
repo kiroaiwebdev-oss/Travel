@@ -5,32 +5,30 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Services\Wallet\WalletService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class WalletApiController extends Controller
 {
     public function __construct(private readonly WalletService $wallet) {}
 
-    public function show(): JsonResponse
+    public function show(Request $request): JsonResponse
     {
-        $wallet = $this->wallet->walletFor(auth('api')->user());
-
-        return response()->json(['data' => $wallet]);
+        return response()->json(['data' => $this->wallet->walletFor($request->user())]);
     }
 
-    public function transactions(): JsonResponse
+    public function transactions(Request $request): JsonResponse
     {
-        $tx = auth('api')->user()->walletTransactions()
-            ->latest()->paginate(20);
-
-        return response()->json($tx);
+        return response()->json(
+            $request->user()->walletTransactions()->latest()->paginate(20)
+        );
     }
 
-    public function cashback(): JsonResponse
+    public function cashback(Request $request): JsonResponse
     {
-        $cashback = auth('api')->user()->cashbacks()
-            ->with('provider:id,name,slug,logo_url')
-            ->latest()->paginate(20);
-
-        return response()->json($cashback);
+        return response()->json(
+            $request->user()->cashbacks()
+                ->with('provider:id,name,slug,logo_url')
+                ->latest()->paginate(20)
+        );
     }
 }

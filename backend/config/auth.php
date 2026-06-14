@@ -11,11 +11,6 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        // JWT guard for the public API (tymon/jwt-auth)
-        'api' => [
-            'driver' => 'jwt',
-            'provider' => 'users',
-        ],
     ],
 
     'providers' => [

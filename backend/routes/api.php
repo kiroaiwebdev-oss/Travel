@@ -22,8 +22,8 @@ Route::prefix('v1')->group(function () {
     // --- Server-to-server affiliate postback (HMAC verified, no auth) ---
     Route::post('postback/{network:slug}', [PostbackController::class, 'handle']);
 
-    // --- Authenticated (JWT) ---
-    Route::middleware('auth:api')->group(function () {
+    // --- Authenticated (Sanctum bearer token) ---
+    Route::middleware('auth:sanctum')->group(function () {
         Route::get('auth/me', [AuthController::class, 'me']);
         Route::post('auth/logout', [AuthController::class, 'logout']);
         Route::post('auth/refresh', [AuthController::class, 'refresh']);

@@ -9,7 +9,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -28,9 +27,7 @@ class AuthController extends Controller
         ]);
         $user->roles()->attach(Role::where('name', 'user')->value('id'));
 
-        $token = JWTAuth::fromUser($user);
-
-        return $this->respondWithToken($token, $user, 201);
+        return $this->respondWithToken($user, 201);
     }
 
     public function login(Request $request): JsonResponse
@@ -40,39 +37,45 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        if (! $token = auth('api')->attempt($credentials)) {
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (! $user || ! Hash::check($credentials['password'], (string) $user->password)) {
             throw ValidationException::withMessages(['email' => ['Invalid credentials.']]);
         }
 
-        $user = auth('api')->user();
         $user->forceFill(['last_login_at' => now(), 'last_login_ip' => $request->ip()])->save();
 
-        return $this->respondWithToken($token, $user);
+        return $this->respondWithToken($user);
     }
 
-    public function me(): JsonResponse
+    public function me(Request $request): JsonResponse
     {
-        return response()->json(['data' => auth('api')->user()->load('wallet', 'roles')]);
+        return response()->json(['data' => $request->user()->load('wallet', 'roles')]);
     }
 
-    public function logout(): JsonResponse
+    public function logout(Request $request): JsonResponse
     {
-        auth('api')->logout();
+        // Revoke the token that authenticated this request.
+        $request->user()->currentAccessToken()?->delete();
 
         return response()->json(['message' => 'Logged out.']);
     }
 
-    public function refresh(): JsonResponse
+    public function refresh(Request $request): JsonResponse
     {
-        return $this->respondWithToken(auth('api')->refresh(), auth('api')->user());
+        // Rotate: revoke the current token and issue a fresh one.
+        $request->user()->currentAccessToken()?->delete();
+
+        return $this->respondWithToken($request->user());
     }
 
-    private function respondWithToken(string $token, User $user, int $status = 200): JsonResponse
+    private function respondWithToken(User $user, int $status = 200): JsonResponse
     {
+        $token = $user->createToken('api')->plainTextToken;
+
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => (int) config('jwt.ttl', 60) * 60,
+            'token_type' => 'Bearer',
             'user' => $user->only(['id', 'name', 'email', 'referral_code']),
         ], $status);
     }

@@ -12,9 +12,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
@@ -59,17 +58,6 @@ class User extends Authenticatable implements JWTSubject
         } while (self::where('referral_code', $code)->exists());
 
         return $code;
-    }
-
-    // --- JWT ---
-    public function getJWTIdentifier(): mixed
-    {
-        return $this->getKey();
-    }
-
-    public function getJWTCustomClaims(): array
-    {
-        return ['roles' => $this->roles()->pluck('name')->all()];
     }
 
     // --- Relationships ---
