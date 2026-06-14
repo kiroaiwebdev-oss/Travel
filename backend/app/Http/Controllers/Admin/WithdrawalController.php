@@ -1,0 +1,64 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Withdrawal;
+use App\Services\Wallet\WalletService;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+
+class WithdrawalController extends Controller
+{
+    public function __construct(private readonly WalletService $wallet) {}
+
+    public function index(Request $request): View
+    {
+        return view('admin.withdrawals.index', [
+            'withdrawals' => Withdrawal::with('user')
+                ->when($request->query('status'), fn ($q, $s) => $q->where('status', $s))
+                ->latest()->paginate(25)->withQueryString(),
+        ]);
+    }
+
+    public function approve(Request $request, Withdrawal $withdrawal): RedirectResponse
+    {
+        $data = $request->validate(['reference' => ['nullable', 'string', 'max:120']]);
+
+        $withdrawal->update([
+            'status' => Withdrawal::PAID,
+            'reference' => $data['reference'] ?? null,
+            'processed_by' => $request->user()->id,
+            'processed_at' => now(),
+        ]);
+
+        return back()->with('status', 'Withdrawal marked as paid.');
+    }
+
+    public function reject(Request $request, Withdrawal $withdrawal): RedirectResponse
+    {
+        $data = $request->validate(['admin_note' => ['required', 'string', 'max:255']]);
+
+        // Refund the held amount back to the user's withdrawable balance.
+        if (in_array($withdrawal->status, [Withdrawal::REQUESTED, Withdrawal::APPROVED, Withdrawal::PROCESSING], true)) {
+            $this->wallet->credit(
+                user: $withdrawal->user,
+                amount: (float) $withdrawal->amount,
+                type: 'withdrawal_reversal',
+                source: $withdrawal,
+                idempotencyKey: 'wd_reverse_'.$withdrawal->id,
+                description: 'Withdrawal rejected — refund',
+            );
+        }
+
+        $withdrawal->update([
+            'status' => Withdrawal::REJECTED,
+            'admin_note' => $data['admin_note'],
+            'processed_by' => $request->user()->id,
+            'processed_at' => now(),
+        ]);
+
+        return back()->with('status', 'Withdrawal rejected and amount refunded.');
+    }
+}

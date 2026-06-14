@@ -1,0 +1,2 @@
+# Drop origin TLS certs here (fullchain.pem / privkey.pem) for direct origin HTTPS.
+# At MVP, TLS is typically terminated at Cloudflare so this can stay empty.
