@@ -14,14 +14,32 @@
     <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body class="bg-bg text-ink font-sans antialiased">
-<div x-data="{ open:false }" class="min-h-screen lg:flex">
-    <aside class="fixed lg:static inset-y-0 left-0 z-40 w-64 text-slate-300 flex flex-col transition-transform lg:translate-x-0"
+{{-- open = mobile drawer · collapsed = desktop slide (persisted) --}}
+<div x-data="{ open:false, collapsed: localStorage.getItem('tc_admin_sidebar')==='1' }"
+     x-init="$watch('collapsed', v => localStorage.setItem('tc_admin_sidebar', v ? '1' : '0'))"
+     class="min-h-screen lg:flex">
+
+    {{-- ===== Sidebar (slides in/out on both mobile & desktop) ===== --}}
+    <aside class="fixed lg:static inset-y-0 left-0 z-40 w-64 text-slate-300 flex flex-col transition-all duration-300 lg:translate-x-0"
            style="background:linear-gradient(180deg,#0B1220 0%,#0a2230 55%,#062a2b 100%)"
-           :class="open ? 'translate-x-0' : '-translate-x-full'">
+           :class="{
+               'translate-x-0': open,
+               '-translate-x-full': !open,
+               'lg:w-64 lg:translate-x-0': !collapsed,
+               'lg:w-0 lg:-translate-x-full lg:overflow-hidden': collapsed
+           }">
         {{-- Brand --}}
         <div class="px-4 pt-5 pb-3 border-b border-white/5">
-            <div class="flex items-center">
+            <div class="flex items-center justify-between">
                 <x-brand-logo light icon="shield" />
+                {{-- collapse button (desktop) --}}
+                <button @click="collapsed = true" class="hidden lg:grid place-items-center w-8 h-8 rounded-lg text-slate-400 hover:bg-white/10 hover:text-white transition" aria-label="Collapse sidebar">
+                    <i data-lucide="chevrons-left" class="w-4 h-4"></i>
+                </button>
+                {{-- close button (mobile) --}}
+                <button @click="open = false" class="lg:hidden grid place-items-center w-8 h-8 rounded-lg text-slate-400 hover:bg-white/10 hover:text-white" aria-label="Close menu">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
             </div>
             <div class="mt-3 flex items-center gap-2 rounded-xl bg-white/5 px-3 py-2">
                 <span class="w-7 h-7 rounded-full grid place-items-center text-white text-xs font-bold" style="background:linear-gradient(150deg,#0F62FE,#00B8A9)">{{ strtoupper(substr(auth()->user()->name,0,1)) }}</span>
@@ -97,12 +115,20 @@
         </div>
     </aside>
 
-    <div @click="open=false" x-show="open" class="fixed inset-0 bg-black/40 z-30 lg:hidden"></div>
+    {{-- mobile backdrop --}}
+    <div @click="open=false" x-show="open" x-transition.opacity class="fixed inset-0 bg-black/40 z-30 lg:hidden"></div>
 
     <div class="flex-1 min-w-0">
         <header class="h-16 bg-white border-b border-slate-100 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-20">
-            <button @click="open=!open" class="lg:hidden btn btn-ghost p-2"><i data-lucide="menu" class="w-5 h-5"></i></button>
-            <h1 class="font-display font-bold">@yield('heading', 'Admin')</h1>
+            <div class="flex items-center gap-1.5">
+                {{-- mobile: open drawer --}}
+                <button @click="open=!open" class="lg:hidden btn btn-ghost p-2" aria-label="Menu"><i data-lucide="menu" class="w-5 h-5"></i></button>
+                {{-- desktop: slide sidebar in/out --}}
+                <button @click="collapsed=!collapsed" class="hidden lg:inline-flex btn btn-ghost p-2" aria-label="Toggle sidebar">
+                    <i data-lucide="panel-left" class="w-5 h-5"></i>
+                </button>
+                <h1 class="font-display font-bold">@yield('heading', 'Admin')</h1>
+            </div>
             <div class="flex items-center gap-2 text-sm text-muted">
                 <i data-lucide="user-circle" class="w-5 h-5"></i> {{ auth()->user()->name }}
             </div>
@@ -117,58 +143,6 @@
             @yield('content')
         </main>
     </div>
-
-    {{-- ===== Right rail (quick actions) — visible on xl+ ===== --}}
-    @php
-        $quick = collect([
-            ['admin.offers.create','plus-circle','New offer','cms.manage','background:rgba(15,98,254,.1);color:#0F62FE'],
-            ['admin.providers.create','plug','Add provider','providers.manage','background:rgba(0,184,169,.12);color:#009688'],
-            ['admin.networks.index','network','Affiliate networks','providers.manage','background:rgba(168,85,247,.12);color:#9333ea'],
-            ['admin.withdrawals.index','banknote','Payouts','withdrawals.approve','background:rgba(34,197,94,.12);color:#16a34a'],
-            ['admin.kyc.index','id-card','KYC review','users.manage','background:rgba(255,138,0,.12);color:#c2410c'],
-            ['admin.support.index','life-buoy','Support inbox','support.handle','background:rgba(236,72,153,.12);color:#db2777'],
-            ['admin.settings.index','settings','Settings','settings.manage','background:rgba(30,41,59,.08);color:#1E293B'],
-        ])->filter(fn ($q) => ! $q[3] || auth()->user()->hasPermission($q[3]));
-    @endphp
-    <aside class="hidden xl:flex xl:flex-col w-72 shrink-0 border-l border-slate-100 bg-white sticky top-0 h-screen overflow-y-auto">
-        <div class="p-4 space-y-5">
-            {{-- Welcome + live clock --}}
-            <div class="card p-4 relative overflow-hidden" style="background:linear-gradient(135deg,#0d9488,#0F62FE)"
-                 x-data="{ t:'' }"
-                 x-init="t=new Date().toLocaleString('en-IN',{weekday:'short',day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}); setInterval(()=>t=new Date().toLocaleString('en-IN',{weekday:'short',day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}),30000)">
-                <p class="text-xs text-white/70">Welcome back</p>
-                <p class="font-display font-extrabold text-white text-lg truncate">{{ strtok(auth()->user()->name, ' ') }}</p>
-                <p class="text-xs text-white/80 mt-1" x-text="t"></p>
-            </div>
-
-            {{-- Quick actions --}}
-            @if ($quick->isNotEmpty())
-                <div>
-                    <p class="text-[10px] font-bold uppercase tracking-wider text-muted px-1 mb-2">Quick actions</p>
-                    <div class="space-y-1">
-                        @foreach ($quick as [$r, $ic, $lbl, $perm, $style])
-                            <a href="{{ route($r) }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition group">
-                                <span class="w-9 h-9 rounded-lg grid place-items-center" style="{{ $style }}"><i data-lucide="{{ $ic }}" class="w-4 h-4"></i></span>
-                                <span class="text-sm font-semibold">{{ $lbl }}</span>
-                                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 ml-auto group-hover:text-slate-400"></i>
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
-
-            {{-- Resources --}}
-            <div>
-                <p class="text-[10px] font-bold uppercase tracking-wider text-muted px-1 mb-2">Resources</p>
-                <a href="{{ route('home') }}" target="_blank" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition">
-                    <span class="w-9 h-9 rounded-lg grid place-items-center bg-blue-50 text-blue-600"><i data-lucide="external-link" class="w-4 h-4"></i></span>
-                    <span class="text-sm font-semibold">Visit live site</span>
-                </a>
-            </div>
-
-            <p class="text-center text-[11px] text-muted pt-2">{{ config('app.name') }} Admin · v1.0</p>
-        </div>
-    </aside>
 </div>
 <script>document.addEventListener('DOMContentLoaded',()=>window.lucide?.createIcons());document.addEventListener('alpine:initialized',()=>window.lucide?.createIcons());</script>
 @stack('scripts')
