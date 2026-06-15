@@ -52,4 +52,20 @@
         </table>
     </div>
 </div>
+
+<div class="card p-6 mt-6 max-w-3xl">
+    <h2 class="font-display font-bold flex items-center gap-2"><i data-lucide="send" class="w-4 h-4"></i> Contact this user</h2>
+    <p class="text-sm text-muted mt-1">Reach the user directly via Email, SMS or WhatsApp (uses configured channels).</p>
+    <form method="POST" action="{{ route('admin.users.contact', $user) }}" class="mt-4 space-y-3">
+        @csrf
+        <div class="grid sm:grid-cols-3 gap-3">
+            <div><label class="text-sm font-semibold">Channel</label>
+                <select name="channel" class="input mt-1"><option value="email">Email</option><option value="sms">SMS</option><option value="whatsapp">WhatsApp</option></select>
+            </div>
+            <div class="sm:col-span-2"><label class="text-sm font-semibold">Subject (email)</label><input name="subject" class="input mt-1" placeholder="Optional"></div>
+        </div>
+        <div><label class="text-sm font-semibold">Message</label><textarea name="message" rows="3" class="input mt-1" required></textarea></div>
+        <button class="btn btn-primary">Send message</button>
+    </form>
+</div>
 @endsection

@@ -40,4 +40,18 @@ return [
         'private_key' => env('VAPID_PRIVATE_KEY'),
         'subject' => env('VAPID_SUBJECT', 'mailto:admin@travelcash.test'),
     ],
+
+    // Twilio — SMS + WhatsApp (env fallback; admin can override in Integrations)
+    'twilio' => [
+        'sid' => env('TWILIO_SID'),
+        'token' => env('TWILIO_TOKEN'),
+        'from' => env('TWILIO_FROM'),                       // SMS sender number
+        'whatsapp_from' => env('TWILIO_WHATSAPP_FROM'),     // e.g. whatsapp:+14155238886
+    ],
+
+    // WhatsApp Business Cloud API (Meta)
+    'whatsapp' => [
+        'token' => env('WHATSAPP_TOKEN'),
+        'phone_id' => env('WHATSAPP_PHONE_ID'),
+    ],
 ];

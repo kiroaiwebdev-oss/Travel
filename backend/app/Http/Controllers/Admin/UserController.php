@@ -68,4 +68,21 @@ class UserController extends Controller
 
         return back()->with('status', 'Wallet adjusted ('.$data['direction'].' ₹'.$data['amount'].').');
     }
+
+    /** Contact a user directly via email / SMS / WhatsApp. */
+    public function contact(Request $request, User $user): RedirectResponse
+    {
+        $data = $request->validate([
+            'channel' => ['required', 'in:email,sms,whatsapp'],
+            'subject' => ['nullable', 'string', 'max:160'],
+            'message' => ['required', 'string', 'max:2000'],
+        ]);
+
+        $result = app(\App\Services\Messaging\MessagingService::class)
+            ->sendToUser($user, $data['message'], $data['channel'], $data['subject'] ?? null);
+
+        return $result['ok']
+            ? back()->with('status', 'Message sent via '.$data['channel'].'.')
+            : back()->withErrors(['message' => 'Failed: '.$result['info']]);
+    }
 }

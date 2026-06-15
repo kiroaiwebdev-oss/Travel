@@ -38,6 +38,7 @@
                 ['admin.support.index','life-buoy','Support', 'support.handle'],
                 ['admin.notifications.index','megaphone','Notifications', 'cms.manage'],
                 ['admin.audit.index','scroll-text','Audit logs', 'audit.view'],
+                ['admin.integrations.index','plug-zap','Integrations', 'settings.manage'],
                 ['admin.settings.index','settings','Settings', 'settings.manage'],
             ]; @endphp
             @foreach ($nav as [$route, $icon, $label, $perm])

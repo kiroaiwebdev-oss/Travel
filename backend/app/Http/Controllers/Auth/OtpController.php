@@ -42,8 +42,10 @@ class OtpController extends Controller
             $code = (string) random_int(100000, 999999);
             Cache::put($this->key($email), ['hash' => Hash::make($code), 'tries' => 0], now()->addMinutes(10));
 
-            // TODO(production): dispatch via email/SMS provider (e.g. Mail / Twilio / MSG91).
-            Log::info('OTP issued', ['email' => $email, 'code' => $code]);
+            // Deliver via the admin-selected channel (email / SMS / WhatsApp).
+            $result = app(\App\Services\Messaging\MessagingService::class)->sendOtp($user, $code);
+            Log::info('OTP issued', ['email' => $email, 'channel' => $result['channel'] ?? 'email', 'sent' => $result['ok'] ?? false]);
+
             if (! app()->environment('production')) {
                 session()->flash('otp_demo', $code); // visible only outside production
             }

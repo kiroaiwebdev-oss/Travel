@@ -56,4 +56,40 @@
         @endforelse
     </div>
 </div>
+
+{{-- Communication channels + quick actions --}}
+<div class="grid gap-5 lg:grid-cols-2 mt-6">
+    <div class="card p-5">
+        <div class="flex items-center justify-between mb-3">
+            <h2 class="font-display font-bold">Communication channels</h2>
+            <a href="{{ route('admin.integrations.index') }}" class="text-sm text-primary font-semibold">Configure</a>
+        </div>
+        <div class="space-y-2">
+            @foreach (['email' => 'Email', 'sms' => 'SMS · Twilio', 'whatsapp' => 'WhatsApp'] as $k => $label)
+                <div class="flex items-center justify-between py-2 border-b border-slate-50 last:border-0">
+                    <span class="text-sm">{{ $label }} @if($otpChannel===$k)<span class="pill pill-brand ml-1">OTP</span>@endif</span>
+                    @if (($channels[$k]['configured'] ?? false) && ($channels[$k]['enabled'] ?? false))
+                        <span class="pill pill-cashback">Live</span>
+                    @elseif ($channels[$k]['configured'] ?? false)
+                        <span class="pill pill-muted">Off</span>
+                    @else
+                        <span class="pill pill-deal">Setup</span>
+                    @endif
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    <div class="card p-5">
+        <h2 class="font-display font-bold mb-3">Quick actions</h2>
+        <div class="grid grid-cols-2 gap-2">
+            <a href="{{ route('admin.offers.create') }}" class="btn btn-ghost text-sm justify-start"><i data-lucide="plus" class="w-4 h-4"></i> New offer</a>
+            <a href="{{ route('admin.providers.create') }}" class="btn btn-ghost text-sm justify-start"><i data-lucide="plug" class="w-4 h-4"></i> Add provider</a>
+            <a href="{{ route('admin.notifications.index') }}" class="btn btn-ghost text-sm justify-start"><i data-lucide="megaphone" class="w-4 h-4"></i> Send notification</a>
+            <a href="{{ route('admin.kyc.index') }}" class="btn btn-ghost text-sm justify-start"><i data-lucide="id-card" class="w-4 h-4"></i> Review KYC</a>
+            <a href="{{ route('admin.withdrawals.index') }}" class="btn btn-ghost text-sm justify-start"><i data-lucide="banknote" class="w-4 h-4"></i> Payouts</a>
+            <a href="{{ route('admin.staff.index') }}" class="btn btn-ghost text-sm justify-start"><i data-lucide="user-cog" class="w-4 h-4"></i> Staff & roles</a>
+        </div>
+    </div>
+</div>
 @endsection

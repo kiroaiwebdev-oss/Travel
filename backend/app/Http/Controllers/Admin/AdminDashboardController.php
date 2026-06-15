@@ -9,14 +9,17 @@ use App\Models\Provider;
 use App\Models\SearchLog;
 use App\Models\User;
 use App\Models\Withdrawal;
+use App\Services\Messaging\MessagingService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
 
 class AdminDashboardController extends Controller
 {
-    public function index(): View
+    public function index(MessagingService $messaging): View
     {
         return view('admin.dashboard', [
+            'channels' => $messaging->status(),
+            'otpChannel' => $messaging->otpChannel(),
             'stats' => [
                 'users' => User::count(),
                 'providers' => Provider::active()->count(),

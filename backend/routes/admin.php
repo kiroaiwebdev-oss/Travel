@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\CashbackController;
 use App\Http\Controllers\Admin\CashbackRuleController;
+use App\Http\Controllers\Admin\IntegrationController;
 use App\Http\Controllers\Admin\KycController as AdminKycController;
 use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 use App\Http\Controllers\Admin\OfferController;
@@ -62,6 +63,7 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::middleware('permission:users.manage')->group(function () {
         Route::put('users/{user}/status', [UserController::class, 'updateStatus'])->name('users.status');
         Route::put('users/{user}/adjust', [UserController::class, 'adjustWallet'])->name('users.adjust');
+        Route::post('users/{user}/contact', [UserController::class, 'contact'])->name('users.contact');
     });
 
     // Withdrawals
@@ -94,6 +96,10 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::middleware('permission:settings.manage')->group(function () {
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
         Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
+        // Communication channels (Email / SMS / WhatsApp) + OTP delivery
+        Route::get('integrations', [IntegrationController::class, 'index'])->name('integrations.index');
+        Route::put('integrations', [IntegrationController::class, 'update'])->name('integrations.update');
+        Route::post('integrations/test', [IntegrationController::class, 'test'])->name('integrations.test');
     });
 
     // Offers / Deals catalog
