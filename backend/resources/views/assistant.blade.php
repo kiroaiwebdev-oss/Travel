@@ -13,7 +13,7 @@
     </div>
 @else
 <div class="max-w-3xl mx-auto px-4 sm:px-6 py-5 sm:py-7"
-     x-data="assistantChat()" x-init="init()">
+     x-data="assistantChat()">
 
     {{-- ===== Premium header ===== --}}
     <div class="rounded-3xl p-5 sm:p-6 text-white relative overflow-hidden mb-4" style="background:linear-gradient(135deg,#7c3aed 0%,#0F62FE 100%)">
@@ -53,18 +53,39 @@
     <div class="card flex flex-col overflow-hidden" style="height:min(72vh,660px)">
         <div x-ref="scroll" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50/40">
             <template x-for="(m, i) in msgs" :key="i">
-                <div class="flex gap-2.5" :class="m.role==='user' ? 'flex-row-reverse' : ''">
-                    <span class="w-8 h-8 rounded-full grid place-items-center shrink-0 text-white"
-                          :style="m.role==='user' ? 'background:#0F62FE' : 'background:linear-gradient(150deg,#9333ea,#0F62FE)'">
-                        <i :data-lucide="m.role==='user' ? 'user' : 'sparkles'" class="w-4 h-4"></i>
-                    </span>
-                    <div class="max-w-[82%]">
-                        <div class="px-4 py-2.5 text-sm leading-relaxed rounded-2xl shadow-sm" style="white-space:pre-line"
-                             :class="m.role==='user' ? 'bg-pay text-white rounded-tr-sm' : 'bg-white border border-slate-100 rounded-tl-sm'"
-                             x-text="m.content"></div>
-                        <p x-show="m.provider" class="text-[10px] text-muted mt-1 px-1 flex items-center gap-1">
-                            <i data-lucide="sparkles" class="w-3 h-3"></i> <span x-text="'powered by ' + m.provider"></span>
-                        </p>
+                <div>
+                    <div class="flex gap-2.5" :class="m.role==='user' ? 'flex-row-reverse' : ''">
+                        <span class="w-8 h-8 rounded-full grid place-items-center shrink-0 text-white"
+                              :style="m.role==='user' ? 'background:#0F62FE' : 'background:linear-gradient(150deg,#9333ea,#0F62FE)'">
+                            <i :data-lucide="m.role==='user' ? 'user' : 'sparkles'" class="w-4 h-4"></i>
+                        </span>
+                        <div class="max-w-[82%]">
+                            <div class="px-4 py-2.5 text-sm leading-relaxed rounded-2xl shadow-sm" style="white-space:pre-line"
+                                 :class="m.role==='user' ? 'bg-pay text-white rounded-tr-sm' : 'bg-white border border-slate-100 rounded-tl-sm'"
+                                 x-text="m.content"></div>
+                            <p x-show="m.provider" class="text-[10px] text-muted mt-1 px-1 flex items-center gap-1">
+                                <i data-lucide="sparkles" class="w-3 h-3"></i> <span x-text="'powered by ' + m.provider"></span>
+                            </p>
+                        </div>
+                    </div>
+
+                    {{-- Real offer cards with affiliate links --}}
+                    <div x-show="m.offers && m.offers.length" class="mt-2 ml-10 space-y-2">
+                        <template x-for="(o, oi) in (m.offers || [])" :key="oi">
+                            <a :href="o.go_url || '#'" target="_blank" rel="nofollow sponsored"
+                               class="press flex gap-3 items-center bg-white border border-slate-100 rounded-xl p-2.5 hover:border-brand/50 transition shadow-sm">
+                                <img :src="o.image" x-show="o.image" class="w-14 h-14 rounded-lg object-cover shrink-0" loading="lazy" alt="">
+                                <div class="min-w-0 flex-1">
+                                    <p class="font-semibold text-sm truncate" x-text="o.title"></p>
+                                    <p class="text-xs text-muted truncate" x-text="o.provider_name + (o.rating ? ' · ' + o.rating + '★' : '')"></p>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <span class="font-bold text-sm" x-text="(o.currency==='INR'?'₹':'$') + Math.round(o.price || 0).toLocaleString()"></span>
+                                        <span x-show="o.cashback" class="pill pill-cashback text-[10px]" x-text="'₹' + Math.round(o.cashback || 0) + ' cashback'"></span>
+                                    </div>
+                                </div>
+                                <span class="btn btn-primary text-xs shrink-0">Book &amp; earn</span>
+                            </a>
+                        </template>
                     </div>
                 </div>
             </template>
@@ -135,7 +156,7 @@
                 })
                 .then(r => r.json().then(j => ({ ok: r.ok, j })))
                 .then(({ ok, j }) => {
-                    this.msgs.push({ role: 'assistant', content: j.message || 'Sorry, I could not respond right now.', provider: j.provider_used || null });
+                    this.msgs.push({ role: 'assistant', content: j.message || 'Sorry, I could not respond right now.', provider: j.provider_used || null, offers: Array.isArray(j.offers) ? j.offers : [] });
                     if (Array.isArray(j.suggestions) && j.suggestions.length) this.suggestions = j.suggestions;
                 })
                 .catch(() => this.msgs.push({ role: 'assistant', content: 'The AI service is unreachable right now. Please try again in a moment.' }))
