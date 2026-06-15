@@ -13,7 +13,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('postback_secret')->nullable(); // HMAC verify postbacks
+            $table->text('postback_secret')->nullable(); // HMAC verify postbacks (encrypted → long ciphertext)
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
@@ -42,7 +42,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('provider_id')->constrained()->cascadeOnDelete();
             $table->string('environment', 20)->default('production'); // sandbox|production
-            $table->json('config');     // encrypted at the model layer (api_key, secret, base_url...)
+            $table->text('config');     // encrypted at the model layer (api_key, secret, base_url...) — ciphertext, not raw JSON
             $table->boolean('is_active')->default(true);
             $table->timestamps();
 

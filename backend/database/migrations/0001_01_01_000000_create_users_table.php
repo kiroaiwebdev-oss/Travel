@@ -26,7 +26,7 @@ return new class extends Migration
             // MFA-ready
             $table->boolean('mfa_enabled')->default(false);
             $table->text('mfa_secret')->nullable();           // encrypted
-            $table->json('mfa_recovery_codes')->nullable();   // encrypted
+            $table->text('mfa_recovery_codes')->nullable();   // encrypted (ciphertext string, not raw JSON)
 
             $table->string('status', 20)->default('active');  // active|suspended|banned
             $table->string('locale', 8)->default('en');

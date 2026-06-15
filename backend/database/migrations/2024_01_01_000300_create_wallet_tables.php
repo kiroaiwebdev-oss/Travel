@@ -87,7 +87,7 @@ return new class extends Migration
             $table->decimal('amount', 15, 2);
             $table->string('currency', 8)->default('INR');
             $table->string('method', 30);        // upi | bank | paypal | voucher
-            $table->json('payout_details');      // encrypted
+            $table->text('payout_details');      // encrypted (ciphertext string, not raw JSON)
             $table->string('status', 20)->default('requested')->index(); // requested|approved|processing|paid|rejected
             $table->string('reference')->nullable();
             $table->string('admin_note')->nullable();

@@ -16,6 +16,7 @@ class Withdrawal extends Model
     protected $fillable = [
         'user_id', 'amount', 'currency', 'method', 'payout_details',
         'status', 'reference', 'admin_note', 'processed_by', 'processed_at',
+        'gateway', 'gateway_payout_id', 'gateway_response',
     ];
 
     protected function casts(): array
@@ -23,6 +24,7 @@ class Withdrawal extends Model
         return [
             'amount' => 'decimal:2',
             'payout_details' => 'encrypted:array',
+            'gateway_response' => 'array',
             'processed_at' => 'datetime',
         ];
     }
