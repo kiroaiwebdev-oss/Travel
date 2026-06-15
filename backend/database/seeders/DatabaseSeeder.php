@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             SettingsSeeder::class,
             ProviderSeeder::class,
             DemoUserSeeder::class,
+            DemoDataSeeder::class, // sample data across every section for testing
         ]);
     }
 }
