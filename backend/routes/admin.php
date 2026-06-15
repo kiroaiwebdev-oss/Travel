@@ -109,6 +109,21 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::put('offers/{offer}/toggle', [OfferController::class, 'toggle'])->name('offers.toggle');
     });
 
+    // Homepage content: trending destinations + user reviews/suggestions
+    Route::middleware('permission:cms.manage')->group(function () {
+        Route::get('destinations', [\App\Http\Controllers\Admin\DestinationController::class, 'index'])->name('destinations.index');
+        Route::post('destinations', [\App\Http\Controllers\Admin\DestinationController::class, 'store'])->name('destinations.store');
+        Route::put('destinations/{destination}', [\App\Http\Controllers\Admin\DestinationController::class, 'update'])->name('destinations.update');
+        Route::put('destinations/{destination}/toggle', [\App\Http\Controllers\Admin\DestinationController::class, 'toggle'])->name('destinations.toggle');
+        Route::delete('destinations/{destination}', [\App\Http\Controllers\Admin\DestinationController::class, 'destroy'])->name('destinations.destroy');
+
+        Route::get('reviews', [\App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('reviews.index');
+        Route::put('reviews/{review}/approve', [\App\Http\Controllers\Admin\ReviewController::class, 'approve'])->name('reviews.approve');
+        Route::put('reviews/{review}/reject', [\App\Http\Controllers\Admin\ReviewController::class, 'reject'])->name('reviews.reject');
+        Route::put('reviews/{review}/feature', [\App\Http\Controllers\Admin\ReviewController::class, 'feature'])->name('reviews.feature');
+        Route::delete('reviews/{review}', [\App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('reviews.destroy');
+    });
+
     // Affiliate networks
     Route::middleware('permission:providers.manage')->group(function () {
         Route::get('networks', [AffiliateNetworkController::class, 'index'])->name('networks.index');

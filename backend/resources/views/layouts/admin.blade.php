@@ -59,6 +59,7 @@
                     ],
                     'Catalog' => [
                         ['admin.offers.index','tag','Offers & Deals', 'cms.manage'],
+                        ['admin.destinations.index','map-pin','Trending Destinations', 'cms.manage'],
                         ['admin.providers.index','plug','Providers', 'providers.manage'],
                         ['admin.networks.index','network','Affiliate Networks', 'providers.manage'],
                         ['admin.cashback-rules.index','badge-percent','Cashback rules', 'cashback.manage'],
@@ -76,6 +77,7 @@
                     'Engage' => [
                         ['admin.support.index','life-buoy','Support', 'support.handle'],
                         ['admin.contact.index','mail','Contact messages', 'support.handle'],
+                        ['admin.reviews.index','message-square','Reviews & Suggestions', 'cms.manage'],
                         ['admin.notifications.index','megaphone','Notifications', 'cms.manage'],
                     ],
                     'System' => [

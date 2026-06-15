@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             DemoUserSeeder::class,   // <-- admin + user created up front, guaranteed
             SettingsSeeder::class,
             ProviderSeeder::class,
+            HomepageSeeder::class,
             DemoDataSeeder::class,
         ];
 

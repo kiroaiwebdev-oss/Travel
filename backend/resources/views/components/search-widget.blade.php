@@ -4,7 +4,7 @@
      Pure HTML works without JS; Alpine powers the tabs. --}}
 <div x-data="{ tab: '{{ $active }}' }" class="card p-2.5 sm:p-3" style="box-shadow:0 30px 60px -24px rgba(13,42,72,.35)">
 
-    {{-- Tabs: app segmented feel on mobile, pill row on desktop --}}
+    {{-- Tabs --}}
     <div class="flex gap-1 overflow-x-auto no-scrollbar p-1 mb-2">
         @foreach ($categories as $key => $cat)
             <button type="button" @click="tab = '{{ $key }}'"
@@ -24,34 +24,55 @@
             @if (in_array($key, ['flights', 'trains', 'cabs', 'transfers']))
                 <div>
                     <label class="text-xs font-semibold text-muted px-1">From</label>
-                    <input name="origin" class="input mt-1" placeholder="Origin city" value="{{ request('origin') }}">
+                    <div class="relative mt-1">
+                        <i data-lucide="plane-takeoff" class="w-4 h-4 text-muted absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                        <input name="origin" class="input pl-9" placeholder="Origin city" value="{{ request('origin') }}">
+                    </div>
                 </div>
                 <div>
                     <label class="text-xs font-semibold text-muted px-1">To</label>
-                    <input name="destination" class="input mt-1" placeholder="Destination" value="{{ request('destination') }}">
+                    <div class="relative mt-1">
+                        <i data-lucide="map-pin" class="w-4 h-4 text-muted absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                        <input name="destination" class="input pl-9" placeholder="Destination" value="{{ request('destination') }}">
+                    </div>
                 </div>
                 <div>
                     <label class="text-xs font-semibold text-muted px-1">Depart</label>
-                    <input type="date" name="depart_date" class="input mt-1">
+                    <div class="relative mt-1 date-field">
+                        <i data-lucide="calendar" class="w-4 h-4 text-brand absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10"></i>
+                        <input type="date" name="depart_date" min="{{ now()->format('Y-m-d') }}" class="input pl-9 md:w-[10.5rem]">
+                    </div>
                 </div>
             @else
                 <div>
                     <label class="text-xs font-semibold text-muted px-1">Destination / City</label>
-                    <input name="destination" class="input mt-1" placeholder="Where to?" value="{{ request('destination') }}">
+                    <div class="relative mt-1">
+                        <i data-lucide="map-pin" class="w-4 h-4 text-muted absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                        <input name="destination" class="input pl-9" placeholder="Where to?" value="{{ request('destination') }}">
+                    </div>
                 </div>
                 <div>
                     <label class="text-xs font-semibold text-muted px-1">Check-in</label>
-                    <input type="date" name="depart_date" class="input mt-1">
+                    <div class="relative mt-1 date-field">
+                        <i data-lucide="calendar" class="w-4 h-4 text-brand absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10"></i>
+                        <input type="date" name="depart_date" min="{{ now()->format('Y-m-d') }}" class="input pl-9 md:w-[10.5rem]">
+                    </div>
                 </div>
                 <div>
                     <label class="text-xs font-semibold text-muted px-1">Check-out</label>
-                    <input type="date" name="return_date" class="input mt-1">
+                    <div class="relative mt-1 date-field">
+                        <i data-lucide="calendar-check" class="w-4 h-4 text-brand absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10"></i>
+                        <input type="date" name="return_date" min="{{ now()->addDay()->format('Y-m-d') }}" class="input pl-9 md:w-[10.5rem]">
+                    </div>
                 </div>
             @endif
 
             <div>
                 <label class="text-xs font-semibold text-muted px-1">Guests</label>
-                <input type="number" name="travellers" min="1" max="20" value="1" class="input mt-1 md:w-24">
+                <div class="relative mt-1">
+                    <i data-lucide="users" class="w-4 h-4 text-muted absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                    <input type="number" name="travellers" min="1" max="20" value="1" class="input pl-9 md:w-24">
+                </div>
             </div>
 
             <button type="submit" class="btn btn-brand h-[48px] justify-center text-base md:text-sm">

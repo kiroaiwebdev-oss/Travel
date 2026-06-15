@@ -1,6 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
+{{-- ===== ADMIN-CONTROLLED PROMO BANNER ===== --}}
+@if ((bool) \App\Models\Setting::get('home.banner_enabled', false))
+    @php
+        $bTitle = \App\Models\Setting::get('home.banner_title');
+        $bSub = \App\Models\Setting::get('home.banner_subtitle');
+        $bCta = \App\Models\Setting::get('home.banner_cta', 'Explore');
+        $bLink = \App\Models\Setting::get('home.banner_link', '/search');
+        $bImg = \App\Models\Setting::get('home.banner_image');
+    @endphp
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-4">
+        <a href="{{ $bLink }}" class="press block relative overflow-hidden rounded-2xl p-5 sm:p-6 text-white" style="background:linear-gradient(120deg,#0d9488,#0F62FE)">
+            @if ($bImg)<img src="{{ $bImg }}" alt="" class="absolute inset-0 w-full h-full object-cover opacity-30">@endif
+            <div class="relative flex items-center justify-between gap-4">
+                <div>
+                    <p class="font-display font-extrabold text-lg sm:text-2xl leading-tight">{{ $bTitle }}</p>
+                    @if ($bSub)<p class="text-white/85 text-sm mt-1">{{ $bSub }}</p>@endif
+                </div>
+                <span class="btn btn-white shrink-0 text-sm">{{ $bCta }} <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+            </div>
+        </a>
+    </div>
+@endif
+
 {{-- ====================================================================
      MOBILE APP HOME (md:hidden) — native cashback-app feed experience
      ==================================================================== --}}
@@ -69,11 +92,11 @@
         </div>
         <div class="h-scroll no-scrollbar px-4 pb-1">
             @foreach ($destinations as $d)
-                <a href="{{ route('search', ['category' => 'hotels', 'destination' => $d['name']]) }}" class="story press text-center">
+                <a href="{{ route('search', ['category' => $d->category ?? 'hotels', 'destination' => $d->name]) }}" class="story press text-center">
                     <span class="story-ring block"><span class="story-ring-inner block">
-                        <img src="{{ $d['image'] }}" alt="{{ $d['name'] }}" loading="lazy">
+                        <img src="{{ $d->image_url }}" alt="{{ $d->name }}" loading="lazy">
                     </span></span>
-                    <span class="block text-[11px] font-semibold mt-1.5 truncate">{{ $d['name'] }}</span>
+                    <span class="block text-[11px] font-semibold mt-1.5 truncate">{{ $d->name }}</span>
                 </a>
             @endforeach
         </div>
@@ -267,20 +290,24 @@
     </div>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         @foreach ($destinations as $d)
-            <a href="{{ route('search', ['category' => 'hotels', 'destination' => $d['name']]) }}"
+            <a href="{{ route('search', ['category' => $d->category ?? 'hotels', 'destination' => $d->name]) }}"
                class="group relative aspect-[3/4] rounded-xl2 overflow-hidden card-hover">
-                <img src="{{ $d['image'] }}" alt="{{ $d['name'] }}" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <img src="{{ $d->image_url }}" alt="{{ $d->name }}" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-700">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent"></div>
                 <div class="absolute bottom-3 left-3 text-white">
-                    <p class="text-[11px] font-medium opacity-80">{{ $d['tag'] }}</p>
-                    <p class="font-bold">{{ $d['name'] }}</p>
+                    <p class="text-[11px] font-medium opacity-80">{{ $d->tag }}</p>
+                    <p class="font-bold">{{ $d->name }}</p>
                 </div>
             </a>
         @endforeach
     </div>
 </section>
 
-@includeWhen(!empty($featured['hotels']), 'partials.offer-rail', ['title' => 'Featured hotels', 'subtitle' => 'Hand-picked stays with boosted cashback.', 'offers' => $featured['hotels'] ?? [], 'cta' => ['hotels', 'View all hotels']])
+@if (($featuredOffers['hotels'] ?? collect())->isNotEmpty())
+    @include('partials.deal-rail', ['title' => 'Featured hotels', 'subtitle' => 'Hand-picked stays with boosted cashback.', 'offers' => $featuredOffers['hotels'], 'cta' => ['hotels', 'View all hotels']])
+@else
+    @includeWhen(!empty($featured['hotels']), 'partials.offer-rail', ['title' => 'Featured hotels', 'subtitle' => 'Hand-picked stays with boosted cashback.', 'offers' => $featured['hotels'] ?? [], 'cta' => ['hotels', 'View all hotels']])
+@endif
 
 {{-- ===== HOW IT WORKS - DETAILED ===== --}}
 <section id="how-it-works" class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
@@ -404,7 +431,11 @@
     </div>
 </section>
 
-@includeWhen(!empty($featured['flights']), 'partials.offer-rail', ['title' => 'Trending flights', 'subtitle' => 'Great fares with cashback on top.', 'offers' => $featured['flights'] ?? [], 'cta' => ['flights', 'View all flights']])
+@if (($featuredOffers['flights'] ?? collect())->isNotEmpty())
+    @include('partials.deal-rail', ['title' => 'Trending flights', 'subtitle' => 'Great fares with cashback on top.', 'offers' => $featuredOffers['flights'], 'cta' => ['flights', 'View all flights']])
+@else
+    @includeWhen(!empty($featured['flights']), 'partials.offer-rail', ['title' => 'Trending flights', 'subtitle' => 'Great fares with cashback on top.', 'offers' => $featured['flights'] ?? [], 'cta' => ['flights', 'View all flights']])
+@endif
 
 {{-- ===== AI ASSISTANT SECTION ===== --}}
 <section class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
@@ -467,7 +498,11 @@
     </div>
 </section>
 
-@includeWhen(!empty($featured['packages']), 'partials.offer-rail', ['title' => 'Featured packages', 'subtitle' => 'Curated holidays, fully loaded.', 'offers' => $featured['packages'] ?? [], 'cta' => ['packages', 'View all packages']])
+@if (($featuredOffers['packages'] ?? collect())->isNotEmpty())
+    @include('partials.deal-rail', ['title' => 'Featured packages', 'subtitle' => 'Curated holidays, fully loaded.', 'offers' => $featuredOffers['packages'], 'cta' => ['packages', 'View all packages']])
+@else
+    @includeWhen(!empty($featured['packages']), 'partials.offer-rail', ['title' => 'Featured packages', 'subtitle' => 'Curated holidays, fully loaded.', 'offers' => $featured['packages'] ?? [], 'cta' => ['packages', 'View all packages']])
+@endif
 
 {{-- ===== CATEGORIES SECTION ===== --}}
 <section class="py-16 bg-white border-y border-slate-100">
@@ -498,38 +533,77 @@
     </div>
 </section>
 
-{{-- ===== TESTIMONIALS ===== --}}
-<section class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
+{{-- ===== REVIEWS & SUGGESTIONS ===== --}}
+<section id="reviews" class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20"
+         x-data="{ form: {{ $errors->any() ? 'true' : 'false' }}, type: '{{ old('type', 'review') }}' }">
     <div class="text-center max-w-xl mx-auto">
         <span class="pill pill-brand">Real stories</span>
         <h2 class="mt-2 font-display text-2xl sm:text-3xl font-extrabold">What our travellers say</h2>
-        <p class="text-muted mt-2">Don't just take our word for it — hear from people who saved real money.</p>
+        <p class="text-muted mt-2">Real reviews from people who saved real money — and your suggestions shape what we build next.</p>
+        <button @click="form = !form" class="btn btn-brand mt-5"><i data-lucide="pen-line" class="w-4 h-4"></i> Write a review / suggestion</button>
     </div>
-    <div class="mt-10 grid md:grid-cols-3 gap-6 max-md:flex max-md:overflow-x-auto max-md:no-scrollbar max-md:-mx-4 max-md:px-4 max-md:snap-x">
-        @foreach ([
-            ['Aarav S.', 'Goa Trip', '₹3,200 cashback', 'Got ₹3,200 back on my Goa trip. The booking experience was exactly the same as booking directly on MakeMyTrip. Money hit my UPI in 2 days after confirmation.', '5'],
-            ['Meera K.', 'Dubai Holiday', '₹8,500 cashback', 'Used TripCash for my Dubai family trip. Compared flight + hotel prices in one place and earned ₹8,500 cashback. The AI even suggested the best areas to stay!', '5'],
-            ['Dev P.', 'Manali Weekend', '₹1,800 cashback', 'Was skeptical at first but tried it for a Manali trip. Found cheaper hotels than what I saw on apps, plus got ₹1,800 back. Now I always check here first.', '5'],
-            ['Priya R.', 'Kerala Backwaters', '₹4,100 cashback', 'Booked a houseboat and flights through TripCash. The whole family loved Kerala and I loved the ₹4,100 that came back into my wallet! So simple.', '5'],
-            ['Rahul M.', 'Business Travel', '₹12,000 cashback', 'I travel for work almost weekly. Started using TripCash and I\'ve earned over ₹12,000 in just 3 months. It adds up fast when you travel often.', '5'],
-            ['Ananya T.', 'Rajasthan Road Trip', '₹2,600 cashback', 'Booked cabs and hotels for our Rajasthan road trip. The compare feature saved us time and the cashback saved us money. Win-win!', '5'],
-        ] as $t)
-            <figure class="card card-hover p-6 max-md:w-[82%] max-md:shrink-0 max-md:snap-start">
-                <div class="flex items-center justify-between">
-                    <div class="flex gap-0.5 text-warning">@for($i=0;$i<(int)$t[4];$i++)<i data-lucide="star" class="w-4 h-4 fill-warning"></i>@endfor</div>
-                    <span class="pill pill-cashback text-xs">{{ $t[2] }}</span>
+
+    @if (session('status'))
+        <div class="mt-6 max-w-xl mx-auto rounded-xl bg-success/10 text-success text-sm p-3 flex items-center gap-2">
+            <i data-lucide="check-circle" class="w-4 h-4"></i> {{ session('status') }}
+        </div>
+    @endif
+
+    {{-- Submit form (toggle) --}}
+    <div x-show="form" x-collapse class="mt-6 max-w-xl mx-auto">
+        <form method="POST" action="{{ route('reviews.store') }}" class="card p-6 space-y-4" x-data="{ rating: {{ old('rating', 5) }} }">
+            @csrf
+            @if ($errors->any())<p class="text-danger text-sm">{{ $errors->first() }}</p>@endif
+
+            <div class="segmented">
+                <button type="button" :class="type === 'review' && 'on'" @click="type = 'review'">⭐ Review</button>
+                <button type="button" :class="type === 'suggestion' && 'on'" @click="type = 'suggestion'">💡 Suggestion</button>
+            </div>
+            <input type="hidden" name="type" :value="type">
+
+            <div class="grid sm:grid-cols-2 gap-3">
+                <div><label class="text-sm font-semibold">Your name</label><input name="name" value="{{ old('name', auth()->user()?->name) }}" class="input mt-1" required></div>
+                <div><label class="text-sm font-semibold">Trip / city <span class="text-muted font-normal">(optional)</span></label><input name="location" value="{{ old('location') }}" class="input mt-1" placeholder="e.g. Trip to Goa"></div>
+            </div>
+
+            <div x-show="type === 'review'">
+                <label class="text-sm font-semibold">Your rating</label>
+                <div class="flex gap-1 mt-1">
+                    <template x-for="n in 5" :key="n">
+                        <button type="button" @click="rating = n" class="text-3xl leading-none transition" :class="n <= rating ? 'text-warning' : 'text-slate-300'">★</button>
+                    </template>
                 </div>
-                <blockquote class="mt-4 text-ink leading-relaxed text-sm">"{{ $t[3] }}"</blockquote>
-                <figcaption class="mt-5 flex items-center gap-3 pt-4 border-t border-slate-100">
-                    <span class="w-10 h-10 rounded-full grid place-items-center text-white text-sm font-bold" style="background:linear-gradient(150deg,#14b8a6,#0d9488)">{{ substr($t[0],0,1) }}</span>
-                    <span>
-                        <span class="font-semibold text-sm block">{{ $t[0] }}</span>
-                        <span class="text-xs text-muted">{{ $t[1] }}</span>
-                    </span>
-                </figcaption>
-            </figure>
-        @endforeach
+                <input type="hidden" name="rating" :value="rating">
+            </div>
+
+            <div>
+                <label class="text-sm font-semibold" x-text="type === 'suggestion' ? 'Your suggestion' : 'Your review'"></label>
+                <textarea name="message" rows="3" class="input mt-1" required placeholder="Tell us about your experience, or what we can improve…">{{ old('message') }}</textarea>
+            </div>
+
+            <button class="btn btn-primary w-full justify-center">Submit</button>
+            <p class="text-xs text-muted text-center">Submissions appear on the site after admin approval.</p>
+        </form>
     </div>
+
+    {{-- Approved reviews --}}
+    @if ($reviews->isNotEmpty())
+        <div class="mt-10 grid md:grid-cols-3 gap-6 max-md:flex max-md:overflow-x-auto max-md:no-scrollbar max-md:-mx-4 max-md:px-4 max-md:snap-x">
+            @foreach ($reviews as $r)
+                <figure class="card card-hover p-6 max-md:w-[82%] max-md:shrink-0 max-md:snap-start">
+                    <div class="flex gap-0.5 text-warning">@for ($i = 0; $i < ($r->rating ?: 5); $i++)<i data-lucide="star" class="w-4 h-4 fill-warning"></i>@endfor</div>
+                    <blockquote class="mt-4 text-ink leading-relaxed text-sm">"{{ $r->message }}"</blockquote>
+                    <figcaption class="mt-5 flex items-center gap-3 pt-4 border-t border-slate-100">
+                        <span class="w-10 h-10 rounded-full grid place-items-center text-white text-sm font-bold" style="background:linear-gradient(150deg,#14b8a6,#0d9488)">{{ strtoupper(substr($r->name, 0, 1)) }}</span>
+                        <span>
+                            <span class="font-semibold text-sm block">{{ $r->name }}</span>
+                            @if ($r->location)<span class="text-xs text-muted">{{ $r->location }}</span>@endif
+                        </span>
+                    </figcaption>
+                </figure>
+            @endforeach
+        </div>
+    @endif
 </section>
 
 {{-- ===== SECURITY & TRUST ===== --}}

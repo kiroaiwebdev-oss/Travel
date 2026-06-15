@@ -20,6 +20,14 @@ class SettingsSeeder extends Seeder
             ['key' => 'cashback.min_withdrawal', 'group' => 'cashback', 'value' => '500', 'type' => 'float', 'is_public' => true],
             ['key' => 'referral.reward_amount', 'group' => 'referral', 'value' => '100', 'type' => 'float', 'is_public' => true],
             ['key' => 'seo.meta_description', 'group' => 'seo', 'value' => 'Compare flights, hotels, trains, cabs & packages. Book through TripCash and earn real cashback.', 'type' => 'string', 'is_public' => true],
+
+            // Homepage banner (admin-controlled promotional strip on the landing page)
+            ['key' => 'home.banner_enabled', 'group' => 'homepage', 'value' => '0', 'type' => 'bool', 'is_public' => true],
+            ['key' => 'home.banner_title', 'group' => 'homepage', 'value' => 'Monsoon Sale is live!', 'type' => 'string', 'is_public' => true],
+            ['key' => 'home.banner_subtitle', 'group' => 'homepage', 'value' => 'Extra cashback on hotels & flights this week only.', 'type' => 'string', 'is_public' => true],
+            ['key' => 'home.banner_cta', 'group' => 'homepage', 'value' => 'Explore deals', 'type' => 'string', 'is_public' => true],
+            ['key' => 'home.banner_link', 'group' => 'homepage', 'value' => '/search?category=hotels', 'type' => 'string', 'is_public' => true],
+            ['key' => 'home.banner_image', 'group' => 'homepage', 'value' => '', 'type' => 'string', 'is_public' => true],
         ];
 
         foreach ($settings as $s) {

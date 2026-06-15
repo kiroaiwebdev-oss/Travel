@@ -30,6 +30,9 @@ Route::get('/terms', [\App\Http\Controllers\PageController::class, 'terms'])->na
 Route::get('/contact', [\App\Http\Controllers\ContactController::class, 'show'])->name('contact');
 Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
 
+// Public reviews & suggestions (moderated before display)
+Route::post('/reviews', [\App\Http\Controllers\ReviewController::class, 'store'])->middleware('throttle:5,1')->name('reviews.store');
+
 // Affiliate click-out -> provider deep-link (signed).
 Route::get('/go/{provider:slug}', [RedirectController::class, 'out'])
     ->middleware('signed')
