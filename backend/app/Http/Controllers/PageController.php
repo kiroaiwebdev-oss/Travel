@@ -8,15 +8,7 @@ class PageController extends Controller
 {
     public function about(): View
     {
-        return view('pages.legal', [
-            'title' => 'About TravelCash',
-            'subtitle' => 'Travel more. Pay less. Earn cashback on every trip.',
-            'sections' => [
-                ['What we do', 'TravelCash is a travel meta-search and cashback platform. We let you compare flights, hotels, trains, cabs, packages, guides and activities across all top providers in one place — and we share a part of the commission we earn back to you as real cashback.'],
-                ['How we make money', 'When you book through our partner links we earn an affiliate commission. A configurable percentage of that commission is returned to your wallet as cashback. You always pay the same provider price — the cashback is on top.'],
-                ['Our mission', 'To make every trip more rewarding. No coupons, no catch — just transparent, real money back into your wallet, withdrawable to UPI, bank or PayPal.'],
-            ],
-        ]);
+        return view('pages.about');
     }
 
     public function privacy(): View
