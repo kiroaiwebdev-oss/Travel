@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Offline — TravelCash</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;display:grid;place-items:center;font-family:Inter,system-ui,sans-serif;
+      background:radial-gradient(60% 50% at 50% 0%,rgba(0,184,169,.15),transparent 60%),#F8FAFC;color:#1E293B;text-align:center;padding:24px}
+    .ic{width:64px;height:64px;border-radius:18px;display:grid;place-items:center;margin:0 auto 16px;
+      background:linear-gradient(135deg,#0F62FE,#00B8A9);color:#fff;font-size:28px}
+    h1{font-size:22px;margin:0 0 6px;font-weight:800;letter-spacing:-.02em}
+    p{color:#64748B;margin:0 0 20px}
+    button{background:#0F62FE;color:#fff;border:0;border-radius:12px;padding:12px 20px;font-weight:600;font-size:15px;cursor:pointer}
+  </style>
+</head>
+<body>
+  <div>
+    <div class="ic">✈</div>
+    <h1>You're offline</h1>
+    <p>Check your connection — your wallet &amp; cashback are safe.</p>
+    <button onclick="location.reload()">Try again</button>
+  </div>
+</body>
+</html>

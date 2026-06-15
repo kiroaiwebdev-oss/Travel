@@ -13,13 +13,14 @@
 
     @include('partials.tailwind')
     @include('partials.styles')
+    @include('partials.pwa')
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     @stack('head')
 </head>
-<body class="bg-bg text-ink antialiased font-sans selection:bg-primary/20">
+<body class="bg-bg text-ink antialiased font-sans selection:bg-primary/20 pb-safe">
     <x-marketing-nav />
 
     <main>
@@ -27,6 +28,7 @@
     </main>
 
     <x-marketing-footer />
+    <x-bottom-nav />
 
     <script>
         // Render Lucide icons after DOM + Alpine paints.

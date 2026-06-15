@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     @include('partials.tailwind')
     @include('partials.styles')
+    @include('partials.pwa')
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -59,7 +60,7 @@
             <a href="{{ route('home') }}" class="btn btn-ghost text-sm"><i data-lucide="search" class="w-4 h-4"></i> New search</a>
         </header>
 
-        <main class="p-4 sm:p-6 fade-up">
+        <main class="p-4 sm:p-6 fade-up pb-safe">
             @if (session('status'))
                 <div class="mb-4 rounded-xl bg-success/10 text-success text-sm p-3 flex items-center gap-2">
                     <i data-lucide="check-circle" class="w-4 h-4"></i> {{ session('status') }}
@@ -69,6 +70,7 @@
         </main>
     </div>
 </div>
+<x-bottom-nav />
 <script>document.addEventListener('DOMContentLoaded',()=>window.lucide?.createIcons());document.addEventListener('alpine:initialized',()=>window.lucide?.createIcons());</script>
 @stack('scripts')
 </body>
