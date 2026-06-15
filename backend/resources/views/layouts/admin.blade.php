@@ -19,8 +19,8 @@
      x-init="$watch('collapsed', v => localStorage.setItem('tc_admin_sidebar', v ? '1' : '0'))"
      class="min-h-screen lg:flex">
 
-    {{-- ===== Sidebar (slides in/out on both mobile & desktop) ===== --}}
-    <aside class="fixed lg:static inset-y-0 left-0 z-40 w-64 text-slate-300 flex flex-col transition-all duration-300 lg:translate-x-0"
+    {{-- ===== Sidebar (slides on mobile · sticky with its OWN scroll on desktop) ===== --}}
+    <aside class="fixed lg:sticky inset-y-0 lg:inset-y-auto lg:top-0 left-0 z-40 w-64 lg:h-screen text-slate-300 flex flex-col transition-all duration-300 lg:translate-x-0"
            style="background:linear-gradient(180deg,#0B1220 0%,#0a2230 55%,#062a2b 100%)"
            :class="{
                'translate-x-0': open,

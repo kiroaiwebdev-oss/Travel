@@ -33,7 +33,7 @@
 
 <div x-data="{ open: false }" class="min-h-screen lg:flex">
     {{-- ===== Desktop sidebar ===== --}}
-    <aside class="hidden lg:flex fixed lg:static inset-y-0 left-0 z-40 w-64 bg-white border-r border-slate-100 p-4 flex-col">
+    <aside class="hidden lg:flex lg:sticky lg:top-0 lg:h-screen left-0 z-40 w-64 bg-white border-r border-slate-100 p-4 flex-col">
         <a href="{{ route('home') }}" class="flex items-center px-2 py-2">
             <x-brand-logo />
         </a>
