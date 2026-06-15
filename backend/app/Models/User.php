@@ -53,11 +53,15 @@ class User extends Authenticatable
     {
         static::creating(function (User $user) {
             $user->referral_code ??= self::generateReferralCode();
+            // Defaults must be set in-memory (DB defaults aren't reflected on the
+            // model yet), otherwise the wallet below gets a null currency.
+            $user->currency ??= config('travelcash.currency', 'INR');
+            $user->locale ??= config('app.locale', 'en');
         });
 
         static::created(function (User $user) {
             // Every user gets a wallet on creation.
-            $user->wallet()->firstOrCreate([], ['currency' => $user->currency]);
+            $user->wallet()->firstOrCreate([], ['currency' => $user->currency ?: 'INR']);
         });
     }
 
