@@ -101,6 +101,11 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('integrations', [IntegrationController::class, 'index'])->name('integrations.index');
         Route::put('integrations', [IntegrationController::class, 'update'])->name('integrations.update');
         Route::post('integrations/test', [IntegrationController::class, 'test'])->name('integrations.test');
+
+        // AI travel assistant control
+        Route::get('ai', [\App\Http\Controllers\Admin\AiController::class, 'index'])->name('ai.index');
+        Route::put('ai', [\App\Http\Controllers\Admin\AiController::class, 'update'])->name('ai.update');
+        Route::post('ai/test', [\App\Http\Controllers\Admin\AiController::class, 'test'])->name('ai.test');
     });
 
     // Offers / Deals catalog

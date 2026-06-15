@@ -13,10 +13,10 @@ class SettingController extends Controller
 {
     public function index(): View
     {
-        // Branding (logo + icon) has a dedicated uploader UI, so exclude that
-        // group from the generic key/value editor. Filter in the query — calling
-        // ->except() on an Eloquent collection treats args as model keys.
-        $groups = Setting::where('group', '!=', 'branding')
+        // Branding + AI have dedicated UIs, so exclude those groups from the generic
+        // key/value editor. Filter in the query — ->except() on an Eloquent collection
+        // treats args as model keys.
+        $groups = Setting::whereNotIn('group', ['branding', 'ai'])
             ->orderBy('group')->get()->groupBy('group');
 
         return view('admin.settings.index', [

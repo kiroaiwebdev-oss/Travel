@@ -28,6 +28,17 @@ class SettingsSeeder extends Seeder
             ['key' => 'home.banner_cta', 'group' => 'homepage', 'value' => 'Explore deals', 'type' => 'string', 'is_public' => true],
             ['key' => 'home.banner_link', 'group' => 'homepage', 'value' => '/search?category=hotels', 'type' => 'string', 'is_public' => true],
             ['key' => 'home.banner_image', 'group' => 'homepage', 'value' => '', 'type' => 'string', 'is_public' => true],
+
+            // AI travel assistant (controlled from the admin panel)
+            ['key' => 'ai.enabled', 'group' => 'ai', 'value' => '1', 'type' => 'bool', 'is_public' => true],
+            ['key' => 'ai.assistant_name', 'group' => 'ai', 'value' => 'TripCash AI', 'type' => 'string', 'is_public' => true],
+            ['key' => 'ai.welcome_message', 'group' => 'ai', 'value' => "Hi! I'm your TripCash travel assistant 🧭 Ask me to find cheap flights, the best cashback hotels, or plan a full itinerary.", 'type' => 'string', 'is_public' => true],
+            ['key' => 'ai.system_prompt', 'group' => 'ai', 'value' => '', 'type' => 'string', 'is_public' => false],
+            ['key' => 'ai.suggestions', 'group' => 'ai', 'value' => "Best hotel in Goa under ₹5000\nCheapest flight from Delhi to Dubai\nBest Thailand family package\nPlan a 3-day North Goa itinerary", 'type' => 'string', 'is_public' => true],
+            ['key' => 'ai.provider_priority', 'group' => 'ai', 'value' => 'groq,gemini,openai', 'type' => 'string', 'is_public' => false],
+            ['key' => 'ai.groq_key', 'group' => 'ai', 'value' => '', 'type' => 'string', 'is_public' => false],
+            ['key' => 'ai.gemini_key', 'group' => 'ai', 'value' => '', 'type' => 'string', 'is_public' => false],
+            ['key' => 'ai.openai_key', 'group' => 'ai', 'value' => '', 'type' => 'string', 'is_public' => false],
         ];
 
         foreach ($settings as $s) {

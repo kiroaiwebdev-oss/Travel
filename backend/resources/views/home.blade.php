@@ -494,6 +494,9 @@
                     </div>
                 @endforeach
             </div>
+            <a href="{{ route('assistant') }}" class="btn btn-primary mt-7" style="background:linear-gradient(180deg,#a855f7,#7c3aed)">
+                <i data-lucide="sparkles" class="w-4 h-4"></i> Chat with {{ \App\Models\Setting::get('ai.assistant_name', 'TripCash AI') }}
+            </a>
         </div>
     </div>
 </section>

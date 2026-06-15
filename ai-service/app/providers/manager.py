@@ -1,9 +1,9 @@
 """AI provider manager — builds the configured providers and runs the fallback chain.
 
-Admin controls the order via AI_PROVIDER_PRIORITY (e.g. groq -> gemini -> openai).
-The first configured provider that succeeds wins; on error we fall through to the
-next. If none are configured/healthy, a deterministic demo responder is used so the
-assistant always returns something useful.
+Provider keys + order can come from env (ai-service/.env) OR be overridden per-request
+by the Laravel admin panel (so admins manage AI entirely from the dashboard). The first
+configured provider that succeeds wins; on error we fall through to the next. If none are
+configured/healthy, a deterministic demo responder is used so the assistant always replies.
 """
 from __future__ import annotations
 
@@ -19,17 +19,27 @@ logger = logging.getLogger("ai.manager")
 
 
 class AIManager:
-    def __init__(self) -> None:
+    def __init__(self, keys: dict[str, str] | None = None, priority: list[str] | None = None) -> None:
+        keys = keys or {}
+        openai_key = (keys.get("openai") or settings.openai_api_key or "").strip()
+        gemini_key = (keys.get("gemini") or settings.gemini_api_key or "").strip()
+        groq_key = (keys.get("groq") or settings.groq_api_key or "").strip()
+
         self._registry: dict[str, AIProvider] = {
-            "openai": OpenAIProvider(settings.openai_api_key, settings.openai_model, settings.ai_timeout),
-            "gemini": GeminiProvider(settings.gemini_api_key, settings.gemini_model, settings.ai_timeout),
-            "groq": GroqProvider(settings.groq_api_key, settings.groq_model, settings.ai_timeout),
+            "openai": OpenAIProvider(openai_key, settings.openai_model, settings.ai_timeout),
+            "gemini": GeminiProvider(gemini_key, settings.gemini_model, settings.ai_timeout),
+            "groq": GroqProvider(groq_key, settings.groq_model, settings.ai_timeout),
         }
+
+        if priority:
+            self._priority = [p.strip().lower() for p in priority if p and p.strip()]
+        else:
+            self._priority = settings.priority_list()
 
     def chain(self) -> list[AIProvider]:
         """Ordered list of usable providers per the configured priority."""
         ordered = []
-        for name in settings.priority_list():
+        for name in self._priority:
             provider = self._registry.get(name)
             if provider and provider.is_configured():
                 ordered.append(provider)
@@ -66,4 +76,12 @@ class AIManager:
         )
 
 
+# Default manager from env. Admin overrides build a fresh one per request.
 manager = AIManager()
+
+
+def build_manager(keys: dict[str, str] | None, priority: list[str] | None) -> AIManager:
+    """Return the shared manager, or a fresh one when admin overrides are supplied."""
+    if (keys and any((v or "").strip() for v in keys.values())) or priority:
+        return AIManager(keys=keys, priority=priority)
+    return manager

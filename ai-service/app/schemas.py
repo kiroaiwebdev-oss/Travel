@@ -19,6 +19,12 @@ class AssistantRequest(BaseModel):
     message: str = Field(..., min_length=1, max_length=1000)
     context: list[Offer] = Field(default_factory=list)
     user_id: int | None = None
+    history: list[dict] = Field(default_factory=list)  # [{role, content}]
+    # Admin overrides (configured from the Laravel admin panel)
+    system_prompt: str | None = None
+    keys: dict[str, str] | None = None       # {groq, gemini, openai}
+    priority: list[str] | None = None        # ["groq","gemini","openai"]
+    suggestions: list[str] | None = None
 
 
 class AssistantResponse(BaseModel):

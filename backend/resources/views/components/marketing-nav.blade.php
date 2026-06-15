@@ -10,6 +10,7 @@
             <a href="{{ route('search', ['category' => 'hotels']) }}" class="btn btn-ghost text-sm">Hotels</a>
             <a href="{{ route('search', ['category' => 'flights']) }}" class="btn btn-ghost text-sm">Flights</a>
             <a href="{{ route('search', ['category' => 'packages']) }}" class="btn btn-ghost text-sm">Packages</a>
+            <a href="{{ route('assistant') }}" class="btn btn-ghost text-sm"><i data-lucide="sparkles" class="w-4 h-4 text-brand"></i> AI Assistant</a>
             <a href="#cashback" class="btn btn-ghost text-sm">How it works</a>
         </div>
 
@@ -39,6 +40,7 @@
         <a href="{{ route('search', ['category' => 'hotels']) }}" class="nav-link">Hotels</a>
         <a href="{{ route('search', ['category' => 'flights']) }}" class="nav-link">Flights</a>
         <a href="{{ route('search', ['category' => 'packages']) }}" class="nav-link">Packages</a>
+        <a href="{{ route('assistant') }}" class="nav-link"><i data-lucide="sparkles" class="w-[18px] h-[18px]"></i> AI Assistant</a>
         @guest<a href="{{ route('login') }}" class="nav-link">Sign in</a>@endguest
     </div>
 </header>

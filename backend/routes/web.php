@@ -22,6 +22,9 @@ Route::get('/search', [SearchController::class, 'index'])->name('search');
 // Dynamic PWA manifest (reflects admin-uploaded branding/icon).
 Route::get('/app.webmanifest', \App\Http\Controllers\ManifestController::class)->name('pwa.manifest');
 
+// AI travel assistant (chat UI)
+Route::get('/assistant', [\App\Http\Controllers\AssistantController::class, 'show'])->name('assistant');
+
 // Static / legal pages
 Route::get('/about', [\App\Http\Controllers\PageController::class, 'about'])->name('about');
 Route::get('/privacy', [\App\Http\Controllers\PageController::class, 'privacy'])->name('privacy');
