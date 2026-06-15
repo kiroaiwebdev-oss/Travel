@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\User\DashboardController;
+use App\Http\Controllers\User\KycController;
 use App\Http\Controllers\User\SavedItemController;
 use App\Http\Controllers\User\SupportController;
 use App\Http\Controllers\User\WalletController;
@@ -51,6 +52,9 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
 
     Route::get('/withdrawals', [WithdrawalController::class, 'index'])->name('withdrawals');
     Route::post('/withdrawals', [WithdrawalController::class, 'store'])->middleware('throttle:4,1')->name('withdrawals.store');
+
+    Route::get('/kyc', [KycController::class, 'show'])->name('kyc');
+    Route::post('/kyc', [KycController::class, 'submit'])->middleware('throttle:6,1')->name('kyc.submit');
 
     Route::get('/support', [SupportController::class, 'index'])->name('support');
     Route::post('/support', [SupportController::class, 'store'])->name('support.store');

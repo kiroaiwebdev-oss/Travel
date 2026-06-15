@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name', 'email', 'password', 'phone', 'avatar_url',
         'referral_code', 'referred_by', 'provider_name', 'provider_id',
         'status', 'locale', 'currency',
+        'kyc_status', 'kyc_full_name', 'kyc_pan', 'kyc_payout_method',
+        'kyc_payout_details', 'kyc_submitted_at', 'kyc_reviewed_at', 'kyc_reviewed_by', 'kyc_note',
     ];
 
     protected $hidden = [
@@ -36,7 +38,15 @@ class User extends Authenticatable
             'mfa_enabled' => 'boolean',
             'mfa_secret' => 'encrypted',
             'mfa_recovery_codes' => 'encrypted:array',
+            'kyc_payout_details' => 'encrypted:array',
+            'kyc_submitted_at' => 'datetime',
+            'kyc_reviewed_at' => 'datetime',
         ];
+    }
+
+    public function isKycApproved(): bool
+    {
+        return $this->kyc_status === 'approved';
     }
 
     protected static function booted(): void
@@ -114,6 +124,11 @@ class User extends Authenticatable
     public function devices(): HasMany
     {
         return $this->hasMany(UserDevice::class);
+    }
+
+    public function pushSubscriptions(): HasMany
+    {
+        return $this->hasMany(PushSubscription::class);
     }
 
     // --- RBAC helpers ---

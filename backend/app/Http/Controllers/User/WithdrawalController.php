@@ -33,6 +33,11 @@ class WithdrawalController extends Controller
         ]);
 
         $user = $request->user();
+
+        if (! $user->isKycApproved()) {
+            return back()->withErrors(['amount' => 'Complete your KYC verification before withdrawing.']);
+        }
+
         $wallet = $this->wallet->walletFor($user);
 
         if ((float) $wallet->balance < (float) $data['amount']) {

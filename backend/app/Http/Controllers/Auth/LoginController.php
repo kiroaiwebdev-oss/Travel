@@ -30,13 +30,14 @@ class LoginController extends Controller
             ]);
         }
 
-        // Hard separation: admins must use the dedicated admin login, never this one.
+        // Hard separation WITHOUT account enumeration: admins cannot use the public
+        // login. We reject with the SAME generic message (never reveal it's an admin).
         if (Auth::user()->hasPermission('admin.access')) {
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
             throw ValidationException::withMessages([
-                'email' => 'Admin accounts must sign in via the admin panel at /admin/login.',
+                'email' => __('These credentials do not match our records.'),
             ]);
         }
 

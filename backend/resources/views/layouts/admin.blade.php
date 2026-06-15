@@ -31,6 +31,8 @@
                 ['admin.cashback-rules.index','badge-percent','Cashback rules', 'cashback.manage'],
                 ['admin.users.index','users','Users', 'users.view'],
                 ['admin.withdrawals.index','banknote','Withdrawals', 'withdrawals.approve'],
+                ['admin.kyc.index','id-card','KYC Review', 'users.manage'],
+                ['admin.notifications.index','megaphone','Notifications', 'cms.manage'],
                 ['admin.audit.index','scroll-text','Audit logs', 'audit.view'],
                 ['admin.settings.index','settings','Settings', 'settings.manage'],
             ]; @endphp

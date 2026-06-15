@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\CashbackController;
 use App\Http\Controllers\Admin\CashbackRuleController;
+use App\Http\Controllers\Admin\KycController as AdminKycController;
+use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 use App\Http\Controllers\Admin\ProviderController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
@@ -59,8 +61,22 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     // Withdrawals
     Route::middleware('permission:withdrawals.approve')->group(function () {
         Route::get('withdrawals', [WithdrawalController::class, 'index'])->name('withdrawals.index');
+        Route::put('withdrawals/{withdrawal}/process', [WithdrawalController::class, 'process'])->name('withdrawals.process');
         Route::put('withdrawals/{withdrawal}/approve', [WithdrawalController::class, 'approve'])->name('withdrawals.approve');
         Route::put('withdrawals/{withdrawal}/reject', [WithdrawalController::class, 'reject'])->name('withdrawals.reject');
+    });
+
+    // KYC review
+    Route::middleware('permission:users.manage')->group(function () {
+        Route::get('kyc', [AdminKycController::class, 'index'])->name('kyc.index');
+        Route::put('kyc/{user}/approve', [AdminKycController::class, 'approve'])->name('kyc.approve');
+        Route::put('kyc/{user}/reject', [AdminKycController::class, 'reject'])->name('kyc.reject');
+    });
+
+    // Admin push / broadcast notifications
+    Route::middleware('permission:cms.manage')->group(function () {
+        Route::get('notifications', [AdminNotificationController::class, 'index'])->name('notifications.index');
+        Route::post('notifications', [AdminNotificationController::class, 'send'])->name('notifications.send');
     });
 
     // Audit logs

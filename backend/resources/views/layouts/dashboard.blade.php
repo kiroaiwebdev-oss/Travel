@@ -31,6 +31,7 @@
                 ['dashboard.saved','heart','Saved & Watchlist'],
                 ['dashboard.referrals','users','Referrals'],
                 ['dashboard.withdrawals','banknote','Withdrawals'],
+                ['dashboard.kyc','shield-check','KYC Verification'],
                 ['dashboard.notifications','bell','Notifications'],
                 ['dashboard.support','life-buoy','Support'],
                 ['dashboard.profile','settings','Profile & Settings'],
