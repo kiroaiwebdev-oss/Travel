@@ -23,8 +23,8 @@
     <form method="POST" action="{{ route('contact.store') }}" class="card p-6 sm:p-8 space-y-4">
         @csrf
         <div class="grid sm:grid-cols-2 gap-4">
-            <div><label class="text-sm font-semibold">Name</label><input name="name" value="{{ old('name', auth()->user()->name ?? '') }}" class="input mt-1" required></div>
-            <div><label class="text-sm font-semibold">Email</label><input type="email" name="email" value="{{ old('email', auth()->user()->email ?? '') }}" class="input mt-1" required></div>
+            <div><label class="text-sm font-semibold">Name</label><input name="name" value="{{ old('name', auth()->user()?->name ?? '') }}" class="input mt-1" required></div>
+            <div><label class="text-sm font-semibold">Email</label><input type="email" name="email" value="{{ old('email', auth()->user()?->email ?? '') }}" class="input mt-1" required></div>
         </div>
         <div><label class="text-sm font-semibold">Subject</label><input name="subject" value="{{ old('subject') }}" class="input mt-1" required></div>
         <div><label class="text-sm font-semibold">Message</label><textarea name="message" rows="5" class="input mt-1" required>{{ old('message') }}</textarea></div>

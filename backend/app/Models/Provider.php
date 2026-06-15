@@ -64,4 +64,18 @@ class Provider extends Model
     {
         return in_array($category, $this->categories ?? [], true);
     }
+
+    /**
+     * Demo mode flag from the active configuration, resilient to decryption
+     * failures (e.g. APP_KEY changed after the config was encrypted) so the
+     * admin providers list never 500s — it just falls back to "demo".
+     */
+    public function isDemoMode(): bool
+    {
+        try {
+            return (bool) ($this->activeConfiguration?->config['demo_mode'] ?? true);
+        } catch (\Throwable $e) {
+            return true;
+        }
+    }
 }

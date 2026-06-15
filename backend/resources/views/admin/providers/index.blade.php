@@ -24,7 +24,7 @@
                         <td class="p-4"><span class="font-mono text-xs">{{ $p->adapter }}</span></td>
                         <td class="p-4">{{ $p->commission_percent }}%</td>
                         <td class="p-4">
-                            @if (optional($p->activeConfiguration)->config['demo_mode'] ?? true)
+                            @if ($p->isDemoMode())
                                 <span class="pill pill-muted">Demo</span>
                             @else
                                 <span class="pill pill-cashback">Live</span>
