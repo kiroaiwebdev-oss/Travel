@@ -70,6 +70,18 @@ body{ background:var(--bg); color:var(--ink); font-family:'Inter',ui-sans-serif,
 .input{ width:100%; border:1px solid var(--line); border-radius:.8rem; padding:.7rem .9rem; font-size:.92rem; background:#fff; color:var(--ink); transition:border-color .15s, box-shadow .15s; }
 .input::placeholder{ color:#94a3b8; }
 .input:focus{ outline:none; border-color:var(--brand); box-shadow:0 0 0 4px rgba(0,184,169,.18); }
+/* ===== Date inputs — match text inputs for a clean, premium, consistent look ===== */
+.date-field input[type="date"]{ color:var(--ink); -webkit-appearance:none; appearance:none; }
+.date-field input[type="date"]::-webkit-calendar-picker-indicator{ position:absolute; inset:0; width:100%; height:100%; margin:0; padding:0; opacity:0; cursor:pointer; }
+.date-field input[type="date"]::-webkit-datetime-edit{ line-height:1.2; }
+.date-field input[type="date"]::-webkit-datetime-edit-text,
+.date-field input[type="date"]::-webkit-datetime-edit-month-field,
+.date-field input[type="date"]::-webkit-datetime-edit-day-field,
+.date-field input[type="date"]::-webkit-datetime-edit-year-field{ color:#94a3b8; }
+.date-field input[type="date"]:focus::-webkit-datetime-edit-text,
+.date-field input[type="date"]:focus::-webkit-datetime-edit-month-field,
+.date-field input[type="date"]:focus::-webkit-datetime-edit-day-field,
+.date-field input[type="date"]:focus::-webkit-datetime-edit-year-field{ color:var(--ink); }
 select.input{ appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right .7rem center; padding-right:2rem; }
 
 /* ===== Sidebar nav ===== */

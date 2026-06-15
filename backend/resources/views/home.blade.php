@@ -128,7 +128,7 @@
      DESKTOP HERO (hidden md:block) — full website landing
      ==================================================================== --}}
 <section class="relative hero-aurora hidden md:block">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-14 pb-12 sm:pt-24 sm:pb-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-12 sm:pt-10 sm:pb-16">
         <div class="max-w-4xl mx-auto text-center">
             <a href="#cashback" class="fade-up inline-flex items-center gap-2 pill pill-cashback mx-auto hover:scale-[1.02] transition">
                 <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>

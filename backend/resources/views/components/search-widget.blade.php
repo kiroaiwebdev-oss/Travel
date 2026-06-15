@@ -18,7 +18,7 @@
 
     @foreach ($categories as $key => $cat)
         <form x-show="tab === '{{ $key }}'" x-cloak method="GET" action="{{ route('search') }}"
-              class="grid gap-2.5 md:grid-cols-[1fr_1fr_auto_auto_auto] md:gap-2 items-end p-1">
+              class="grid gap-2.5 md:grid-cols-[1.5fr_1.15fr_1.15fr_auto_auto] md:gap-2 items-end p-1">
             <input type="hidden" name="category" value="{{ $key }}">
 
             @if (in_array($key, ['flights', 'trains', 'cabs', 'transfers']))
@@ -40,7 +40,7 @@
                     <label class="text-xs font-semibold text-muted px-1">Depart</label>
                     <div class="relative mt-1 date-field">
                         <i data-lucide="calendar" class="w-4 h-4 text-brand absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10"></i>
-                        <input type="date" name="depart_date" min="{{ now()->format('Y-m-d') }}" class="input pl-9 md:w-[10.5rem]">
+                        <input type="date" name="depart_date" min="{{ now()->format('Y-m-d') }}" class="input pl-9 w-full">
                     </div>
                 </div>
             @else
@@ -55,14 +55,14 @@
                     <label class="text-xs font-semibold text-muted px-1">Check-in</label>
                     <div class="relative mt-1 date-field">
                         <i data-lucide="calendar" class="w-4 h-4 text-brand absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10"></i>
-                        <input type="date" name="depart_date" min="{{ now()->format('Y-m-d') }}" class="input pl-9 md:w-[10.5rem]">
+                        <input type="date" name="depart_date" min="{{ now()->format('Y-m-d') }}" class="input pl-9 w-full">
                     </div>
                 </div>
                 <div>
                     <label class="text-xs font-semibold text-muted px-1">Check-out</label>
                     <div class="relative mt-1 date-field">
                         <i data-lucide="calendar-check" class="w-4 h-4 text-brand absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10"></i>
-                        <input type="date" name="return_date" min="{{ now()->addDay()->format('Y-m-d') }}" class="input pl-9 md:w-[10.5rem]">
+                        <input type="date" name="return_date" min="{{ now()->addDay()->format('Y-m-d') }}" class="input pl-9 w-full">
                     </div>
                 </div>
             @endif
@@ -71,12 +71,12 @@
                 <label class="text-xs font-semibold text-muted px-1">Guests</label>
                 <div class="relative mt-1">
                     <i data-lucide="users" class="w-4 h-4 text-muted absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
-                    <input type="number" name="travellers" min="1" max="20" value="1" class="input pl-9 md:w-24">
+                    <input type="number" name="travellers" min="1" max="20" value="1" class="input pl-9 md:w-[5.5rem]">
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-brand h-[48px] justify-center text-base md:text-sm">
-                <i data-lucide="search" class="w-4 h-4"></i> Search deals
+            <button type="submit" class="btn btn-brand h-[48px] justify-center text-base md:text-sm md:px-5">
+                <i data-lucide="search" class="w-4 h-4"></i> <span class="md:hidden lg:inline">Search</span><span class="hidden md:inline lg:hidden">Go</span><span class="hidden lg:inline"> deals</span>
             </button>
         </form>
     @endforeach
