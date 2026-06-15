@@ -232,4 +232,59 @@ select.input{ appearance:none; background-image:url("data:image/svg+xml,%3Csvg x
 @media (max-width:767px){
   .app-edge{ padding-left:1rem; padding-right:1rem; }
 }
+
+/* ===== App top bar (dashboard) ===== */
+.app-topbar{ position:sticky; top:0; z-index:40; padding-top:env(safe-area-inset-top);
+  background:rgba(255,255,255,.92); backdrop-filter:saturate(180%) blur(16px); -webkit-backdrop-filter:saturate(180%) blur(16px);
+  border-bottom:1px solid var(--line-2); }
+.app-topbar-row{ height:3.5rem; display:flex; align-items:center; gap:.5rem; padding:0 .5rem; }
+.app-iconbtn{ width:2.4rem; height:2.4rem; border-radius:999px; display:grid; place-items:center; color:var(--ink); transition:.15s; }
+.app-iconbtn:active{ background:rgba(30,41,59,.08); transform:scale(.94); }
+
+/* ===== Grouped settings / list cards (iOS-style) ===== */
+.list-group{ background:#fff; border:1px solid var(--line-2); border-radius:1.1rem; overflow:hidden; box-shadow:var(--shadow-sm); }
+.list-row{ display:flex; align-items:center; gap:.85rem; padding:.9rem 1rem; background:#fff; transition:.12s; }
+.list-row:active{ background:rgba(30,41,59,.04); }
+.list-row + .list-row{ border-top:1px solid var(--line-2); }
+.list-row-ic{ width:2.3rem; height:2.3rem; border-radius:.7rem; display:grid; place-items:center; flex:0 0 auto; }
+.list-row-title{ font-weight:600; font-size:.92rem; }
+.list-row-sub{ font-size:.76rem; color:var(--muted); }
+.list-row-chev{ color:#cbd5e1; margin-left:auto; flex:0 0 auto; }
+.list-label{ font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); padding:0 1rem .5rem; }
+
+/* ===== App field (bigger touch input) ===== */
+@media (max-width:767px){
+  .input{ padding:.85rem .95rem; font-size:1rem; border-radius:.85rem; }
+  .field-label{ font-size:.8rem; }
+}
+
+/* ===== Sticky bottom action bar (forms) ===== */
+.sticky-action{ position:sticky; bottom:0; z-index:30; margin:0 -1rem; padding:.75rem 1rem calc(.75rem + env(safe-area-inset-bottom));
+  background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-top:1px solid var(--line-2); }
+@media (min-width:768px){ .sticky-action{ position:static; margin:0; padding:0; background:none; border:none; backdrop-filter:none; } }
+
+/* ===== Toggle switch ===== */
+.switch{ position:relative; width:2.7rem; height:1.6rem; border-radius:999px; background:#cbd5e1; transition:.2s; flex:0 0 auto; cursor:pointer; }
+.switch::after{ content:""; position:absolute; top:.18rem; left:.18rem; width:1.24rem; height:1.24rem; border-radius:999px; background:#fff; box-shadow:var(--shadow-sm); transition:.2s; }
+.switch.on{ background:var(--brand); }
+.switch.on::after{ transform:translateX(1.1rem); }
+
+/* ===== Slide-in drawer (mobile full menu) ===== */
+.drawer{ position:fixed; inset-y:0; left:0; top:0; bottom:0; z-index:90; width:78%; max-width:20rem; background:#fff;
+  padding:calc(env(safe-area-inset-top) + .5rem) .75rem 1rem; box-shadow:0 0 60px rgba(13,42,72,.35); overflow-y:auto; }
+
+/* ===== Install banner ===== */
+.install-banner{ position:fixed; left:.75rem; right:.75rem; bottom:calc(4.8rem + env(safe-area-inset-bottom)); z-index:70;
+  background:#fff; border:1px solid var(--line-2); border-radius:1.1rem; box-shadow:var(--shadow-lg); padding:.85rem 1rem; }
+@media (min-width:768px){ .install-banner{ left:auto; right:1.25rem; bottom:1.25rem; max-width:22rem; } }
+
+/* ===== PWA standalone (installed app) refinements ===== */
+@media (display-mode: standalone), (display-mode: minimal-ui){
+  /* hide browser-only chrome hints when running as an installed app */
+  .only-browser{ display:none !important; }
+  /* prevent accidental text selection on UI chrome for a native feel */
+  .app-header, .app-topbar, .bnav, .list-row-title, .qa span{ -webkit-user-select:none; user-select:none; }
+  body{ overscroll-behavior:none; }
+}
+html.standalone .hide-in-app{ display:none !important; }
 </style>
