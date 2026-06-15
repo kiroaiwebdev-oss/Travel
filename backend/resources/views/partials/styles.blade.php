@@ -194,9 +194,9 @@ select.input{ appearance:none; background-image:url("data:image/svg+xml,%3Csvg x
 
 /* ===== Story circles (Instagram-style) ===== */
 .story{ width:4.6rem; }
-.story-ring{ padding:2.5px; border-radius:999px; background:linear-gradient(135deg,#14b8a6,#0F62FE,#FF8A00); }
-.story-ring-inner{ padding:2px; border-radius:999px; background:#fff; }
-.story img{ width:3.7rem; height:3.7rem; border-radius:999px; object-fit:cover; display:block; }
+.story-ring{ width:4.6rem; height:4.6rem; padding:2.5px; border-radius:999px; background:linear-gradient(135deg,#14b8a6,#0F62FE,#FF8A00); }
+.story-ring-inner{ width:100%; height:100%; padding:2px; border-radius:999px; background:#fff; }
+.story img{ width:100%; height:100%; border-radius:999px; object-fit:cover; object-position:center; display:block; }
 
 /* ===== Segmented control (app tabs) ===== */
 .segmented{ display:inline-flex; padding:.25rem; gap:.15rem; background:rgba(30,41,59,.06); border-radius:999px; }
