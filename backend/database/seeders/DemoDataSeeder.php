@@ -2,179 +2,185 @@
 
 namespace Database\Seeders;
 
+use App\Models\AffiliateNetwork;
 use App\Models\Booking;
-use App\Models\Cashback;
 use App\Models\Offer;
 use App\Models\Provider;
+use App\Models\Referral;
 use App\Models\Role;
 use App\Models\SavedItem;
-use App\Models\SearchLog;
 use App\Models\SupportTicket;
 use App\Models\User;
 use App\Models\Withdrawal;
 use App\Services\Cashback\CashbackService;
 use App\Services\Wallet\WalletService;
+use Closure;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**
- * Populates every section of the platform with realistic demo data so the full
- * app (user dashboard + admin control center) can be tested end-to-end.
+ * Populates every section with realistic demo data for easy testing.
+ * Each block is isolated: if one fails it is logged and skipped — the seed never
+ * aborts, so admin + the rest of the data always survive.
  */
 class DemoDataSeeder extends Seeder
 {
     public function run(): void
     {
-        $cashbackService = app(CashbackService::class);
-        $wallet = app(WalletService::class);
         $providers = Provider::all();
         if ($providers->isEmpty()) {
             $this->command?->warn('No providers — run ProviderSeeder first.');
 
             return;
         }
-
         $categories = array_keys(config('travelcash.categories'));
 
-        // --- Offers / Deals catalog ---
-        $this->seedOffers($providers, $categories);
+        $this->safe('offers', fn () => $this->seedOffers($providers));
+        $this->safe('staff', fn () => $this->seedStaff());
 
-        // --- Staff accounts ---
-        $this->seedStaff();
-
-        // --- Demo + extra users ---
-        $demo = User::where('email', 'user@travelcash.test')->first()
-            ?? User::factory()->create(['name' => 'Demo Traveller', 'email' => 'user@travelcash.test']);
-        $demo->update([
-            'phone' => '+919876500000',
-            'kyc_status' => 'approved',
-            'kyc_full_name' => 'Demo Traveller',
-            'kyc_pan' => 'ABCDE1234F',
-            'kyc_payout_method' => 'upi',
-            'kyc_payout_details' => ['upi' => 'demo@upi'],
-            'kyc_submitted_at' => now()->subDays(5),
-            'kyc_reviewed_at' => now()->subDays(4),
-        ]);
-        if (! $demo->hasRole('user')) {
+        $demo = null;
+        $users = collect();
+        $allUsers = collect();
+        $this->safe('users', function () use (&$demo, &$users, &$allUsers) {
+            $demo = User::where('email', 'user@travelcash.test')->first()
+                ?? User::factory()->create(['name' => 'Demo Traveller', 'email' => 'user@travelcash.test']);
+            $demo->update([
+                'phone' => '+919876500000', 'kyc_status' => 'approved', 'kyc_full_name' => 'Demo Traveller',
+                'kyc_pan' => 'ABCDE1234F', 'kyc_payout_method' => 'upi', 'kyc_payout_details' => ['upi' => 'demo@upi'],
+                'kyc_submitted_at' => now()->subDays(5), 'kyc_reviewed_at' => now()->subDays(4),
+            ]);
             $demo->roles()->syncWithoutDetaching([Role::where('name', 'user')->value('id')]);
+
+            $users = User::factory()->count(14)->create();
+            $users->take(2)->each(fn ($u) => $u->update([
+                'kyc_status' => 'pending', 'kyc_full_name' => $u->name, 'kyc_pan' => 'PANXX'.rand(1000, 9999).'Z',
+                'kyc_payout_method' => 'bank',
+                'kyc_payout_details' => ['account' => '00011122233', 'ifsc' => 'HDFC0001234', 'name' => $u->name],
+                'kyc_submitted_at' => now()->subDays(rand(1, 3)),
+            ]));
+            $users->each(fn ($u) => $u->roles()->syncWithoutDetaching([Role::where('name', 'user')->value('id')]));
+            $allUsers = $users->push($demo);
+        });
+
+        if ($demo) {
+            $this->safe('bookings+cashbacks', fn () => $this->seedBookings($allUsers, $demo, $providers));
+            $this->safe('withdrawals', fn () => $this->seedWithdrawals($demo, $users));
+            $this->safe('referrals', fn () => $this->seedReferrals($demo, $users));
+            $this->safe('saved items', fn () => $this->seedSaved($demo));
+            $this->safe('support tickets', fn () => $this->seedSupport($allUsers));
+            $this->safe('notifications', fn () => $this->seedNotifications($allUsers));
         }
 
-        $users = User::factory()->count(14)->create();
-        // A couple of pending KYC users for the admin to review
-        $users->take(2)->each(fn ($u) => $u->update([
-            'kyc_status' => 'pending', 'kyc_full_name' => $u->name, 'kyc_pan' => 'PANXX'.rand(1000, 9999).'Z',
-            'kyc_payout_method' => 'bank', 'kyc_payout_details' => ['account' => '00011122233', 'ifsc' => 'HDFC0001234', 'name' => $u->name],
-            'kyc_submitted_at' => now()->subDays(rand(1, 3)),
-        ]));
-        $users->each(fn ($u) => $u->roles()->syncWithoutDetaching([Role::where('name', 'user')->value('id')]));
+        $this->safe('affiliate networks', fn () => $this->seedNetworks());
+        $this->safe('search logs', fn () => $this->seedSearchLogs($categories));
+        $this->safe('audit logs', fn () => $this->seedAuditLogs());
 
-        $allUsers = $users->push($demo);
+        $this->command?->info('Demo data seeding finished.');
+    }
 
-        // --- Bookings + cashbacks (every status) + wallet movements ---
+    private function safe(string $label, Closure $fn): void
+    {
+        try {
+            $fn();
+            $this->command?->line("  <info>✓</info> {$label}");
+        } catch (\Throwable $e) {
+            $this->command?->warn("  ✗ {$label}: ".$e->getMessage());
+        }
+    }
+
+    private function seedBookings($allUsers, User $demo, $providers): void
+    {
+        $cashback = app(CashbackService::class);
+        $wallet = app(WalletService::class);
+
         foreach ($allUsers as $user) {
-            $bookingCount = $user->is($demo) ? 8 : rand(1, 4);
-            for ($i = 0; $i < $bookingCount; $i++) {
+            $count = $user->is($demo) ? 8 : rand(1, 4);
+            for ($i = 0; $i < $count; $i++) {
                 $provider = $providers->random();
-                $category = collect($provider->categories)->random();
+                $cats = $provider->categories ?: ['hotels'];
+                $category = $cats[array_rand($cats)];
                 $amount = rand(1500, 60000);
 
                 $booking = Booking::create([
-                    'user_id' => $user->id,
-                    'provider_id' => $provider->id,
-                    'category' => $category,
+                    'user_id' => $user->id, 'provider_id' => $provider->id, 'category' => $category,
                     'title' => ucfirst($category).' booking · '.$provider->name,
                     'amount' => $amount,
                     'commission_amount' => round($amount * (float) $provider->commission_percent / 100, 2),
-                    'currency' => 'INR',
-                    'status' => 'confirmed',
-                    'external_ref' => 'EXT-'.strtoupper(Str::random(8)),
-                    'booked_at' => now()->subDays(rand(0, 60)),
+                    'currency' => 'INR', 'status' => 'confirmed',
+                    'external_ref' => 'EXT-'.strtoupper(Str::random(8)), 'booked_at' => now()->subDays(rand(0, 60)),
                 ]);
 
-                $cashback = $cashbackService->createForBooking($booking);
-                if (! $cashback) {
+                $cb = $cashback->createForBooking($booking);
+                if (! $cb) {
                     continue;
                 }
-
-                // Spread across the lifecycle for testing.
                 $outcome = ['pending', 'confirmed', 'withdrawable', 'withdrawable', 'rejected'][rand(0, 4)];
                 if ($outcome === 'confirmed') {
-                    $cashbackService->confirm($cashback);
+                    $cashback->confirm($cb);
                 } elseif ($outcome === 'withdrawable') {
-                    $cashbackService->confirm($cashback);
-                    $cashbackService->mature($cashback);
+                    $cashback->confirm($cb);
+                    $cashback->mature($cb);
                 } elseif ($outcome === 'rejected') {
-                    $cashbackService->reject($cashback, 'Booking cancelled by user');
+                    $cashback->reject($cb, 'Booking cancelled by user');
                 }
             }
-
-            // Referral reward + signup bonus so wallets have varied balances
             $wallet->credit($user, rand(50, 300), 'referral_credit', description: 'Welcome bonus', idempotencyKey: 'demo_bonus_'.$user->id);
         }
+    }
 
-        // --- Withdrawal request for the demo user (has withdrawable balance) ---
-        $demoWallet = $wallet->walletFor($demo->fresh());
-        if ((float) $demoWallet->balance >= 500) {
+    private function seedWithdrawals(User $demo, $users): void
+    {
+        $wallet = app(WalletService::class);
+
+        if ((float) $wallet->walletFor($demo->fresh())->balance >= 500) {
             $wallet->debit($demo, 500, 'withdrawal_debit', description: 'Withdrawal request');
-            Withdrawal::create([
-                'user_id' => $demo->id, 'amount' => 500, 'currency' => 'INR', 'method' => 'upi',
-                'payout_details' => ['upi' => 'demo@upi'], 'status' => 'requested',
-            ]);
+            Withdrawal::create(['user_id' => $demo->id, 'amount' => 500, 'currency' => 'INR', 'method' => 'upi', 'payout_details' => ['upi' => 'demo@upi'], 'status' => 'requested']);
         }
-        // A couple more withdrawals from random users (in different states)
         foreach ($users->take(3) as $u) {
-            $w = $wallet->walletFor($u->fresh());
-            if ((float) $w->balance >= 250) {
-                $amt = min(250, (float) $w->balance);
-                $wallet->debit($u, $amt, 'withdrawal_debit', description: 'Withdrawal request');
+            $bal = (float) $wallet->walletFor($u->fresh())->balance;
+            if ($bal >= 250) {
+                $wallet->debit($u, 250, 'withdrawal_debit', description: 'Withdrawal request');
                 Withdrawal::create([
-                    'user_id' => $u->id, 'amount' => $amt, 'currency' => 'INR', 'method' => 'bank',
+                    'user_id' => $u->id, 'amount' => 250, 'currency' => 'INR', 'method' => 'bank',
                     'payout_details' => ['account' => '123456789', 'ifsc' => 'ICIC0000123', 'name' => $u->name],
                     'status' => ['requested', 'processing', 'paid'][rand(0, 2)],
                 ]);
             }
         }
+    }
 
-        // --- Referrals for demo user ---
-        foreach ($users->take(4) as $i => $ref) {
-            \App\Models\Referral::create([
+    private function seedReferrals(User $demo, $users): void
+    {
+        foreach ($users->take(4) as $ref) {
+            Referral::create([
                 'referrer_id' => $demo->id, 'referee_id' => $ref->id, 'code' => $demo->referral_code,
-                'status' => ['pending', 'qualified', 'rewarded'][rand(0, 2)],
-                'reward_amount' => 100, 'ip_address' => '103.0.0.'.rand(1, 254),
+                'status' => ['pending', 'qualified', 'rewarded'][rand(0, 2)], 'reward_amount' => 100,
+                'ip_address' => '103.0.0.'.rand(1, 254),
             ]);
         }
+    }
 
-        // --- Saved items / watchlist for demo user ---
+    private function seedSaved(User $demo): void
+    {
         SavedItem::create(['user_id' => $demo->id, 'kind' => 'saved_hotel', 'category' => 'hotels', 'payload' => ['title' => 'Grand Plaza Goa', 'price' => 5400]]);
         SavedItem::create(['user_id' => $demo->id, 'kind' => 'watchlist', 'category' => 'flights', 'payload' => ['title' => 'DEL → DXB'], 'target_price' => 18000]);
+    }
 
-        // --- Support tickets ---
+    private function seedSupport($allUsers): void
+    {
         foreach ($allUsers->take(5) as $u) {
             $ticket = SupportTicket::create([
-                'user_id' => $u->id, 'subject' => ['Cashback not credited', 'Withdrawal delay', 'KYC question', 'Booking issue'][rand(0, 3)],
+                'user_id' => $u->id,
+                'subject' => ['Cashback not credited', 'Withdrawal delay', 'KYC question', 'Booking issue'][rand(0, 3)],
                 'category' => 'general', 'priority' => ['normal', 'high', 'urgent'][rand(0, 2)],
                 'status' => ['open', 'pending', 'resolved'][rand(0, 2)], 'last_reply_at' => now()->subHours(rand(1, 72)),
             ]);
             $ticket->messages()->create(['user_id' => $u->id, 'is_staff' => false, 'body' => 'Hi, I need help with my recent transaction.']);
         }
-
-        // --- Admin broadcast notifications for all users ---
-        $this->seedNotifications($allUsers);
-
-        // --- Extra affiliate networks (for the Networks admin page) ---
-        $this->seedNetworks();
-
-        // --- Search logs (last 14 days) for analytics charts ---
-        $this->seedSearchLogs($categories);
-
-        // --- Audit logs (admin activity trail) ---
-        $this->seedAuditLogs();
-
-        $this->command?->info('Demo data seeded across all sections.');
     }
 
-    private function seedOffers($providers, array $categories): void
+    private function seedOffers($providers): void
     {
         $deals = [
             ['Up to 60% cashback on hotels', 'hotels', 'percentage', 60, true],
@@ -219,9 +225,8 @@ class DemoDataSeeder extends Seeder
         $rows = [];
         foreach ($users as $u) {
             $rows[] = [
-                'id' => (string) Str::uuid(), 'type' => 'admin.broadcast',
-                'notifiable_type' => User::class, 'notifiable_id' => $u->id,
-                'data' => $payload, 'category' => 'promo', 'read_at' => null,
+                'id' => (string) Str::uuid(), 'type' => 'admin.broadcast', 'notifiable_type' => User::class,
+                'notifiable_id' => $u->id, 'data' => $payload, 'category' => 'promo', 'read_at' => null,
                 'created_at' => $now, 'updated_at' => $now,
             ];
         }
@@ -239,9 +244,8 @@ class DemoDataSeeder extends Seeder
                 $rows[] = [
                     'category' => $categories[array_rand($categories)],
                     'destination' => ['Goa', 'Dubai', 'Bali', 'Manali', 'Jaipur'][rand(0, 4)],
-                    'travellers' => rand(1, 4), 'result_count' => rand(4, 40),
-                    'response_ms' => rand(20, 480), 'cache_hit' => (bool) rand(0, 1),
-                    'ip_address' => '103.0.0.'.rand(1, 254),
+                    'travellers' => rand(1, 4), 'result_count' => rand(4, 40), 'response_ms' => rand(20, 480),
+                    'cache_hit' => (bool) rand(0, 1), 'ip_address' => '103.0.0.'.rand(1, 254),
                     'created_at' => $date->copy()->setTime(rand(0, 23), rand(0, 59)),
                 ];
             }
@@ -253,13 +257,8 @@ class DemoDataSeeder extends Seeder
 
     private function seedNetworks(): void
     {
-        foreach ([
-            ['Admitad', false], ['Cuelinks', true], ['vCommission', true], ['CJ Affiliate', true],
-        ] as [$name, $active]) {
-            \App\Models\AffiliateNetwork::updateOrCreate(
-                ['slug' => Str::slug($name)],
-                ['name' => $name, 'postback_secret' => Str::random(40), 'is_active' => $active]
-            );
+        foreach ([['Admitad', false], ['Cuelinks', true], ['vCommission', true]] as [$name, $active]) {
+            AffiliateNetwork::updateOrCreate(['slug' => Str::slug($name)], ['name' => $name, 'postback_secret' => Str::random(40), 'is_active' => $active]);
         }
     }
 
@@ -274,11 +273,8 @@ class DemoDataSeeder extends Seeder
         $rows = [];
         foreach ($actions as $i => $action) {
             $rows[] = [
-                'user_id' => $admin?->id,
-                'action' => $action,
-                'new_values' => json_encode(['demo' => true]),
-                'ip_address' => '103.0.0.'.rand(1, 254),
-                'user_agent' => 'Mozilla/5.0 (Admin Demo)',
+                'user_id' => $admin?->id, 'action' => $action, 'new_values' => json_encode(['demo' => true]),
+                'ip_address' => '103.0.0.'.rand(1, 254), 'user_agent' => 'Mozilla/5.0 (Admin Demo)',
                 'created_at' => now()->subHours($i * 3),
             ];
         }
