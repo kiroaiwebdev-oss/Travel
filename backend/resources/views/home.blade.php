@@ -444,17 +444,9 @@
             <div class="card p-5 sm:p-6 relative overflow-hidden">
                 <div class="absolute -right-8 -bottom-8 w-32 h-32 rounded-full blur-2xl bg-purple-200/50"></div>
                 <div class="relative space-y-3">
-                    <div class="flex gap-3 items-start">
-                        <div class="w-8 h-8 rounded-full bg-purple-100 grid place-items-center shrink-0">
-                            <i data-lucide="bot" class="w-4 h-4 text-purple-600"></i>
-                        </div>
-                        <div class="card p-3 text-sm bg-purple-50 border-purple-100">
-                            I found 3 beachfront hotels in Goa under ₹5,000/night with 12-18% cashback. The best value is Hotel Paradise with ₹890 cashback on a 2-night stay. Want me to compare amenities?
-                        </div>
-                    </div>
                     <div class="flex gap-3 items-start justify-end">
                         <div class="card p-3 text-sm bg-blue-50 border-blue-100">
-                            Yes! Also suggest what I can do in North Goa for 3 days.
+                            Plan a 3-day Goa trip under ₹20,000 with maximum cashback.
                         </div>
                         <div class="w-8 h-8 rounded-full bg-blue-100 grid place-items-center shrink-0">
                             <i data-lucide="user" class="w-4 h-4 text-blue-600"></i>
@@ -462,35 +454,56 @@
                     </div>
                     <div class="flex gap-3 items-start">
                         <div class="w-8 h-8 rounded-full bg-purple-100 grid place-items-center shrink-0">
-                            <i data-lucide="bot" class="w-4 h-4 text-purple-600"></i>
+                            <i data-lucide="sparkles" class="w-4 h-4 text-purple-600"></i>
                         </div>
                         <div class="card p-3 text-sm bg-purple-50 border-purple-100">
-                            Here's a 3-day North Goa itinerary: Day 1 — Calangute Beach & Fort Aguada, Day 2 — Anjuna Flea Market & Chapora Fort, Day 3 — Panjim Heritage Walk & Fontainhas. I'll also find cabs with cashback!
+                            I compared 6 providers live 👇<br>
+                            🏨 Hotel Paradise — ₹4,500/night · <b class="text-green-700">₹890 back</b><br>
+                            ✈️ IndiGo DEL→GOI — ₹3,800 · <b class="text-green-700">₹250 back</b><br>
+                            Total trip cashback so far: <b class="text-green-700">₹1,140</b>. Want a cab + itinerary too?
+                        </div>
+                    </div>
+                    <div class="flex gap-3 items-start justify-end">
+                        <div class="card p-3 text-sm bg-blue-50 border-blue-100">
+                            Yes! And what can I do in North Goa?
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-blue-100 grid place-items-center shrink-0">
+                            <i data-lucide="user" class="w-4 h-4 text-blue-600"></i>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 items-start">
+                        <div class="w-8 h-8 rounded-full bg-purple-100 grid place-items-center shrink-0">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-purple-600"></i>
+                        </div>
+                        <div class="card p-3 text-sm bg-purple-50 border-purple-100">
+                            Day 1 — Calangute Beach &amp; Fort Aguada · Day 2 — Anjuna Market &amp; Chapora Fort · Day 3 — Panjim &amp; Fontainhas. Added an Ola airport cab (<b class="text-green-700">₹140 back</b>). Tap any card to <b>book &amp; earn</b>! 🎉
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="order-1 lg:order-2">
-            <span class="pill pill-brand">AI-Powered</span>
+            <span class="pill pill-brand"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> AI-Powered · 24/7</span>
             <h2 class="mt-3 font-display text-3xl sm:text-4xl font-extrabold leading-tight">
-                Your personal AI travel assistant
+                Your personal AI travel concierge
             </h2>
             <p class="mt-4 text-muted text-lg leading-relaxed">
-                Our AI assistant understands your budget, preferences, and travel style. Ask it anything &mdash;
-                from finding the cheapest flights to planning entire itineraries.
+                Just chat in plain language — {{ \App\Models\Setting::get('ai.assistant_name', 'TripCash AI') }} searches <strong class="text-ink">live deals across 9+ providers</strong>,
+                compares them by price, rating &amp; cashback, and hands you ready-to-book options with affiliate links.
+                It doesn't just advise — it finds you real money back. 💰
             </p>
             <div class="mt-6 space-y-3">
                 @foreach ([
-                    'Find the best deals matching your budget instantly',
-                    'Get personalized destination recommendations',
-                    'Plan day-by-day itineraries with local tips',
-                    'Compare hotels by amenities, reviews & cashback',
-                    'Track price drops and notify you automatically',
+                    ['layers', 'Hotels, flights, trains, cabs &amp; packages — all in one chat'],
+                    ['badge-percent', 'Real, bookable offers with cashback — not generic advice'],
+                    ['route', 'Plans full day-by-day itineraries with local tips'],
+                    ['scale', 'Compares options to find the best cashback-adjusted value'],
+                    ['message-circle', 'Understands your budget, dates &amp; travel style in plain words'],
+                    ['smartphone', 'Always on — same smart assistant on mobile &amp; desktop'],
                 ] as $point)
                     <div class="flex items-start gap-3">
-                        <i data-lucide="sparkles" class="w-4 h-4 text-purple-500 shrink-0 mt-1"></i>
-                        <span class="text-ink text-sm font-medium">{{ $point }}</span>
+                        <span class="w-7 h-7 rounded-lg bg-purple-50 grid place-items-center shrink-0"><i data-lucide="{{ $point[0] }}" class="w-4 h-4 text-purple-600"></i></span>
+                        <span class="text-ink text-sm font-medium pt-1">{!! $point[1] !!}</span>
                     </div>
                 @endforeach
             </div>
