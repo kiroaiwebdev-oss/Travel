@@ -117,6 +117,58 @@
             @yield('content')
         </main>
     </div>
+
+    {{-- ===== Right rail (quick actions) — visible on xl+ ===== --}}
+    @php
+        $quick = collect([
+            ['admin.offers.create','plus-circle','New offer','cms.manage','background:rgba(15,98,254,.1);color:#0F62FE'],
+            ['admin.providers.create','plug','Add provider','providers.manage','background:rgba(0,184,169,.12);color:#009688'],
+            ['admin.networks.index','network','Affiliate networks','providers.manage','background:rgba(168,85,247,.12);color:#9333ea'],
+            ['admin.withdrawals.index','banknote','Payouts','withdrawals.approve','background:rgba(34,197,94,.12);color:#16a34a'],
+            ['admin.kyc.index','id-card','KYC review','users.manage','background:rgba(255,138,0,.12);color:#c2410c'],
+            ['admin.support.index','life-buoy','Support inbox','support.handle','background:rgba(236,72,153,.12);color:#db2777'],
+            ['admin.settings.index','settings','Settings','settings.manage','background:rgba(30,41,59,.08);color:#1E293B'],
+        ])->filter(fn ($q) => ! $q[3] || auth()->user()->hasPermission($q[3]));
+    @endphp
+    <aside class="hidden xl:flex xl:flex-col w-72 shrink-0 border-l border-slate-100 bg-white sticky top-0 h-screen overflow-y-auto">
+        <div class="p-4 space-y-5">
+            {{-- Welcome + live clock --}}
+            <div class="card p-4 relative overflow-hidden" style="background:linear-gradient(135deg,#0d9488,#0F62FE)"
+                 x-data="{ t:'' }"
+                 x-init="t=new Date().toLocaleString('en-IN',{weekday:'short',day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}); setInterval(()=>t=new Date().toLocaleString('en-IN',{weekday:'short',day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}),30000)">
+                <p class="text-xs text-white/70">Welcome back</p>
+                <p class="font-display font-extrabold text-white text-lg truncate">{{ strtok(auth()->user()->name, ' ') }}</p>
+                <p class="text-xs text-white/80 mt-1" x-text="t"></p>
+            </div>
+
+            {{-- Quick actions --}}
+            @if ($quick->isNotEmpty())
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-muted px-1 mb-2">Quick actions</p>
+                    <div class="space-y-1">
+                        @foreach ($quick as [$r, $ic, $lbl, $perm, $style])
+                            <a href="{{ route($r) }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition group">
+                                <span class="w-9 h-9 rounded-lg grid place-items-center" style="{{ $style }}"><i data-lucide="{{ $ic }}" class="w-4 h-4"></i></span>
+                                <span class="text-sm font-semibold">{{ $lbl }}</span>
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 ml-auto group-hover:text-slate-400"></i>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            {{-- Resources --}}
+            <div>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-muted px-1 mb-2">Resources</p>
+                <a href="{{ route('home') }}" target="_blank" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition">
+                    <span class="w-9 h-9 rounded-lg grid place-items-center bg-blue-50 text-blue-600"><i data-lucide="external-link" class="w-4 h-4"></i></span>
+                    <span class="text-sm font-semibold">Visit live site</span>
+                </a>
+            </div>
+
+            <p class="text-center text-[11px] text-muted pt-2">{{ config('app.name') }} Admin · v1.0</p>
+        </div>
+    </aside>
 </div>
 <script>document.addEventListener('DOMContentLoaded',()=>window.lucide?.createIcons());document.addEventListener('alpine:initialized',()=>window.lucide?.createIcons());</script>
 @stack('scripts')
