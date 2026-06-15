@@ -7,6 +7,7 @@ use App\Services\Wallet\WalletService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -73,5 +74,24 @@ class DashboardController extends Controller
         $request->user()->update($data);
 
         return back()->with('status', 'Profile updated.');
+    }
+
+    public function updateAvatar(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'avatar' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+        ]);
+
+        $user = $request->user();
+
+        // Remove the previous uploaded avatar (only if it lived on our public disk).
+        if ($user->avatar_url && str_starts_with($user->avatar_url, '/storage/avatars/')) {
+            Storage::disk('public')->delete(str_replace('/storage/', '', $user->avatar_url));
+        }
+
+        $path = $request->file('avatar')->store('avatars', 'public');
+        $user->update(['avatar_url' => '/storage/'.$path]);
+
+        return back()->with('status', 'Profile photo updated.');
     }
 }

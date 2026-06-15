@@ -57,6 +57,7 @@ Route::middleware(['auth', 'user.area'])->prefix('dashboard')->name('dashboard.'
     Route::get('/notifications', [DashboardController::class, 'notifications'])->name('notifications');
     Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
     Route::put('/profile', [DashboardController::class, 'updateProfile'])->name('profile.update');
+    Route::post('/profile/avatar', [DashboardController::class, 'updateAvatar'])->middleware('throttle:10,1')->name('profile.avatar');
 
     Route::get('/withdrawals', [WithdrawalController::class, 'index'])->name('withdrawals');
     Route::post('/withdrawals', [WithdrawalController::class, 'store'])->middleware('throttle:4,1')->name('withdrawals.store');
