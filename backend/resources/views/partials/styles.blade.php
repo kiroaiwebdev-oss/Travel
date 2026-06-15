@@ -150,4 +150,86 @@ select.input{ appearance:none; background-image:url("data:image/svg+xml,%3Csvg x
 
 /* Focus styles */
 :focus-visible{ outline:2px solid var(--brand); outline-offset:2px; border-radius:4px; }
+
+/* ============================================================
+   ===== NATIVE-APP-FEEL LAYER (mobile-first) =================
+   On phones the site behaves like an installed app; on >=768px
+   it falls back to the regular website layout.
+   ============================================================ */
+
+/* prevent text auto-zoom & give native tap feedback on mobile */
+@media (max-width:767px){
+  html{ -webkit-text-size-adjust:100%; }
+  body{ overscroll-behavior-y:none; }
+  /* native tap highlight removal + active press feel */
+  a,button,[role="button"],.tap{ -webkit-tap-highlight-color:transparent; }
+  .tap:active,a:active,button:active{ }
+}
+.press{ transition:transform .12s ease; }
+.press:active{ transform:scale(.96); }
+
+/* ===== App top header (mobile only) ===== */
+.app-header{ position:sticky; top:0; z-index:50; padding-top:env(safe-area-inset-top);
+  background:rgba(255,255,255,.92); backdrop-filter:saturate(180%) blur(16px); -webkit-backdrop-filter:saturate(180%) blur(16px);
+  border-bottom:1px solid var(--line-2); }
+.app-header-gradient{ background:linear-gradient(135deg,#0d9488 0%,#0f766e 45%,#0F62FE 130%); border-bottom:none; }
+
+/* ===== Horizontal snap rails (story / card carousels) ===== */
+.h-scroll{ display:flex; gap:.75rem; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scroll-padding-left:1rem; }
+.h-scroll > *{ scroll-snap-align:start; flex:0 0 auto; }
+.no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none; }
+.no-scrollbar::-webkit-scrollbar{ display:none; width:0; height:0; }
+
+/* ===== Story circles (Instagram-style) ===== */
+.story{ width:4.6rem; }
+.story-ring{ padding:2.5px; border-radius:999px; background:linear-gradient(135deg,#14b8a6,#0F62FE,#FF8A00); }
+.story-ring-inner{ padding:2px; border-radius:999px; background:#fff; }
+.story img{ width:3.7rem; height:3.7rem; border-radius:999px; object-fit:cover; display:block; }
+
+/* ===== Segmented control (app tabs) ===== */
+.segmented{ display:inline-flex; padding:.25rem; gap:.15rem; background:rgba(30,41,59,.06); border-radius:999px; }
+.segmented button{ padding:.45rem .9rem; border-radius:999px; font-size:.82rem; font-weight:600; color:var(--muted); transition:.2s; white-space:nowrap; }
+.segmented button.on{ background:#fff; color:var(--ink); box-shadow:var(--shadow-sm); }
+
+/* ===== App list rows ===== */
+.app-row{ display:flex; align-items:center; gap:.85rem; padding:.85rem 1rem; background:#fff; }
+.app-row + .app-row{ border-top:1px solid var(--line-2); }
+.app-row-ic{ width:2.6rem; height:2.6rem; border-radius:.85rem; display:grid; place-items:center; flex:0 0 auto; }
+
+/* ===== Bottom nav upgrade: center FAB + labels ===== */
+.bnav{ box-shadow:0 -4px 24px -10px rgba(13,42,72,.18); }
+.bnav-fab{ position:relative; }
+.bnav-fab a{ position:absolute; left:50%; top:-1.6rem; transform:translateX(-50%); width:3.6rem; height:3.6rem; border-radius:999px;
+  display:grid; place-items:center; color:#fff; box-shadow:0 12px 24px -8px rgba(15,98,254,.6);
+  background:linear-gradient(160deg,#14b8a6,#0F62FE); border:4px solid #fff; }
+.bnav-fab a.active .bnav-ic,.bnav-fab a .bnav-ic{ background:transparent; }
+
+/* ===== Bottom sheet ===== */
+.sheet-backdrop{ position:fixed; inset:0; z-index:80; background:rgba(11,18,32,.5); backdrop-filter:blur(2px); }
+.sheet{ position:fixed; left:0; right:0; bottom:0; z-index:81; background:#fff; border-radius:1.5rem 1.5rem 0 0;
+  padding:.5rem 1rem calc(1.25rem + env(safe-area-inset-bottom)); box-shadow:0 -24px 60px -20px rgba(13,42,72,.4); max-height:88vh; overflow-y:auto; }
+.sheet-handle{ width:2.6rem; height:.32rem; border-radius:999px; background:rgba(30,41,59,.2); margin:.5rem auto 1rem; }
+
+/* sheet enter/leave */
+@keyframes sheetUp{ from{ transform:translateY(100%);} to{ transform:translateY(0);} }
+.sheet{ animation:sheetUp .32s cubic-bezier(.2,.8,.2,1) both; }
+
+/* ===== App promo / balance card ===== */
+.app-balance{ background:linear-gradient(135deg,#0B1220 0%,#0f2e2b 55%,#0d3a52 120%); color:#fff; border-radius:1.25rem; position:relative; overflow:hidden; }
+.app-balance::after{ content:""; position:absolute; right:-30px; top:-30px; width:140px; height:140px; border-radius:999px; background:rgba(13,148,136,.4); filter:blur(28px); }
+
+/* ===== Quick-action grid (app shortcuts) ===== */
+.qa{ display:flex; flex-direction:column; align-items:center; gap:.4rem; }
+.qa-ic{ width:3.2rem; height:3.2rem; border-radius:1.1rem; display:grid; place-items:center; }
+.qa span{ font-size:.7rem; font-weight:600; color:var(--ink); }
+
+/* ===== Section title (app) ===== */
+.app-sec-title{ display:flex; align-items:center; justify-content:space-between; padding:0 1rem; }
+.app-sec-title h3{ font-weight:800; font-size:1.02rem; }
+.app-sec-title a{ font-size:.78rem; font-weight:700; color:var(--pay); }
+
+/* tighter edge spacing on phones */
+@media (max-width:767px){
+  .app-edge{ padding-left:1rem; padding-right:1rem; }
+}
 </style>

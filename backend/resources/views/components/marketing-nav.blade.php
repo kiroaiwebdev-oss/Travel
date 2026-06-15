@@ -1,5 +1,5 @@
 <header x-data="{ open: false, scrolled: false }" @scroll.window="scrolled = window.scrollY > 8"
-        class="sticky top-0 z-50 transition-all duration-300"
+        class="hidden md:block sticky top-0 z-50 transition-all duration-300"
         :class="scrolled ? 'glass shadow-soft border-b border-slate-100' : 'bg-transparent'">
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <a href="{{ route('home') }}" class="flex items-center gap-2.5 font-display font-extrabold text-lg">

@@ -22,6 +22,7 @@
 </head>
 <body class="bg-bg text-ink antialiased font-sans selection:bg-primary/20 pb-safe">
     <x-marketing-nav />
+    <x-mobile-app-header />
 
     <main>
         @yield('content')

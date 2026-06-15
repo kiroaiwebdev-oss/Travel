@@ -1,8 +1,110 @@
 @extends('layouts.app')
 
 @section('content')
-{{-- ===== HERO ===== --}}
-<section class="relative hero-aurora">
+{{-- ====================================================================
+     MOBILE APP HOME (md:hidden) — native cashback-app feed experience
+     ==================================================================== --}}
+<div class="md:hidden">
+    {{-- Search entry (tap → search) --}}
+    <div class="px-4 pt-4">
+        <a href="{{ route('search', ['category' => 'hotels']) }}" class="press flex items-center gap-3 card px-4 py-3.5">
+            <i data-lucide="search" class="w-5 h-5 text-brand"></i>
+            <span class="text-muted text-sm">Search hotels, flights, trains &amp; more…</span>
+            <span class="ml-auto pill pill-cashback text-[10px]">Cashback</span>
+        </a>
+    </div>
+
+    {{-- Quick actions (app shortcuts) --}}
+    <div class="mt-5 grid grid-cols-5 gap-1 px-3">
+        @foreach ([
+            ['hotels', 'Hotels', 'bed', 'background:rgba(15,98,254,.1);color:#0F62FE'],
+            ['flights', 'Flights', 'plane', 'background:rgba(0,184,169,.12);color:#009688'],
+            ['trains', 'Trains', 'train-front', 'background:rgba(255,138,0,.12);color:#c2410c'],
+            ['cabs', 'Cabs', 'car', 'background:rgba(168,85,247,.12);color:#9333ea'],
+            ['packages', 'Packages', 'map', 'background:rgba(236,72,153,.12);color:#db2777'],
+        ] as $qa)
+            <a href="{{ route('search', ['category' => $qa[0]]) }}" class="qa press">
+                <span class="qa-ic" style="{{ $qa[3] }}"><i data-lucide="{{ $qa[2] }}" class="w-5 h-5"></i></span>
+                <span>{{ $qa[1] }}</span>
+            </a>
+        @endforeach
+    </div>
+
+    {{-- Earn / balance banner --}}
+    <div class="px-4 mt-5">
+        @auth
+            <a href="{{ route('dashboard.wallet') }}" class="press block app-balance p-5">
+                <div class="relative flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-white/70">Your cashback wallet</p>
+                        <p class="text-3xl font-extrabold font-display mt-1">₹{{ number_format((float) (auth()->user()->wallet?->balance ?? 0), 0) }}</p>
+                        <p class="text-xs text-white/70 mt-1">Tap to view &amp; withdraw</p>
+                    </div>
+                    <span class="grid place-items-center w-12 h-12 rounded-2xl" style="background:rgba(255,255,255,.12)">
+                        <i data-lucide="wallet" class="w-6 h-6 text-white"></i>
+                    </span>
+                </div>
+            </a>
+        @else
+            <a href="{{ route('register') }}" class="press block app-balance p-5">
+                <div class="relative flex items-center justify-between gap-3">
+                    <div>
+                        <span class="pill text-[10px]" style="background:rgba(255,255,255,.15);color:#fff">Limited offer</span>
+                        <p class="text-xl font-extrabold font-display mt-2 leading-tight">Earn up to {{ (int) \App\Models\Setting::get('cashback.default_share_percent', 40) }}% cashback on every trip</p>
+                        <p class="text-xs text-white/70 mt-1">Join free → start earning real money</p>
+                    </div>
+                    <span class="grid place-items-center w-11 h-11 rounded-full shrink-0 bg-white text-ink">
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </span>
+                </div>
+            </a>
+        @endauth
+    </div>
+
+    {{-- Trending destinations — Instagram-style stories rail --}}
+    <div class="mt-6">
+        <div class="app-sec-title mb-3">
+            <h3 class="font-display">Trending now</h3>
+            <a href="{{ route('search', ['category' => 'hotels']) }}">See all</a>
+        </div>
+        <div class="h-scroll no-scrollbar px-4 pb-1">
+            @foreach ($destinations as $d)
+                <a href="{{ route('search', ['category' => 'hotels', 'destination' => $d['name']]) }}" class="story press text-center">
+                    <span class="story-ring block"><span class="story-ring-inner block">
+                        <img src="{{ $d['image'] }}" alt="{{ $d['name'] }}" loading="lazy">
+                    </span></span>
+                    <span class="block text-[11px] font-semibold mt-1.5 truncate">{{ $d['name'] }}</span>
+                </a>
+            @endforeach
+        </div>
+    </div>
+
+    {{-- How it works — compact app cards --}}
+    <div class="mt-6">
+        <div class="app-sec-title mb-3">
+            <h3 class="font-display">How it works</h3>
+        </div>
+        <div class="h-scroll no-scrollbar px-4 pb-1">
+            @foreach ([
+                ['search', 'Search & compare', 'Best prices across 9+ providers', 'background:rgba(0,184,169,.12);color:#009688'],
+                ['mouse-pointer-click', 'Book as usual', 'Same provider, same price', 'background:rgba(15,98,254,.1);color:#0F62FE'],
+                ['wallet', 'Earn cashback', 'Real money in your wallet', 'background:rgba(34,197,94,.12);color:#16a34a'],
+            ] as $i => $s)
+                <div class="card p-4 w-[62%] max-w-[15rem]">
+                    <span class="grid place-items-center w-10 h-10 rounded-xl" style="{{ $s[3] }}"><i data-lucide="{{ $s[0] }}" class="w-5 h-5"></i></span>
+                    <p class="text-[11px] text-muted mt-3 font-bold">STEP {{ $i + 1 }}</p>
+                    <p class="font-semibold text-sm mt-0.5">{{ $s[1] }}</p>
+                    <p class="text-xs text-muted mt-1">{{ $s[2] }}</p>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</div>
+
+{{-- ====================================================================
+     DESKTOP HERO (hidden md:block) — full website landing
+     ==================================================================== --}}
+<section class="relative hero-aurora hidden md:block">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-14 pb-12 sm:pt-24 sm:pb-24">
         <div class="max-w-4xl mx-auto text-center">
             <a href="#cashback" class="fade-up inline-flex items-center gap-2 pill pill-cashback mx-auto hover:scale-[1.02] transition">
@@ -20,7 +122,6 @@
                 Book as you always do &mdash; we pay you real cashback into your wallet. No coupons, no tricks.
             </p>
 
-            {{-- CTA buttons --}}
             <div class="fade-up-3 mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <a href="{{ route('register') }}" class="btn btn-primary text-base px-7 py-3.5">
                     Start earning free <i data-lucide="arrow-right" class="w-4 h-4"></i>
@@ -30,7 +131,6 @@
                 </a>
             </div>
 
-            {{-- social proof --}}
             <div class="fade-up-3 mt-8 flex items-center justify-center gap-3 text-sm text-muted">
                 <div class="flex -space-x-2">
                     @foreach (['a','b','c','d','e'] as $s)
@@ -44,12 +144,10 @@
             </div>
         </div>
 
-        {{-- search widget --}}
         <div class="mt-12 max-w-5xl mx-auto fade-up-3">
             <x-search-widget :categories="$categories" active="hotels" />
         </div>
 
-        {{-- trust counters --}}
         <div class="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto"
              x-data="{ stats: [{n:1200000,l:'Cashback paid',p:'₹',desc:'Real money returned to users'},{n:9,l:'Providers compared',s:'+',desc:'All top Indian & global brands'},{n:50000,l:'Happy travellers',s:'+',desc:'And growing every day'},{n:4.8,l:'Average rating',d:1,desc:'On trust & review platforms'}] }">
             <template x-for="s in stats">
@@ -65,12 +163,12 @@
 </section>
 
 {{-- ===== TRUSTED BY / PROVIDER LOGOS ===== --}}
-<section class="py-10 border-y border-slate-100 bg-white">
+<section class="py-8 sm:py-10 border-y border-slate-100 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <p class="text-center text-sm font-semibold text-muted mb-6 uppercase tracking-wide">Compare prices across India's top travel providers</p>
-        <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
+        <p class="text-center text-xs sm:text-sm font-semibold text-muted mb-5 sm:mb-6 uppercase tracking-wide">Compare prices across India's top travel providers</p>
+        <div class="flex md:flex-wrap items-center md:justify-center gap-x-6 sm:gap-x-8 gap-y-4 overflow-x-auto no-scrollbar md:overflow-visible opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
             @foreach (['Booking.com', 'MakeMyTrip', 'Goibibo', 'Cleartrip', 'Agoda', 'Expedia', 'Tripadvisor', 'Uber', 'Ola'] as $provider)
-                <div class="flex items-center gap-2 text-sm font-bold text-slate-600">
+                <div class="flex items-center gap-2 text-sm font-bold text-slate-600 shrink-0">
                     <span class="w-8 h-8 rounded-lg bg-slate-100 grid place-items-center">
                         <i data-lucide="building-2" class="w-4 h-4"></i>
                     </span>
@@ -82,7 +180,7 @@
 </section>
 
 {{-- ===== WHAT IS TRAVELCASH - PLATFORM EXPLAINER ===== --}}
-<section class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+<section class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
     <div class="grid lg:grid-cols-2 gap-12 items-center">
         <div>
             <span class="pill pill-brand">What is TravelCash?</span>
@@ -158,8 +256,8 @@
     </div>
 </section>
 
-{{-- ===== POPULAR DESTINATIONS ===== --}}
-<section class="max-w-7xl mx-auto px-4 sm:px-6 py-14">
+{{-- ===== POPULAR DESTINATIONS (desktop — mobile uses stories rail above) ===== --}}
+<section class="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 py-14">
     <div class="flex items-end justify-between mb-6">
         <div>
             <span class="pill pill-brand">Trending now</span>
@@ -185,7 +283,7 @@
 @includeWhen(!empty($featured['hotels']), 'partials.offer-rail', ['title' => 'Featured hotels', 'subtitle' => 'Hand-picked stays with boosted cashback.', 'offers' => $featured['hotels'] ?? [], 'cta' => ['hotels', 'View all hotels']])
 
 {{-- ===== HOW IT WORKS - DETAILED ===== --}}
-<section id="how-it-works" class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+<section id="how-it-works" class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
     <div class="text-center max-w-2xl mx-auto">
         <span class="pill pill-brand">Simple & transparent</span>
         <h2 class="mt-3 font-display text-3xl sm:text-4xl font-extrabold">How TravelCash works</h2>
@@ -219,7 +317,7 @@
 </section>
 
 {{-- ===== WHY CHOOSE US ===== --}}
-<section class="py-16 sm:py-20 bg-white border-y border-slate-100">
+<section class="py-12 sm:py-20 bg-white border-y border-slate-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="text-center max-w-2xl mx-auto">
             <span class="pill pill-brand">Why TravelCash?</span>
@@ -309,7 +407,7 @@
 @includeWhen(!empty($featured['flights']), 'partials.offer-rail', ['title' => 'Trending flights', 'subtitle' => 'Great fares with cashback on top.', 'offers' => $featured['flights'] ?? [], 'cta' => ['flights', 'View all flights']])
 
 {{-- ===== AI ASSISTANT SECTION ===== --}}
-<section class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+<section class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
     <div class="grid lg:grid-cols-2 gap-12 items-center">
         <div class="order-2 lg:order-1">
             <div class="card p-5 sm:p-6 relative overflow-hidden">
@@ -401,13 +499,13 @@
 </section>
 
 {{-- ===== TESTIMONIALS ===== --}}
-<section class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+<section class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
     <div class="text-center max-w-xl mx-auto">
         <span class="pill pill-brand">Real stories</span>
         <h2 class="mt-2 font-display text-2xl sm:text-3xl font-extrabold">What our travellers say</h2>
         <p class="text-muted mt-2">Don't just take our word for it — hear from people who saved real money.</p>
     </div>
-    <div class="mt-10 grid md:grid-cols-3 gap-6">
+    <div class="mt-10 grid md:grid-cols-3 gap-6 max-md:flex max-md:overflow-x-auto max-md:no-scrollbar max-md:-mx-4 max-md:px-4 max-md:snap-x">
         @foreach ([
             ['Aarav S.', 'Goa Trip', '₹3,200 cashback', 'Got ₹3,200 back on my Goa trip. The booking experience was exactly the same as booking directly on MakeMyTrip. Money hit my UPI in 2 days after confirmation.', '5'],
             ['Meera K.', 'Dubai Holiday', '₹8,500 cashback', 'Used TravelCash for my Dubai family trip. Compared flight + hotel prices in one place and earned ₹8,500 cashback. The AI even suggested the best areas to stay!', '5'],
@@ -416,7 +514,7 @@
             ['Rahul M.', 'Business Travel', '₹12,000 cashback', 'I travel for work almost weekly. Started using TravelCash and I\'ve earned over ₹12,000 in just 3 months. It adds up fast when you travel often.', '5'],
             ['Ananya T.', 'Rajasthan Road Trip', '₹2,600 cashback', 'Booked cabs and hotels for our Rajasthan road trip. The compare feature saved us time and the cashback saved us money. Win-win!', '5'],
         ] as $t)
-            <figure class="card card-hover p-6">
+            <figure class="card card-hover p-6 max-md:w-[82%] max-md:shrink-0 max-md:snap-start">
                 <div class="flex items-center justify-between">
                     <div class="flex gap-0.5 text-warning">@for($i=0;$i<(int)$t[4];$i++)<i data-lucide="star" class="w-4 h-4 fill-warning"></i>@endfor</div>
                     <span class="pill pill-cashback text-xs">{{ $t[2] }}</span>

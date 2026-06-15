@@ -11,7 +11,15 @@
             </a>
         @endisset
     </div>
-    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    {{-- Mobile: horizontal snap rail (app feel) · Desktop: grid --}}
+    <div class="md:hidden h-scroll no-scrollbar -mx-4 px-4">
+        @foreach (array_slice($offers, 0, 6) as $offer)
+            <div class="w-[78%] max-w-[20rem]">
+                <x-offer-card :offer="$offer" />
+            </div>
+        @endforeach
+    </div>
+    <div class="hidden md:grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         @foreach (array_slice($offers, 0, 4) as $offer)
             <x-offer-card :offer="$offer" />
         @endforeach
