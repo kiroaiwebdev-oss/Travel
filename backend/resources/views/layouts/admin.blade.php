@@ -15,46 +15,86 @@
 </head>
 <body class="bg-bg text-ink font-sans antialiased">
 <div x-data="{ open:false }" class="min-h-screen lg:flex">
-    <aside class="fixed lg:static inset-y-0 left-0 z-40 w-64 bg-secondary text-slate-300 p-4 flex flex-col transition-transform lg:translate-x-0"
+    <aside class="fixed lg:static inset-y-0 left-0 z-40 w-64 text-slate-300 flex flex-col transition-transform lg:translate-x-0"
+           style="background:linear-gradient(180deg,#0B1220 0%,#0a2230 55%,#062a2b 100%)"
            :class="open ? 'translate-x-0' : '-translate-x-full'">
-        <div class="flex items-center gap-2 font-display font-extrabold text-lg text-white px-2 py-2">
-            <span class="grid place-items-center w-8 h-8 rounded-lg bg-primary"><i data-lucide="shield" class="w-4 h-4"></i></span>
-            Admin
+        {{-- Brand --}}
+        <div class="px-4 pt-5 pb-3 border-b border-white/5">
+            <div class="flex items-center gap-2.5 font-display font-extrabold text-lg text-white">
+                <span class="grid place-items-center w-9 h-9 rounded-xl text-white shadow-lift" style="background:linear-gradient(150deg,#0F62FE,#00B8A9)"><i data-lucide="shield" class="w-5 h-5"></i></span>
+                <span>Travel<span style="color:#2dd4cb">Cash</span></span>
+            </div>
+            <div class="mt-3 flex items-center gap-2 rounded-xl bg-white/5 px-3 py-2">
+                <span class="w-7 h-7 rounded-full grid place-items-center text-white text-xs font-bold" style="background:linear-gradient(150deg,#0F62FE,#00B8A9)">{{ strtoupper(substr(auth()->user()->name,0,1)) }}</span>
+                <div class="min-w-0">
+                    <p class="text-xs font-semibold text-white truncate">{{ auth()->user()->name }}</p>
+                    <p class="text-[10px] text-slate-400 truncate">{{ auth()->user()->roles->pluck('label')->join(', ') ?: 'Admin' }}</p>
+                </div>
+            </div>
         </div>
-        <nav class="mt-4 space-y-1 flex-1 overflow-y-auto text-sm">
-            @php $nav = [
-                ['admin.dashboard','layout-dashboard','Dashboard', null],
-                ['admin.analytics','bar-chart-3','Analytics', 'analytics.view'],
-                ['admin.bookings.index','ticket','Bookings', 'analytics.view'],
-                ['admin.cashbacks.index','badge-dollar-sign','Cashback ledger', 'cashback.manage'],
-                ['admin.offers.index','tag','Offers & Deals', 'cms.manage'],
-                ['admin.providers.index','plug','Providers', 'providers.manage'],
-                ['admin.networks.index','network','Affiliate Networks', 'providers.manage'],
-                ['admin.cashback-rules.index','badge-percent','Cashback rules', 'cashback.manage'],
-                ['admin.users.index','users','Users', 'users.view'],
-                ['admin.staff.index','user-cog','Staff & Roles', 'users.manage'],
-                ['admin.kyc.index','id-card','KYC Review', 'users.manage'],
-                ['admin.withdrawals.index','banknote','Withdrawals', 'withdrawals.approve'],
-                ['admin.support.index','life-buoy','Support', 'support.handle'],
-                ['admin.notifications.index','megaphone','Notifications', 'cms.manage'],
-                ['admin.audit.index','scroll-text','Audit logs', 'audit.view'],
-                ['admin.integrations.index','plug-zap','Integrations', 'settings.manage'],
-                ['admin.settings.index','settings','Settings', 'settings.manage'],
-            ]; @endphp
-            @foreach ($nav as [$route, $icon, $label, $perm])
-                @if (!$perm || auth()->user()->hasPermission($perm))
-                    <a href="{{ route($route) }}"
-                       class="flex items-center gap-3 px-3 py-2 rounded-lg transition {{ request()->routeIs(str_replace('.index','*',$route)) || request()->routeIs($route) ? 'bg-white/10 text-white' : 'hover:bg-white/5 hover:text-white' }}">
-                        <i data-lucide="{{ $icon }}" class="w-[18px] h-[18px]"></i> {{ $label }}
-                    </a>
+
+        <nav class="mt-2 px-3 space-y-0.5 flex-1 overflow-y-auto text-sm pb-4">
+            @php
+                $groups = [
+                    'Overview' => [
+                        ['admin.dashboard','layout-dashboard','Dashboard', null],
+                        ['admin.analytics','bar-chart-3','Analytics', 'analytics.view'],
+                    ],
+                    'Catalog' => [
+                        ['admin.offers.index','tag','Offers & Deals', 'cms.manage'],
+                        ['admin.providers.index','plug','Providers', 'providers.manage'],
+                        ['admin.networks.index','network','Affiliate Networks', 'providers.manage'],
+                        ['admin.cashback-rules.index','badge-percent','Cashback rules', 'cashback.manage'],
+                    ],
+                    'Finance' => [
+                        ['admin.bookings.index','ticket','Bookings', 'analytics.view'],
+                        ['admin.cashbacks.index','badge-dollar-sign','Cashback ledger', 'cashback.manage'],
+                        ['admin.withdrawals.index','banknote','Withdrawals & Payouts', 'withdrawals.approve'],
+                    ],
+                    'Users' => [
+                        ['admin.users.index','users','Users', 'users.view'],
+                        ['admin.staff.index','user-cog','Staff & Roles', 'users.manage'],
+                        ['admin.kyc.index','id-card','KYC Review', 'users.manage'],
+                    ],
+                    'Engage' => [
+                        ['admin.support.index','life-buoy','Support', 'support.handle'],
+                        ['admin.notifications.index','megaphone','Notifications', 'cms.manage'],
+                    ],
+                    'System' => [
+                        ['admin.audit.index','scroll-text','Audit logs', 'audit.view'],
+                        ['admin.integrations.index','plug-zap','Integrations', 'settings.manage'],
+                        ['admin.settings.index','settings','Settings', 'settings.manage'],
+                    ],
+                ];
+                $u = auth()->user();
+            @endphp
+
+            @foreach ($groups as $section => $items)
+                @php $visible = collect($items)->filter(fn ($it) => ! $it[3] || $u->hasPermission($it[3])); @endphp
+                @if ($visible->isNotEmpty())
+                    <p class="px-3 pt-4 pb-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">{{ $section }}</p>
+                    @foreach ($visible as [$route, $icon, $label, $perm])
+                        @php
+                            $pattern = \Illuminate\Support\Str::endsWith($route, '.index') ? \Illuminate\Support\Str::replaceLast('.index', '.*', $route) : $route;
+                            $active = request()->routeIs($pattern) || request()->routeIs($route);
+                        @endphp
+                        <a href="{{ route($route) }}"
+                           class="flex items-center gap-3 px-3 py-2 rounded-lg transition text-[13.5px] {{ $active ? 'text-white font-semibold' : 'text-slate-400 hover:bg-white/5 hover:text-white' }}"
+                           @if ($active) style="background:linear-gradient(90deg,rgba(0,184,169,.22),rgba(15,98,254,.14)); box-shadow:inset 2px 0 0 #2dd4cb" @endif>
+                            <i data-lucide="{{ $icon }}" class="w-[18px] h-[18px] {{ $active ? '' : 'opacity-80' }}"></i> {{ $label }}
+                        </a>
+                    @endforeach
                 @endif
             @endforeach
         </nav>
-        <a href="{{ route('home') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 hover:text-white text-sm"><i data-lucide="external-link" class="w-[18px] h-[18px]"></i> Visit site</a>
-        <form method="POST" action="{{ route('admin.logout') }}" class="mt-1">
-            @csrf
-            <button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 hover:text-white text-sm text-left"><i data-lucide="log-out" class="w-[18px] h-[18px]"></i> Sign out</button>
-        </form>
+
+        <div class="px-3 py-3 border-t border-white/5 space-y-0.5">
+            <a href="{{ route('home') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 hover:text-white text-[13.5px] text-slate-400"><i data-lucide="external-link" class="w-[18px] h-[18px]"></i> Visit site</a>
+            <form method="POST" action="{{ route('admin.logout') }}">
+                @csrf
+                <button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-danger/15 hover:text-white text-[13.5px] text-slate-400 text-left"><i data-lucide="log-out" class="w-[18px] h-[18px]"></i> Sign out</button>
+            </form>
+        </div>
     </aside>
 
     <div @click="open=false" x-show="open" class="fixed inset-0 bg-black/40 z-30 lg:hidden"></div>
