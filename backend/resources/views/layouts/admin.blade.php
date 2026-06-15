@@ -58,6 +58,7 @@
                     ],
                     'Engage' => [
                         ['admin.support.index','life-buoy','Support', 'support.handle'],
+                        ['admin.contact.index','mail','Contact messages', 'support.handle'],
                         ['admin.notifications.index','megaphone','Notifications', 'cms.manage'],
                     ],
                     'System' => [

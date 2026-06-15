@@ -123,6 +123,12 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('support/{ticket}', [AdminSupportController::class, 'show'])->name('support.show');
         Route::post('support/{ticket}/reply', [AdminSupportController::class, 'reply'])->name('support.reply');
         Route::put('support/{ticket}/status', [AdminSupportController::class, 'updateStatus'])->name('support.status');
+
+        // Contact form messages
+        Route::get('contact', [\App\Http\Controllers\Admin\ContactController::class, 'index'])->name('contact.index');
+        Route::get('contact/{contact}', [\App\Http\Controllers\Admin\ContactController::class, 'show'])->name('contact.show');
+        Route::post('contact/{contact}/reply', [\App\Http\Controllers\Admin\ContactController::class, 'reply'])->name('contact.reply');
+        Route::put('contact/{contact}/status', [\App\Http\Controllers\Admin\ContactController::class, 'updateStatus'])->name('contact.status');
     });
 
     // Staff & roles

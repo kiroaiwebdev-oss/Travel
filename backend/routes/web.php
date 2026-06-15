@@ -19,6 +19,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 
+// Static / legal pages
+Route::get('/about', [\App\Http\Controllers\PageController::class, 'about'])->name('about');
+Route::get('/privacy', [\App\Http\Controllers\PageController::class, 'privacy'])->name('privacy');
+Route::get('/refund', [\App\Http\Controllers\PageController::class, 'refund'])->name('refund');
+Route::get('/terms', [\App\Http\Controllers\PageController::class, 'terms'])->name('terms');
+Route::get('/contact', [\App\Http\Controllers\ContactController::class, 'show'])->name('contact');
+Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
+
 // Affiliate click-out -> provider deep-link (signed).
 Route::get('/go/{provider:slug}', [RedirectController::class, 'out'])
     ->middleware('signed')
