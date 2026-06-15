@@ -88,7 +88,7 @@
     <div class="mt-6">
         <div class="app-sec-title mb-3">
             <h3 class="font-display">Trending now</h3>
-            <a href="{{ route('search', ['category' => 'hotels']) }}">See all</a>
+            <a href="{{ route('destinations') }}">See all</a>
         </div>
         <div class="h-scroll no-scrollbar px-4 pb-1">
             @foreach ($destinations as $d)

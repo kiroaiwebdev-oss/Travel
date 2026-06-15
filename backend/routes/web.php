@@ -25,6 +25,9 @@ Route::get('/app.webmanifest', \App\Http\Controllers\ManifestController::class)-
 // AI travel assistant (chat UI)
 Route::get('/assistant', [\App\Http\Controllers\AssistantController::class, 'show'])->name('assistant');
 
+// Trending destinations (full premium grid — used by mobile "See all")
+Route::get('/destinations', [\App\Http\Controllers\DestinationController::class, 'index'])->name('destinations');
+
 // Static / legal pages
 Route::get('/about', [\App\Http\Controllers\PageController::class, 'about'])->name('about');
 Route::get('/privacy', [\App\Http\Controllers\PageController::class, 'privacy'])->name('privacy');
