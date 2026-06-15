@@ -49,9 +49,20 @@ class PayoutManager
 
         $result = $gateway->payout($withdrawal);
 
+        // On failure: record gateway response but leave the wallet/refund decision to
+        // the caller (which holds the WalletService). On success: advance the status.
+        if (! $result['ok']) {
+            $withdrawal->update([
+                'gateway' => $gateway->key(),
+                'gateway_response' => $result['raw'],
+            ]);
+
+            return $result;
+        }
+
         $withdrawal->update([
             'gateway' => $gateway->key(),
-            'status' => $result['ok'] ? ($result['status'] === 'processed' ? Withdrawal::PAID : Withdrawal::PROCESSING) : Withdrawal::REJECTED,
+            'status' => $result['status'] === 'processed' ? Withdrawal::PAID : Withdrawal::PROCESSING,
             'gateway_payout_id' => $result['reference'],
             'gateway_response' => $result['raw'],
             'reference' => $result['reference'] ?? $withdrawal->reference,

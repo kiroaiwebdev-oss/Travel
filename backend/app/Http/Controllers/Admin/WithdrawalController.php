@@ -37,11 +37,28 @@ class WithdrawalController extends Controller
         }
 
         $result = $this->payouts->process($withdrawal, $data['gateway']);
-        $withdrawal->update(['processed_by' => $request->user()->id, 'processed_at' => now()]);
 
         if (! $result['ok']) {
-            return back()->withErrors(['gateway' => $result['raw']['error'] ?? 'Payout failed at the gateway.']);
+            // Gateway failed -> return the held money to the user's wallet.
+            $this->wallet->credit(
+                user: $withdrawal->user,
+                amount: (float) $withdrawal->amount,
+                type: 'withdrawal_reversal',
+                source: $withdrawal,
+                idempotencyKey: 'wd_reverse_'.$withdrawal->id,
+                description: 'Payout failed — refund',
+            );
+            $withdrawal->update([
+                'status' => Withdrawal::REJECTED,
+                'admin_note' => 'Gateway failed: '.($result['raw']['error'] ?? 'unknown error'),
+                'processed_by' => $request->user()->id,
+                'processed_at' => now(),
+            ]);
+
+            return back()->withErrors(['gateway' => $result['raw']['error'] ?? 'Payout failed; amount refunded to wallet.']);
         }
+
+        $withdrawal->update(['processed_by' => $request->user()->id, 'processed_at' => now()]);
 
         return back()->with('status', "Payout initiated via {$data['gateway']} (ref: {$result['reference']}).");
     }

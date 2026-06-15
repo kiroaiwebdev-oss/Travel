@@ -56,6 +56,7 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     });
     Route::middleware('permission:users.manage')->group(function () {
         Route::put('users/{user}/status', [UserController::class, 'updateStatus'])->name('users.status');
+        Route::put('users/{user}/adjust', [UserController::class, 'adjustWallet'])->name('users.adjust');
     });
 
     // Withdrawals

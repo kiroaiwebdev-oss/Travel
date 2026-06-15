@@ -20,6 +20,23 @@
             </select>
             <button class="btn btn-dark text-sm">Update</button>
         </form>
+
+        @if ($errors->any())
+            <div class="mt-3 rounded-xl bg-danger/10 text-danger text-xs p-2">{{ $errors->first() }}</div>
+        @endif
+        <div class="mt-5 pt-5 border-t border-slate-100">
+            <p class="text-sm font-semibold mb-2">Manual wallet adjustment</p>
+            <form method="POST" action="{{ route('admin.users.adjust', $user) }}" class="space-y-2">
+                @csrf @method('PUT')
+                <div class="flex gap-2">
+                    <select name="direction" class="input w-28"><option value="credit">Credit +</option><option value="debit">Debit −</option></select>
+                    <input type="number" step="0.01" min="0.01" name="amount" class="input" placeholder="Amount ₹" required>
+                </div>
+                <input name="note" class="input" placeholder="Reason (dispute / goodwill)…" required>
+                <button class="btn btn-primary text-sm w-full justify-center">Apply adjustment</button>
+            </form>
+            <p class="text-[11px] text-muted mt-2">Recorded in the double-entry ledger &amp; audit log.</p>
+        </div>
     </div>
 
     <div class="card overflow-hidden lg:col-span-2">
