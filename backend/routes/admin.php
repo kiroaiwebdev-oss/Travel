@@ -96,6 +96,7 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::middleware('permission:settings.manage')->group(function () {
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
         Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
+        Route::delete('settings/branding', [SettingController::class, 'removeBranding'])->name('settings.branding.remove');
         // Communication channels (Email / SMS / WhatsApp) + OTP delivery
         Route::get('integrations', [IntegrationController::class, 'index'])->name('integrations.index');
         Route::put('integrations', [IntegrationController::class, 'update'])->name('integrations.update');

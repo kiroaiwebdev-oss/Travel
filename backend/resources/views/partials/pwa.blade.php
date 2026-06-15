@@ -1,10 +1,12 @@
-{{-- PWA: installable, standalone, offline-capable, push-ready --}}
-<link rel="manifest" href="/manifest.webmanifest">
+{{-- PWA: installable, standalone, offline-capable, push-ready.
+     Favicon + manifest are dynamic so admin-uploaded branding (site.icon) applies everywhere. --}}
+@php $brandIcon = \App\Models\Setting::get('site.icon'); @endphp
+<link rel="manifest" href="{{ route('pwa.manifest') }}">
 <meta name="theme-color" content="#0F62FE" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0B1220" media="(prefers-color-scheme: dark)">
-<link rel="icon" type="image/svg+xml" href="/icon.svg">
-<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
-<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link rel="icon" type="image/svg+xml" href="{{ $brandIcon ?: '/icon.svg' }}">
+<link rel="icon" sizes="192x192" href="{{ $brandIcon ?: '/icons/icon-192.png' }}">
+<link rel="apple-touch-icon" href="{{ $brandIcon ?: '/icons/icon-192.png' }}">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">

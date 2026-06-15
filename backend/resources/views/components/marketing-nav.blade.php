@@ -2,11 +2,8 @@
         class="hidden md:block sticky top-0 z-50 transition-all duration-300"
         :class="scrolled ? 'glass shadow-soft border-b border-slate-100' : 'bg-transparent'">
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <a href="{{ route('home') }}" class="flex items-center gap-2.5 font-display font-extrabold text-lg">
-            <span class="grid place-items-center w-9 h-9 rounded-xl text-white shadow-lift" style="background:linear-gradient(150deg,#14b8a6,#0d9488)">
-                <i data-lucide="plane" class="w-5 h-5"></i>
-            </span>
-            <span>Trip<span class="text-brand">Cash</span></span>
+        <a href="{{ route('home') }}" class="flex items-center">
+            <x-brand-logo />
         </a>
 
         <div class="hidden md:flex items-center gap-0.5">

@@ -20,11 +20,8 @@
                 </p>
             </div>
         @else
-            <a href="{{ route('home') }}" class="flex items-center gap-2 font-display font-extrabold text-base">
-                <span class="grid place-items-center w-8 h-8 rounded-xl text-white" style="background:linear-gradient(150deg,#14b8a6,#0d9488)">
-                    <i data-lucide="plane" class="w-4 h-4"></i>
-                </span>
-                Trip<span class="text-brand">Cash</span>
+            <a href="{{ route('home') }}" class="flex items-center">
+                <x-brand-logo compact />
             </a>
         @endif
 

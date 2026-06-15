@@ -22,11 +22,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-14 grid gap-10 md:grid-cols-5">
         {{-- Brand Column --}}
         <div class="md:col-span-2">
-            <div class="flex items-center gap-2 text-white font-display font-extrabold text-lg">
-                <span class="grid place-items-center w-9 h-9 rounded-xl text-white" style="background:linear-gradient(150deg,#14b8a6,#0d9488)">
-                    <i data-lucide="plane" class="w-5 h-5"></i>
-                </span>
-                Trip<span style="color:#2dd4cb">Cash</span>
+            <div class="flex items-center">
+                <x-brand-logo light />
             </div>
             <p class="mt-4 text-sm text-slate-400 max-w-xs leading-relaxed">
                 {{ \App\Models\Setting::get('site.tagline', 'India\'s first travel meta-search engine with built-in cashback. Compare prices, book as usual, earn real money back.') }}

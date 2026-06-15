@@ -34,9 +34,8 @@
 <div x-data="{ open: false }" class="min-h-screen lg:flex">
     {{-- ===== Desktop sidebar ===== --}}
     <aside class="hidden lg:flex fixed lg:static inset-y-0 left-0 z-40 w-64 bg-white border-r border-slate-100 p-4 flex-col">
-        <a href="{{ route('home') }}" class="flex items-center gap-2 font-display font-extrabold text-lg px-2 py-2">
-            <span class="grid place-items-center w-8 h-8 rounded-lg bg-primary text-white"><i data-lucide="plane" class="w-4 h-4"></i></span>
-            {{ config('app.name') }}
+        <a href="{{ route('home') }}" class="flex items-center px-2 py-2">
+            <x-brand-logo />
         </a>
         <nav class="mt-4 space-y-1 flex-1 overflow-y-auto">
             @foreach ($nav as [$route, $icon, $label])
@@ -58,9 +57,8 @@
                x-transition:enter="transition ease-out duration-250" x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
                x-transition:leave="transition ease-in duration-200" x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full">
             <div class="flex items-center justify-between px-2 py-2">
-                <a href="{{ route('home') }}" class="flex items-center gap-2 font-display font-extrabold text-lg">
-                    <span class="grid place-items-center w-8 h-8 rounded-lg text-white" style="background:linear-gradient(150deg,#14b8a6,#0d9488)"><i data-lucide="plane" class="w-4 h-4"></i></span>
-                    Trip<span class="text-brand">Cash</span>
+                <a href="{{ route('home') }}" class="flex items-center">
+                    <x-brand-logo />
                 </a>
                 <button @click="open=false" class="app-iconbtn"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>

@@ -20,9 +20,8 @@
            :class="open ? 'translate-x-0' : '-translate-x-full'">
         {{-- Brand --}}
         <div class="px-4 pt-5 pb-3 border-b border-white/5">
-            <div class="flex items-center gap-2.5 font-display font-extrabold text-lg text-white">
-                <span class="grid place-items-center w-9 h-9 rounded-xl text-white shadow-lift" style="background:linear-gradient(150deg,#0F62FE,#00B8A9)"><i data-lucide="shield" class="w-5 h-5"></i></span>
-                <span>Trip<span style="color:#2dd4cb">Cash</span></span>
+            <div class="flex items-center">
+                <x-brand-logo light icon="shield" />
             </div>
             <div class="mt-3 flex items-center gap-2 rounded-xl bg-white/5 px-3 py-2">
                 <span class="w-7 h-7 rounded-full grid place-items-center text-white text-xs font-bold" style="background:linear-gradient(150deg,#0F62FE,#00B8A9)">{{ strtoupper(substr(auth()->user()->name,0,1)) }}</span>
