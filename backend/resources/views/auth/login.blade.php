@@ -14,6 +14,9 @@
         <a href="{{ route('auth.google') }}" class="btn w-full justify-center mt-6 border border-slate-200 bg-white hover:bg-slate-50">
             <img src="https://www.google.com/favicon.ico" class="w-4 h-4" alt=""> Continue with Google
         </a>
+        <a href="{{ route('login.otp') }}" class="btn w-full justify-center mt-2 border border-slate-200 bg-white hover:bg-slate-50">
+            <i data-lucide="mail" class="w-4 h-4"></i> Sign in with email OTP
+        </a>
 
         <div class="flex items-center gap-3 my-5 text-xs text-muted"><span class="flex-1 h-px bg-slate-200"></span>or<span class="flex-1 h-px bg-slate-200"></span></div>
 

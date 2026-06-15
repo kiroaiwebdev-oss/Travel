@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RedirectController;
@@ -27,6 +28,13 @@ Route::get('/go/{provider:slug}', [RedirectController::class, 'out'])
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'show'])->name('login');
     Route::post('/login', [LoginController::class, 'login'])->middleware('throttle:6,1');
+
+    // Passwordless email OTP login
+    Route::get('/login/otp', [OtpController::class, 'showRequest'])->name('login.otp');
+    Route::post('/login/otp', [OtpController::class, 'send'])->middleware('throttle:6,1')->name('login.otp.send');
+    Route::get('/login/otp/verify', [OtpController::class, 'showVerify'])->name('login.otp.verify.show');
+    Route::post('/login/otp/verify', [OtpController::class, 'verify'])->middleware('throttle:10,1')->name('login.otp.verify');
+
     Route::get('/register', [RegisterController::class, 'show'])->name('register');
     Route::post('/register', [RegisterController::class, 'register'])->middleware('throttle:6,1');
 
