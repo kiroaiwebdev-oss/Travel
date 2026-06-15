@@ -5,17 +5,18 @@ namespace Database\Seeders;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DemoUserSeeder extends Seeder
 {
     public function run(): void
     {
+        // NOTE: pass the PLAINTEXT password. The User model's `password => 'hashed'`
+        // cast hashes it exactly once. (Hashing here too would risk a double-hash.)
         $admin = User::updateOrCreate(
             ['email' => 'admin@travelcash.test'],
             [
                 'name' => 'Platform Admin',
-                'password' => Hash::make('password'),
+                'password' => 'password',
                 'email_verified_at' => now(),
                 'status' => 'active',
             ]
@@ -26,7 +27,7 @@ class DemoUserSeeder extends Seeder
             ['email' => 'user@travelcash.test'],
             [
                 'name' => 'Demo Traveller',
-                'password' => Hash::make('password'),
+                'password' => 'password',
                 'email_verified_at' => now(),
                 'status' => 'active',
             ]
