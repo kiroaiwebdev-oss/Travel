@@ -30,6 +30,16 @@ class LoginController extends Controller
             ]);
         }
 
+        // Hard separation: admins must use the dedicated admin login, never this one.
+        if (Auth::user()->hasPermission('admin.access')) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            throw ValidationException::withMessages([
+                'email' => 'Admin accounts must sign in via the admin panel at /admin/login.',
+            ]);
+        }
+
         $request->session()->regenerate();
 
         $user = Auth::user();
