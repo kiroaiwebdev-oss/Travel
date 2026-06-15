@@ -49,4 +49,12 @@
         </tbody>
     </table>
 </div>
+<div class="card p-5 mt-5">
+    <h2 class="font-display font-bold mb-3">Reports & exports</h2>
+    <div class="flex flex-wrap gap-2">
+        <a href="{{ route('admin.reports.users') }}" class="btn btn-ghost text-sm"><i data-lucide="download" class="w-4 h-4"></i> Users CSV</a>
+        <a href="{{ route('admin.reports.cashbacks') }}" class="btn btn-ghost text-sm"><i data-lucide="download" class="w-4 h-4"></i> Cashbacks CSV</a>
+        <a href="{{ route('admin.reports.withdrawals') }}" class="btn btn-ghost text-sm"><i data-lucide="download" class="w-4 h-4"></i> Withdrawals CSV</a>
+    </div>
+</div>
 @endsection

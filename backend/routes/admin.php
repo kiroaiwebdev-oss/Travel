@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AffiliateNetworkController;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\BookingController;
@@ -8,8 +9,12 @@ use App\Http\Controllers\Admin\CashbackController;
 use App\Http\Controllers\Admin\CashbackRuleController;
 use App\Http\Controllers\Admin\KycController as AdminKycController;
 use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
+use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\ProviderController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\StaffController;
+use App\Http\Controllers\Admin\SupportController as AdminSupportController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WithdrawalController;
 use Illuminate\Support\Facades\Route;
@@ -89,5 +94,42 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::middleware('permission:settings.manage')->group(function () {
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
         Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
+    });
+
+    // Offers / Deals catalog
+    Route::middleware('permission:cms.manage')->group(function () {
+        Route::resource('offers', OfferController::class)->except(['show']);
+        Route::put('offers/{offer}/toggle', [OfferController::class, 'toggle'])->name('offers.toggle');
+    });
+
+    // Affiliate networks
+    Route::middleware('permission:providers.manage')->group(function () {
+        Route::get('networks', [AffiliateNetworkController::class, 'index'])->name('networks.index');
+        Route::post('networks', [AffiliateNetworkController::class, 'store'])->name('networks.store');
+        Route::put('networks/{network}', [AffiliateNetworkController::class, 'update'])->name('networks.update');
+        Route::put('networks/{network}/toggle', [AffiliateNetworkController::class, 'toggle'])->name('networks.toggle');
+        Route::put('networks/{network}/secret', [AffiliateNetworkController::class, 'regenerateSecret'])->name('networks.secret');
+    });
+
+    // Support tickets
+    Route::middleware('permission:support.handle')->group(function () {
+        Route::get('support', [AdminSupportController::class, 'index'])->name('support.index');
+        Route::get('support/{ticket}', [AdminSupportController::class, 'show'])->name('support.show');
+        Route::post('support/{ticket}/reply', [AdminSupportController::class, 'reply'])->name('support.reply');
+        Route::put('support/{ticket}/status', [AdminSupportController::class, 'updateStatus'])->name('support.status');
+    });
+
+    // Staff & roles
+    Route::middleware('permission:users.manage')->group(function () {
+        Route::get('staff', [StaffController::class, 'index'])->name('staff.index');
+        Route::post('staff', [StaffController::class, 'store'])->name('staff.store');
+        Route::put('staff/{user}/roles', [StaffController::class, 'updateRoles'])->name('staff.roles');
+    });
+
+    // Reports / CSV exports
+    Route::middleware('permission:analytics.view')->group(function () {
+        Route::get('reports/users.csv', [ReportController::class, 'users'])->name('reports.users');
+        Route::get('reports/cashbacks.csv', [ReportController::class, 'cashbacks'])->name('reports.cashbacks');
+        Route::get('reports/withdrawals.csv', [ReportController::class, 'withdrawals'])->name('reports.withdrawals');
     });
 });
