@@ -5,18 +5,23 @@
     $sym = $cur === 'INR' ? '₹' : ($cur === 'USD' ? '$' : $cur.' ');
     $img = $offer['images'][0] ?? null;
     $attrs = $offer['attributes'] ?? [];
+    $cb = (float) ($offer['cashback'] ?? 0);
+    $price = (float) ($offer['price'] ?? 0);
+    $hotDeal = $price > 0 && ($cb / $price) >= 0.03; // >=3% back = highlight as a deal
 @endphp
 
 <article class="card card-hover overflow-hidden flex flex-col">
     @if ($img)
-        <div class="relative aspect-[16/10] bg-slate-100">
-            <img src="{{ $img }}" alt="{{ $offer['title'] }}" loading="lazy" class="w-full h-full object-cover">
-            @if (($offer['cashback'] ?? 0) > 0)
-                <span class="absolute top-3 left-3 pill pill-cashback bg-white/90 shadow-soft">
-                    <i data-lucide="badge-percent" class="w-3.5 h-3.5"></i>
-                    {{ $sym }}{{ number_format($offer['cashback']) }} cashback
-                </span>
-            @endif
+        <div class="relative aspect-[16/10] bg-slate-100 overflow-hidden">
+            <img src="{{ $img }}" alt="{{ $offer['title'] }}" loading="lazy" class="w-full h-full object-cover transition duration-700 hover:scale-105">
+            <div class="absolute top-3 left-3 flex flex-col gap-1.5 items-start">
+                @if ($hotDeal)
+                    <span class="pill pill-deal shadow-soft"><i data-lucide="flame" class="w-3.5 h-3.5"></i> Hot deal</span>
+                @endif
+                @if ($cb > 0)
+                    <span class="pill pill-cashback bg-white/95 shadow-soft"><i data-lucide="badge-percent" class="w-3.5 h-3.5"></i> {{ $sym }}{{ number_format($cb) }} cashback</span>
+                @endif
+            </div>
         </div>
     @endif
 
@@ -53,10 +58,9 @@
         <div class="mt-auto pt-3 flex items-end justify-between border-t border-slate-100">
             <div>
                 <p class="text-xs text-muted">From</p>
-                <p class="text-xl font-extrabold font-display">{{ $sym }}{{ number_format($offer['price']) }}</p>
+                <p class="text-xl font-extrabold font-display">{{ $sym }}{{ number_format($price) }}</p>
             </div>
-            <a href="{{ $offer['go_url'] ?? '#' }}" rel="nofollow sponsored" target="_blank"
-               class="btn btn-primary text-sm">
+            <a href="{{ $offer['go_url'] ?? '#' }}" rel="nofollow sponsored" target="_blank" class="btn btn-primary text-sm">
                 Book &amp; earn <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
             </a>
         </div>

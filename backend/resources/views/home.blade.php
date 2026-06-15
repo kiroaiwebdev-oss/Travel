@@ -3,27 +3,48 @@
 @section('content')
 {{-- ===== HERO ===== --}}
 <section class="relative hero-aurora">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-10 sm:pt-24 sm:pb-16">
-        <div class="max-w-3xl mx-auto text-center fade-up">
-            <span class="pill pill-cashback mx-auto"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Up to {{ (int) \App\Models\Setting::get('cashback.default_share_percent', 40) }}% of our commission back to you</span>
-            <h1 class="mt-5 font-display text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.05]">
-                Travel more.<br>Earn <span class="text-gradient">real cashback</span> on every trip.
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-14 pb-12 sm:pt-20 sm:pb-20">
+        <div class="max-w-3xl mx-auto text-center">
+            <a href="#cashback" class="fade-up inline-flex items-center gap-2 pill pill-cashback mx-auto hover:scale-[1.02] transition">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                Earn up to {{ (int) \App\Models\Setting::get('cashback.default_share_percent', 40) }}% of our commission back
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </a>
+
+            <h1 class="fade-up-2 mt-6 font-display text-[2.6rem] leading-[1.04] sm:text-6xl font-extrabold tracking-tight">
+                Travel smarter.<br>Get <span class="text-gradient">real cashback</span><br class="sm:hidden"> on every booking.
             </h1>
-            <p class="mt-5 text-lg text-muted max-w-xl mx-auto">
-                Compare flights, hotels, trains, cabs &amp; packages across all top providers — and get paid back into your wallet for booking.
+
+            <p class="fade-up-3 mt-6 text-lg text-muted max-w-xl mx-auto">
+                Compare flights, hotels, trains, cabs &amp; packages across every top provider —
+                book as usual and we pay you back into your wallet.
             </p>
+
+            {{-- social proof --}}
+            <div class="fade-up-3 mt-7 flex items-center justify-center gap-3 text-sm text-muted">
+                <div class="flex -space-x-2">
+                    @foreach (['a','b','c','d'] as $s)
+                        <img src="https://i.pravatar.cc/40?img={{ $loop->index + 11 }}" class="w-7 h-7 rounded-full ring-2 ring-white" alt="">
+                    @endforeach
+                </div>
+                <span class="flex items-center gap-1">
+                    <span class="flex text-warning">@for($i=0;$i<5;$i++)<i data-lucide="star" class="w-3.5 h-3.5 fill-warning"></i>@endfor</span>
+                    <span class="font-semibold text-ink">4.8</span> · loved by 50k+ travellers
+                </span>
+            </div>
         </div>
 
-        <div class="mt-10 max-w-5xl mx-auto fade-up">
+        {{-- search widget --}}
+        <div class="mt-10 max-w-5xl mx-auto fade-up-3">
             <x-search-widget :categories="$categories" active="hotels" />
         </div>
 
-        {{-- Trust counters --}}
-        <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto"
+        {{-- trust counters --}}
+        <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-4xl mx-auto"
              x-data="{ stats: [{n:1200000,l:'Paid as cashback',p:'₹'},{n:9,l:'Providers compared',s:'+'},{n:50000,l:'Happy travellers',s:'+'},{n:4.8,l:'Average rating',d:1}] }">
             <template x-for="s in stats">
                 <div class="card p-4 text-center">
-                    <p class="text-2xl font-extrabold font-display counter"
+                    <p class="text-2xl font-extrabold font-display counter text-ink"
                        x-data="{v:0}" x-intersect.once="let t=s.n,step=t/40,i=setInterval(()=>{v+=step;if(v>=t){v=t;clearInterval(i)};$el.textContent=(s.p||'')+(s.d?v.toFixed(1):Math.floor(v).toLocaleString())+(s.s||'')},25)">0</p>
                     <p class="text-xs text-muted mt-1" x-text="s.l"></p>
                 </div>
@@ -36,47 +57,48 @@
 <section class="max-w-7xl mx-auto px-4 sm:px-6 py-14">
     <div class="flex items-end justify-between mb-6">
         <div>
-            <h2 class="font-display text-2xl sm:text-3xl font-extrabold">Popular destinations</h2>
-            <p class="text-muted mt-1">Trending right now with the best cashback.</p>
+            <span class="pill pill-brand">Trending now</span>
+            <h2 class="mt-2 font-display text-2xl sm:text-3xl font-extrabold">Popular destinations</h2>
         </div>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         @foreach ($destinations as $d)
             <a href="{{ route('search', ['category' => 'hotels', 'destination' => $d['name']]) }}"
                class="group relative aspect-[3/4] rounded-xl2 overflow-hidden card-hover">
-                <img src="{{ $d['image'] }}" alt="{{ $d['name'] }}" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+                <img src="{{ $d['image'] }}" alt="{{ $d['name'] }}" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent"></div>
                 <div class="absolute bottom-3 left-3 text-white">
-                    <p class="text-xs opacity-80">{{ $d['tag'] }}</p>
-                    <p class="font-semibold">{{ $d['name'] }}</p>
+                    <p class="text-[11px] font-medium opacity-80">{{ $d['tag'] }}</p>
+                    <p class="font-bold">{{ $d['name'] }}</p>
                 </div>
             </a>
         @endforeach
     </div>
 </section>
 
-{{-- ===== FEATURED HOTELS ===== --}}
 @includeWhen(!empty($featured['hotels']), 'partials.offer-rail', ['title' => 'Featured hotels', 'subtitle' => 'Hand-picked stays with boosted cashback.', 'offers' => $featured['hotels'] ?? [], 'cta' => ['hotels', 'View all hotels']])
 
 {{-- ===== CASHBACK EXPLAINER ===== --}}
 <section id="cashback" class="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-    <div class="card p-8 sm:p-12 bg-gradient-to-br from-secondary to-[#10243f] text-white relative overflow-hidden">
-        <div class="absolute -right-16 -top-16 w-72 h-72 rounded-full bg-primary/30 blur-3xl"></div>
+    <div class="card p-8 sm:p-12 text-white relative overflow-hidden" style="background:linear-gradient(135deg,#0B1220 0%,#0f2e2b 60%,#0d3a52 100%)">
+        <div class="absolute -right-20 -top-20 w-80 h-80 rounded-full blur-3xl" style="background:rgba(13,148,136,.35)"></div>
+        <div class="absolute -left-16 bottom-0 w-72 h-72 rounded-full blur-3xl" style="background:rgba(37,99,235,.25)"></div>
         <div class="relative">
-            <h2 class="font-display text-3xl font-extrabold">How cashback works</h2>
-            <p class="text-slate-300 mt-2 max-w-2xl">Three simple steps. No coupons, no hassle — money lands in your wallet.</p>
+            <span class="pill" style="background:rgba(255,255,255,.1);color:#fff">How it works</span>
+            <h2 class="mt-3 font-display text-3xl font-extrabold">Cashback in three simple steps</h2>
+            <p class="text-slate-300 mt-2 max-w-2xl">No coupons, no catch — real money lands in your wallet.</p>
             <div class="mt-10 grid md:grid-cols-3 gap-6">
                 @foreach ([
-                    ['search', 'Search & compare', 'Find the best price across all providers in one place.'],
-                    ['mouse-pointer-click', 'Book via TravelCash', 'Click through and book on the provider as usual.'],
-                    ['wallet', 'Earn cashback', 'We share our commission back to your wallet — withdraw to UPI/bank.'],
+                    ['search', 'Search & compare', 'Find the best price across every provider in one place.', '#14b8a6'],
+                    ['mouse-pointer-click', 'Book via TravelCash', 'Click through and book on the provider exactly as usual.', '#2563EB'],
+                    ['wallet', 'Earn cashback', 'We share our commission back — withdraw to UPI or bank.', '#10b981'],
                 ] as $i => $step)
                     <div class="flex gap-4">
-                        <div class="shrink-0 grid place-items-center w-11 h-11 rounded-xl bg-white/10 text-accent">
+                        <div class="shrink-0 grid place-items-center w-12 h-12 rounded-2xl text-white font-bold" style="background:{{ $step[3] }}1f;color:{{ $step[3] }}">
                             <i data-lucide="{{ $step[0] }}" class="w-5 h-5"></i>
                         </div>
                         <div>
-                            <p class="text-sm text-slate-400">Step {{ $i + 1 }}</p>
+                            <p class="text-xs text-slate-400">Step {{ $i + 1 }}</p>
                             <h3 class="font-semibold">{{ $step[1] }}</h3>
                             <p class="text-sm text-slate-300 mt-1">{{ $step[2] }}</p>
                         </div>
@@ -87,23 +109,28 @@
     </div>
 </section>
 
-{{-- ===== FEATURED FLIGHTS + PACKAGES ===== --}}
 @includeWhen(!empty($featured['flights']), 'partials.offer-rail', ['title' => 'Trending flights', 'subtitle' => 'Great fares with cashback on top.', 'offers' => $featured['flights'] ?? [], 'cta' => ['flights', 'View all flights']])
 @includeWhen(!empty($featured['packages']), 'partials.offer-rail', ['title' => 'Featured packages', 'subtitle' => 'Curated holidays, fully loaded.', 'offers' => $featured['packages'] ?? [], 'cta' => ['packages', 'View all packages']])
 
 {{-- ===== TESTIMONIALS ===== --}}
 <section class="max-w-7xl mx-auto px-4 sm:px-6 py-14">
-    <h2 class="font-display text-2xl sm:text-3xl font-extrabold text-center">Loved by travellers</h2>
+    <div class="text-center max-w-xl mx-auto">
+        <span class="pill pill-brand">Testimonials</span>
+        <h2 class="mt-2 font-display text-2xl sm:text-3xl font-extrabold">Loved by travellers</h2>
+    </div>
     <div class="mt-8 grid md:grid-cols-3 gap-5">
         @foreach ([
-            ['Aarav S.', 'Got ₹3,200 back on my Goa trip. Booking was exactly the same as always.'],
-            ['Meera K.', 'The flight compare is genuinely faster than the apps I used before.'],
-            ['Dev P.', 'Withdrew cashback to UPI in two days. Legit and simple.'],
+            ['Aarav S.', 'Goa', 'Got ₹3,200 back on my Goa trip. Booking was exactly the same as always.'],
+            ['Meera K.', 'Dubai', 'The flight compare is genuinely faster than the apps I used before.'],
+            ['Dev P.', 'Manali', 'Withdrew cashback to UPI in two days. Legit and simple.'],
         ] as $t)
-            <figure class="card p-6">
-                <div class="flex gap-1 text-warning">@for($i=0;$i<5;$i++)<i data-lucide="star" class="w-4 h-4 fill-warning"></i>@endfor</div>
-                <blockquote class="mt-3 text-ink">“{{ $t[1] }}”</blockquote>
-                <figcaption class="mt-4 text-sm font-semibold text-muted">{{ $t[0] }}</figcaption>
+            <figure class="card card-hover p-6">
+                <div class="flex gap-0.5 text-warning">@for($i=0;$i<5;$i++)<i data-lucide="star" class="w-4 h-4 fill-warning"></i>@endfor</div>
+                <blockquote class="mt-3 text-ink leading-relaxed">“{{ $t[2] }}”</blockquote>
+                <figcaption class="mt-4 flex items-center gap-3">
+                    <span class="w-9 h-9 rounded-full grid place-items-center text-white text-sm font-bold" style="background:linear-gradient(150deg,#14b8a6,#0d9488)">{{ substr($t[0],0,1) }}</span>
+                    <span><span class="font-semibold text-sm block">{{ $t[0] }}</span><span class="text-xs text-muted">Trip to {{ $t[1] }}</span></span>
+                </figcaption>
             </figure>
         @endforeach
     </div>
@@ -120,25 +147,26 @@
             ['Which providers are supported?', 'Booking.com, Agoda, Expedia, MakeMyTrip, Goibibo, Cleartrip, Uber, Ola, Tripadvisor and more — added continuously.'],
         ] as $i => $faq)
             <div class="card overflow-hidden">
-                <button @click="open === {{ $i }} ? open = null : open = {{ $i }}" class="w-full flex items-center justify-between p-4 text-left font-semibold">
+                <button @click="open === {{ $i }} ? open = null : open = {{ $i }}" class="w-full flex items-center justify-between p-5 text-left font-semibold">
                     {{ $faq[0] }}
-                    <i data-lucide="chevron-down" class="w-5 h-5 text-muted transition" :class="open === {{ $i }} && 'rotate-180'"></i>
+                    <i data-lucide="chevron-down" class="w-5 h-5 text-muted transition shrink-0" :class="open === {{ $i }} && 'rotate-180'"></i>
                 </button>
-                <div x-show="open === {{ $i }}" x-collapse><p class="px-4 pb-4 text-muted text-sm">{{ $faq[1] }}</p></div>
+                <div x-show="open === {{ $i }}" x-collapse><p class="px-5 pb-5 text-muted text-sm leading-relaxed">{{ $faq[1] }}</p></div>
             </div>
         @endforeach
     </div>
 </section>
 
 {{-- ===== CTA ===== --}}
-<section class="max-w-7xl mx-auto px-4 sm:px-6 pb-8">
-    <div class="card p-10 text-center bg-gradient-to-br from-primary to-accent text-white">
-        <h2 class="font-display text-3xl font-extrabold">Start earning on your next trip</h2>
-        <p class="mt-2 text-white/90">Join free. Search, book, and watch your wallet grow.</p>
-        <a href="{{ route('register') }}" class="btn bg-white text-primary mt-6 font-bold">Create your free account <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+<section class="max-w-7xl mx-auto px-4 sm:px-6 pb-10">
+    <div class="card p-10 sm:p-14 text-center relative overflow-hidden ring-grid" style="background:linear-gradient(135deg,#0d9488 0%,#10b981 55%,#2563EB 130%)">
+        <div class="relative">
+            <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white">Start earning on your next trip</h2>
+            <p class="mt-3 text-white/90">Join free in seconds. Search, book, and watch your wallet grow.</p>
+            <a href="{{ route('register') }}" class="btn btn-white mt-7 font-bold">Create your free account <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+        </div>
     </div>
 </section>
 
-@push('scripts')
-@endpush
+@push('scripts')@endpush
 @endsection
