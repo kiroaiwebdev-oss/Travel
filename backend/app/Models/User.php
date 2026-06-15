@@ -144,8 +144,10 @@ class User extends Authenticatable
 
     public function hasPermission(string $permission): bool
     {
+        // Qualify `permissions.name` — an unqualified `name` is ambiguous with
+        // roles.name in the correlated subquery and silently matches nothing.
         return $this->roles()
-            ->whereHas('permissions', fn ($q) => $q->where('name', $permission))
+            ->whereHas('permissions', fn ($q) => $q->where('permissions.name', $permission))
             ->exists();
     }
 }
