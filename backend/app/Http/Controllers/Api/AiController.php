@@ -36,8 +36,9 @@ class AiController extends Controller
         ]);
 
         // Resolve category/destination — prefer what the UI sent, else infer from the text.
-        $category = $data['category'] ?: $this->detectCategory($data['message']);
-        $destination = $data['destination'] ?: $this->detectDestination($data['message']);
+        // Use ?? (not ?:) because validate() omits keys that weren't submitted.
+        $category = ($data['category'] ?? null) ?: $this->detectCategory($data['message']);
+        $destination = ($data['destination'] ?? null) ?: $this->detectDestination($data['message']);
         $origin = $this->detectOrigin($data['message']);
 
         // Ground the model with real, cashback + affiliate-enriched offers.
