@@ -60,7 +60,7 @@
             <div class="flex items-center justify-between px-2 py-2">
                 <a href="{{ route('home') }}" class="flex items-center gap-2 font-display font-extrabold text-lg">
                     <span class="grid place-items-center w-8 h-8 rounded-lg text-white" style="background:linear-gradient(150deg,#14b8a6,#0d9488)"><i data-lucide="plane" class="w-4 h-4"></i></span>
-                    Travel<span class="text-brand">Cash</span>
+                    Trip<span class="text-brand">Cash</span>
                 </a>
                 <button @click="open=false" class="app-iconbtn"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>

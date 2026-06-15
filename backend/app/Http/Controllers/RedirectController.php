@@ -23,7 +23,7 @@ class RedirectController extends Controller
         $params = $request->only(['offer_ref', 'amount', 'category', 'url', 'currency']);
         $result = $this->tracker->registerClick($provider, $params, $request);
 
-        $cookieDays = (int) config('travelcash.affiliate.cookie_days', 30);
+        $cookieDays = (int) config('tripcash.affiliate.cookie_days', 30);
         $cookie = Cookie::create(
             't_click',
             $result['click']->click_id,

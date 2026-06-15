@@ -1,4 +1,4 @@
-# Pre-Build Review — TravelCash Super Platform
+# Pre-Build Review — TripCash Super Platform
 
 > Mandatory review pass executed **before** writing implementation code, as required.
 > Each section identifies flaws, risks, and the concrete decision we adopted.

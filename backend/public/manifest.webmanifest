@@ -1,6 +1,6 @@
 {
-  "name": "TravelCash — Cashback on every trip",
-  "short_name": "TravelCash",
+  "name": "TripCash — Cashback on every trip",
+  "short_name": "TripCash",
   "description": "Compare flights, hotels, trains, cabs & packages and earn real cashback into your wallet.",
   "start_url": "/?source=pwa",
   "scope": "/",

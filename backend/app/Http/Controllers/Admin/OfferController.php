@@ -23,7 +23,7 @@ class OfferController extends Controller
         return view('admin.offers.form', [
             'offer' => new Offer(['cashback_type' => 'percentage', 'is_active' => true, 'sort_order' => 0]),
             'providers' => Provider::orderBy('name')->get(),
-            'categories' => config('travelcash.categories'),
+            'categories' => config('tripcash.categories'),
         ]);
     }
 
@@ -39,7 +39,7 @@ class OfferController extends Controller
         return view('admin.offers.form', [
             'offer' => $offer,
             'providers' => Provider::orderBy('name')->get(),
-            'categories' => config('travelcash.categories'),
+            'categories' => config('tripcash.categories'),
         ]);
     }
 
@@ -69,7 +69,7 @@ class OfferController extends Controller
         return $request->validate([
             'title' => ['required', 'string', 'max:160'],
             'provider_id' => ['nullable', 'exists:providers,id'],
-            'category' => ['required', 'string', 'in:'.implode(',', array_keys(config('travelcash.categories')))],
+            'category' => ['required', 'string', 'in:'.implode(',', array_keys(config('tripcash.categories')))],
             'cashback_label' => ['nullable', 'string', 'max:120'],
             'cashback_type' => ['required', 'in:percentage,flat'],
             'cashback_value' => ['required', 'numeric', 'min:0'],

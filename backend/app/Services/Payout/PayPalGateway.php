@@ -38,7 +38,7 @@ class PayPalGateway implements PayoutGateway
             $resp = Http::withToken($token)->acceptJson()->timeout(20)->post($base.'/v1/payments/payouts', [
                 'sender_batch_header' => [
                     'sender_batch_id' => 'wd_'.$withdrawal->id,
-                    'email_subject' => 'Your TravelCash cashback payout',
+                    'email_subject' => 'Your TripCash cashback payout',
                 ],
                 'items' => [[
                     'recipient_type' => 'EMAIL',

@@ -24,7 +24,7 @@ class CashbackRuleController extends Controller
         return view('admin.cashback.form', [
             'rule' => new CashbackRule(['type' => 'percentage', 'priority' => 100, 'is_active' => true]),
             'providers' => Provider::orderBy('name')->get(),
-            'categories' => config('travelcash.categories'),
+            'categories' => config('tripcash.categories'),
         ]);
     }
 
@@ -41,7 +41,7 @@ class CashbackRuleController extends Controller
         return view('admin.cashback.form', [
             'rule' => $cashbackRule,
             'providers' => Provider::orderBy('name')->get(),
-            'categories' => config('travelcash.categories'),
+            'categories' => config('tripcash.categories'),
         ]);
     }
 

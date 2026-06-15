@@ -1,4 +1,4 @@
-{{-- Tailwind Play CDN + TravelCash tokens. Trust Blue primary · Travel Teal secondary. --}}
+{{-- Tailwind Play CDN + TripCash tokens. Trust Blue primary · Travel Teal secondary. --}}
 <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
 <script>
     tailwind.config = {

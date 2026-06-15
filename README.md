@@ -1,4 +1,4 @@
-# TravelCash — Travel Meta-Search + Cashback Super-Platform
+# TripCash — Travel Meta-Search + Cashback Super-Platform
 
 > Compare **flights, hotels, trains, cabs, packages, guides, activities & airport transfers**
 > across all top providers, book through affiliate links, and earn a configurable share of
@@ -41,7 +41,7 @@ Browser ─► Cloudflare ─► Nginx ─► PHP-FPM (Laravel 12)  ─┬─ My
 │   │   │   └── Referral/ReferralService.php
 │   │   ├── Http/Controllers/{Api,Auth,User,Admin}
 │   │   └── Models/
-│   ├── config/{travelcash,providers}.php        # business + plugin config
+│   ├── config/{tripcash,providers}.php        # business + plugin config
 │   ├── database/migrations + seeders
 │   └── resources/views/                         # Blade (marketing, dashboard, admin)
 ├── ai-service/         # FastAPI sidecar (assistant, recommender, analytics)
@@ -89,8 +89,8 @@ docker compose exec app php artisan storage:link
 Open `http://localhost`.
 
 Demo logins (seeded):
-- **Admin:** `admin@travelcash.test` / `password`
-- **User:** `user@travelcash.test` / `password`
+- **Admin:** `admin@tripcash.test` / `password`
+- **User:** `user@tripcash.test` / `password`
 
 > Providers ship in **demo mode** (realistic sample offers) so the full
 > search → click → cashback funnel works immediately. Add real API keys in

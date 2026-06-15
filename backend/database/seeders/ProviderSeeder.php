@@ -49,7 +49,7 @@ class ProviderSeeder extends Seeder
                     'priority' => $p['priority'],
                     'commission_percent' => $p['commission'],
                     'logo_url' => "https://logo.clearbit.com/{$p['slug']}.com",
-                    'tracking_template' => 'https://{host}/deeplink?aff=travelcash&subid={click_id}&url={target}',
+                    'tracking_template' => 'https://{host}/deeplink?aff=tripcash&subid={click_id}&url={target}',
                 ]
             );
 

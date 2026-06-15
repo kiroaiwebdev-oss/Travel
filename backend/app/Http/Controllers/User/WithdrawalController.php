@@ -19,13 +19,13 @@ class WithdrawalController extends Controller
         return view('dashboard.withdrawals', [
             'wallet' => $this->wallet->walletFor($request->user()),
             'withdrawals' => $request->user()->withdrawals()->latest()->paginate(15),
-            'min' => (float) config('travelcash.cashback.min_withdrawal', 500),
+            'min' => (float) config('tripcash.cashback.min_withdrawal', 500),
         ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
-        $min = (float) config('travelcash.cashback.min_withdrawal', 500);
+        $min = (float) config('tripcash.cashback.min_withdrawal', 500);
         $data = $request->validate([
             'amount' => ['required', 'numeric', "min:{$min}"],
             'method' => ['required', 'in:upi,bank,paypal,voucher'],

@@ -87,7 +87,7 @@ class MessagingService
             return ['ok' => false, 'info' => "User has no {$channel} address on file"];
         }
 
-        $result = $this->channel($channel)->send($to, $message, ['subject' => $subject ?? 'A message from TravelCash']);
+        $result = $this->channel($channel)->send($to, $message, ['subject' => $subject ?? 'A message from TripCash']);
         Log::info('Outbound message', ['user' => $user->id, 'channel' => $channel, 'ok' => $result['ok']]);
 
         return $result + ['channel' => $channel];
@@ -98,7 +98,7 @@ class MessagingService
     {
         $channel = $this->otpChannel();
         $to = $this->addressFor($user, $channel);
-        $message = "Your TravelCash verification code is {$code}. It expires in 10 minutes.";
+        $message = "Your TripCash verification code is {$code}. It expires in 10 minutes.";
 
         if (! $to) {
             // Fall back to email if the chosen channel has no address.
@@ -106,6 +106,6 @@ class MessagingService
             $to = $user->email;
         }
 
-        return $this->channel($channel)->send($to, $message, ['subject' => 'Your TravelCash code']) + ['channel' => $channel];
+        return $this->channel($channel)->send($to, $message, ['subject' => 'Your TripCash code']) + ['channel' => $channel];
     }
 }

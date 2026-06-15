@@ -33,7 +33,7 @@ class ReferralService
         // Daily cap per referrer.
         $todayCount = Referral::where('referrer_id', $referrer->id)
             ->whereDate('created_at', today())->count();
-        $overCap = $todayCount >= (int) config('travelcash.referral.max_referrals_per_day', 20);
+        $overCap = $todayCount >= (int) config('tripcash.referral.max_referrals_per_day', 20);
 
         $referee->forceFill(['referred_by' => $referrer->id])->save();
 
@@ -42,7 +42,7 @@ class ReferralService
             'referee_id' => $referee->id,
             'code' => $code,
             'status' => ($sameIp || $overCap) ? Referral::REJECTED : Referral::PENDING,
-            'reward_amount' => (float) config('travelcash.referral.reward_amount', 100),
+            'reward_amount' => (float) config('tripcash.referral.reward_amount', 100),
             'ip_address' => $request->ip(),
             'signup_fingerprint' => hash('sha256', $request->ip().'|'.$request->userAgent()),
         ]);
@@ -60,7 +60,7 @@ class ReferralService
 
         $referral->update(['status' => Referral::QUALIFIED, 'qualified_at' => now()]);
 
-        if (config('travelcash.referral.require_confirmed_booking', true)) {
+        if (config('tripcash.referral.require_confirmed_booking', true)) {
             $this->reward($referral);
         }
     }

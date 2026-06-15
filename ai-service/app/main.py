@@ -1,4 +1,4 @@
-"""TravelCash AI sidecar (FastAPI).
+"""TripCash AI sidecar (FastAPI).
 
 Responsibilities (per architecture): AI travel assistant, recommendation engine,
 analytics/data processing. Laravel remains the system of record and main backend.
@@ -14,9 +14,9 @@ from .routers import assistant, health, recommend
 logging.basicConfig(level=logging.INFO)
 
 app = FastAPI(
-    title="TravelCash AI Service",
+    title="TripCash AI Service",
     version="1.0.0",
-    description="AI assistant, recommender and analytics sidecar for TravelCash.",
+    description="AI assistant, recommender and analytics sidecar for TripCash.",
 )
 
 app.include_router(health.router, tags=["health"])
@@ -26,4 +26,4 @@ app.include_router(recommend.router, tags=["recommend"])
 
 @app.get("/")
 async def root() -> dict:
-    return {"service": "travelcash-ai", "status": "running"}
+    return {"service": "tripcash-ai", "status": "running"}

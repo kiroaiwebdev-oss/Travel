@@ -68,7 +68,7 @@ class ProviderManager
     /** Flush the active-provider cache (call after admin edits a provider). */
     public function flushCache(): void
     {
-        foreach (array_keys(config('travelcash.categories', [])) as $category) {
+        foreach (array_keys(config('tripcash.categories', [])) as $category) {
             Cache::forget("providers:active:{$category}");
         }
     }

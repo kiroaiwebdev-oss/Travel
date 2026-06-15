@@ -38,6 +38,6 @@
 
         <p class="text-sm text-muted text-center mt-6">No account? <a href="{{ route('register') }}" class="text-primary font-semibold">Create one</a></p>
     </div>
-    <p class="text-xs text-center text-muted mt-4">Demo: admin@travelcash.test / user@travelcash.test · password</p>
+    <p class="text-xs text-center text-muted mt-4">Demo: admin@tripcash.test / user@tripcash.test · password</p>
 </div>
 @endsection

@@ -1,7 +1,7 @@
 {
-    "name": "travelcash/platform",
+    "name": "tripcash/platform",
     "type": "project",
-    "description": "TravelCash — travel meta-search + cashback super-platform.",
+    "description": "TripCash — travel meta-search + cashback super-platform.",
     "keywords": ["laravel", "travel", "cashback", "affiliate"],
     "license": "proprietary",
     "require": {

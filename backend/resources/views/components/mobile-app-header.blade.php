@@ -16,7 +16,7 @@
             <div class="min-w-0">
                 <p class="text-[11px] font-medium opacity-80 leading-none">{{ $isAuth ? $greeting.',' : 'Welcome to' }}</p>
                 <p class="font-display font-extrabold text-lg leading-tight truncate">
-                    {{ $isAuth ? $firstName.' 👋' : 'TravelCash' }}
+                    {{ $isAuth ? $firstName.' 👋' : 'TripCash' }}
                 </p>
             </div>
         @else
@@ -24,7 +24,7 @@
                 <span class="grid place-items-center w-8 h-8 rounded-xl text-white" style="background:linear-gradient(150deg,#14b8a6,#0d9488)">
                     <i data-lucide="plane" class="w-4 h-4"></i>
                 </span>
-                Travel<span class="text-brand">Cash</span>
+                Trip<span class="text-brand">Cash</span>
             </a>
         @endif
 

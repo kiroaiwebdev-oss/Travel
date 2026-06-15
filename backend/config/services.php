@@ -38,7 +38,7 @@ return [
     'webpush' => [
         'public_key' => env('VAPID_PUBLIC_KEY'),
         'private_key' => env('VAPID_PRIVATE_KEY'),
-        'subject' => env('VAPID_SUBJECT', 'mailto:admin@travelcash.test'),
+        'subject' => env('VAPID_SUBJECT', 'mailto:admin@tripcash.test'),
     ],
 
     // Twilio — SMS + WhatsApp (env fallback; admin can override in Integrations)

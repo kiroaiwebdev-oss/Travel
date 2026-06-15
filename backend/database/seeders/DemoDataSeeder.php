@@ -34,7 +34,7 @@ class DemoDataSeeder extends Seeder
 
             return;
         }
-        $categories = array_keys(config('travelcash.categories'));
+        $categories = array_keys(config('tripcash.categories'));
 
         $this->safe('offers', fn () => $this->seedOffers($providers));
         $this->safe('staff', fn () => $this->seedStaff());
@@ -43,8 +43,8 @@ class DemoDataSeeder extends Seeder
         $users = collect();
         $allUsers = collect();
         $this->safe('users', function () use (&$demo, &$users, &$allUsers) {
-            $demo = User::where('email', 'user@travelcash.test')->first()
-                ?? User::factory()->create(['name' => 'Demo Traveller', 'email' => 'user@travelcash.test']);
+            $demo = User::where('email', 'user@tripcash.test')->first()
+                ?? User::factory()->create(['name' => 'Demo Traveller', 'email' => 'user@tripcash.test']);
             $demo->update([
                 'phone' => '+919876500000', 'kyc_status' => 'approved', 'kyc_full_name' => 'Demo Traveller',
                 'kyc_pan' => 'ABCDE1234F', 'kyc_payout_method' => 'upi', 'kyc_payout_details' => ['upi' => 'demo@upi'],
@@ -207,24 +207,24 @@ class DemoDataSeeder extends Seeder
 
     private function seedStaff(): void
     {
-        $manager = User::updateOrCreate(['email' => 'manager@travelcash.test'], [
+        $manager = User::updateOrCreate(['email' => 'manager@tripcash.test'], [
             'name' => 'Ops Manager', 'email_verified_at' => now(), 'status' => 'active',
         ]);
         $manager->roles()->syncWithoutDetaching([Role::where('name', 'manager')->value('id')]);
 
-        $support = User::updateOrCreate(['email' => 'support@travelcash.test'], [
+        $support = User::updateOrCreate(['email' => 'support@tripcash.test'], [
             'name' => 'Support Agent', 'email_verified_at' => now(), 'status' => 'active',
         ]);
         $support->roles()->syncWithoutDetaching([Role::where('name', 'support')->value('id')]);
 
         // Exact-bcrypt passwords at the DB level so staff logins always work.
-        DB::table('users')->whereIn('email', ['manager@travelcash.test', 'support@travelcash.test'])
+        DB::table('users')->whereIn('email', ['manager@tripcash.test', 'support@tripcash.test'])
             ->update(['password' => bcrypt('password')]);
     }
 
     private function seedNotifications($users): void
     {
-        $payload = json_encode(['title' => 'Welcome to TravelCash 🎉', 'message' => 'Start searching and earn cashback on every booking!', 'url' => '/dashboard']);
+        $payload = json_encode(['title' => 'Welcome to TripCash 🎉', 'message' => 'Start searching and earn cashback on every booking!', 'url' => '/dashboard']);
         $now = now();
         $rows = [];
         foreach ($users as $u) {
@@ -268,7 +268,7 @@ class DemoDataSeeder extends Seeder
 
     private function seedAuditLogs(): void
     {
-        $admin = User::where('email', 'admin@travelcash.test')->first();
+        $admin = User::where('email', 'admin@tripcash.test')->first();
         $actions = [
             'admin.login.success', 'PUT admin/providers/1', 'PUT admin/withdrawals/1/approve',
             'PUT admin/kyc/3/approve', 'POST admin/offers', 'PUT admin/cashbacks/2/confirm',

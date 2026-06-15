@@ -1,4 +1,4 @@
-/* TravelCash Service Worker — offline support + fast static caching.
+/* TripCash Service Worker — offline support + fast static caching.
    Strategy: network-first for navigations (fresh dynamic pages, offline fallback),
    cache-first for same-origin static assets. Never touches POST or cross-origin. */
 const CACHE = 'tc-cache-v1';
@@ -50,7 +50,7 @@ self.addEventListener('fetch', (event) => {
 
 /* Push notifications (ready for a backend push service) */
 self.addEventListener('push', (event) => {
-  let data = { title: 'TravelCash', body: 'You have an update.' };
+  let data = { title: 'TripCash', body: 'You have an update.' };
   try { data = event.data ? event.data.json() : data; } catch (e) {}
   event.waitUntil(
     self.registration.showNotification(data.title, {

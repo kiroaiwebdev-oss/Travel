@@ -1,17 +1,17 @@
 @extends('layouts.app')
-@section('title', 'About TravelCash — India\'s Smartest Travel Cashback Platform')
+@section('title', 'About TripCash — India\'s Smartest Travel Cashback Platform')
 
 @section('content')
 {{-- ===== HERO ===== --}}
 <section class="relative hero-aurora">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-12 sm:pt-24 sm:pb-16">
         <div class="max-w-3xl mx-auto text-center">
-            <span class="pill pill-brand fade-up">About TravelCash</span>
+            <span class="pill pill-brand fade-up">About TripCash</span>
             <h1 class="fade-up-2 mt-4 font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
                 We make travel <span class="text-gradient">rewarding</span> for everyone
             </h1>
             <p class="fade-up-3 mt-5 text-lg sm:text-xl text-muted max-w-2xl mx-auto leading-relaxed">
-                TravelCash is India's first travel meta-search and cashback platform. We help you find the best
+                TripCash is India's first travel meta-search and cashback platform. We help you find the best
                 deals across all major providers and earn real money back on every booking.
             </p>
         </div>
@@ -24,10 +24,10 @@
         <div>
             <span class="pill pill-brand">Our Platform</span>
             <h2 class="mt-3 font-display text-3xl sm:text-4xl font-extrabold leading-tight">
-                What is TravelCash?
+                What is TripCash?
             </h2>
             <p class="mt-5 text-muted text-lg leading-relaxed">
-                TravelCash is a <strong class="text-ink">travel meta-search engine with built-in cashback</strong>.
+                TripCash is a <strong class="text-ink">travel meta-search engine with built-in cashback</strong>.
                 Think of us as your one-stop travel companion that does two things brilliantly:
             </p>
             <div class="mt-6 space-y-4">
@@ -63,7 +63,7 @@
                     <div class="w-20 h-20 rounded-2xl mx-auto grid place-items-center text-white shadow-lift" style="background:linear-gradient(150deg,#14b8a6,#0d9488)">
                         <i data-lucide="plane" class="w-10 h-10"></i>
                     </div>
-                    <h3 class="mt-4 font-display font-extrabold text-xl">Travel<span class="text-brand">Cash</span></h3>
+                    <h3 class="mt-4 font-display font-extrabold text-xl">Trip<span class="text-brand">Cash</span></h3>
                     <p class="text-muted text-sm mt-2">Travel more. Pay less. Earn cashback.</p>
                     <div class="mt-6 grid grid-cols-3 gap-4">
                         <div class="text-center">
@@ -132,7 +132,7 @@
                         </div>
                         <div class="text-center p-4 rounded-xl" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
                             <p class="text-slate-200 font-bold text-lg">Remaining</p>
-                            <p class="text-sm text-slate-300 mt-1">Keeps TravelCash running</p>
+                            <p class="text-sm text-slate-300 mt-1">Keeps TripCash running</p>
                         </div>
                     </div>
                     <p class="text-center text-xs text-slate-400 mt-6">You always pay the same price as booking directly. The cashback comes from the commission — not from your pocket.</p>
@@ -146,7 +146,7 @@
 <section class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
     <div class="text-center max-w-2xl mx-auto">
         <span class="pill pill-brand">Our Difference</span>
-        <h2 class="mt-3 font-display text-3xl sm:text-4xl font-extrabold">What makes TravelCash unique?</h2>
+        <h2 class="mt-3 font-display text-3xl sm:text-4xl font-extrabold">What makes TripCash unique?</h2>
         <p class="text-muted mt-3 text-lg">Built by travellers, for travellers. Here's what sets us apart.</p>
     </div>
 
@@ -175,7 +175,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="text-center max-w-2xl mx-auto">
             <span class="pill pill-brand">Step by Step</span>
-            <h2 class="mt-3 font-display text-3xl sm:text-4xl font-extrabold">How to use TravelCash</h2>
+            <h2 class="mt-3 font-display text-3xl sm:text-4xl font-extrabold">How to use TripCash</h2>
             <p class="text-muted mt-3 text-lg">It's incredibly simple — here's the complete process from sign-up to withdrawal.</p>
         </div>
 
@@ -217,7 +217,7 @@
 <section class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
     <div class="text-center max-w-2xl mx-auto">
         <span class="pill pill-brand">Platform Features</span>
-        <h2 class="mt-3 font-display text-3xl sm:text-4xl font-extrabold">Everything inside TravelCash</h2>
+        <h2 class="mt-3 font-display text-3xl sm:text-4xl font-extrabold">Everything inside TripCash</h2>
         <p class="text-muted mt-3 text-lg">A comprehensive platform built for the modern Indian traveller.</p>
     </div>
 
@@ -309,7 +309,7 @@
                 <h3 class="font-display text-2xl font-extrabold">Our Vision</h3>
                 <p class="text-muted mt-3 leading-relaxed">
                     To become India's most trusted travel platform where every booking = savings. We envision a future
-                    where no one books travel without checking TravelCash first — because why leave money on the table?
+                    where no one books travel without checking TripCash first — because why leave money on the table?
                 </p>
                 <p class="text-muted mt-3 leading-relaxed">
                     We aim to build an ecosystem where travel, savings, and smart planning come together seamlessly,
@@ -325,8 +325,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="text-center max-w-2xl mx-auto">
             <span class="pill pill-brand">For Everyone</span>
-            <h2 class="mt-3 font-display text-3xl sm:text-4xl font-extrabold">Who is TravelCash for?</h2>
-            <p class="text-muted mt-3 text-lg">Whether you travel once a year or once a week — TravelCash saves you money.</p>
+            <h2 class="mt-3 font-display text-3xl sm:text-4xl font-extrabold">Who is TripCash for?</h2>
+            <p class="text-muted mt-3 text-lg">Whether you travel once a year or once a week — TripCash saves you money.</p>
         </div>
 
         <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -354,7 +354,7 @@
          x-data="{ stats: [{n:1200000,l:'Total Cashback Paid',p:'₹',desc:'Real money returned to our users'},{n:50000,l:'Happy Travellers',s:'+',desc:'Growing community across India'},{n:9,l:'Provider Partners',s:'+',desc:'All major travel brands'},{n:4.8,l:'User Rating',d:1,desc:'Based on user reviews'},{n:150000,l:'Bookings Tracked',s:'+',desc:'Successful cashback bookings'},{n:48,l:'Avg Payout Time',s:'hrs',desc:'Fast withdrawal processing'}] }">
     <div class="text-center max-w-2xl mx-auto mb-10">
         <span class="pill pill-brand">Our Numbers</span>
-        <h2 class="mt-3 font-display text-3xl sm:text-4xl font-extrabold">TravelCash in numbers</h2>
+        <h2 class="mt-3 font-display text-3xl sm:text-4xl font-extrabold">TripCash in numbers</h2>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         <template x-for="s in stats">

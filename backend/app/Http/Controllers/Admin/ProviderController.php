@@ -28,7 +28,7 @@ class ProviderController extends Controller
             'provider' => new Provider(['categories' => [], 'priority' => 100, 'is_active' => true]),
             'networks' => AffiliateNetwork::orderBy('name')->get(),
             'drivers' => $this->manager->availableDrivers(),
-            'categories' => config('travelcash.categories'),
+            'categories' => config('tripcash.categories'),
         ]);
     }
 
@@ -48,7 +48,7 @@ class ProviderController extends Controller
             'provider' => $provider->load('activeConfiguration'),
             'networks' => AffiliateNetwork::orderBy('name')->get(),
             'drivers' => $this->manager->availableDrivers(),
-            'categories' => config('travelcash.categories'),
+            'categories' => config('tripcash.categories'),
         ]);
     }
 
@@ -89,7 +89,7 @@ class ProviderController extends Controller
             'affiliate_network_id' => ['nullable', 'exists:affiliate_networks,id'],
             'adapter' => ['required', 'string', 'in:'.implode(',', $this->manager->availableDrivers())],
             'categories' => ['required', 'array', 'min:1'],
-            'categories.*' => ['string', 'in:'.implode(',', array_keys(config('travelcash.categories')))],
+            'categories.*' => ['string', 'in:'.implode(',', array_keys(config('tripcash.categories')))],
             'logo_url' => ['nullable', 'url'],
             'priority' => ['required', 'integer', 'min:1', 'max:9999'],
             'commission_percent' => ['required', 'numeric', 'min:0', 'max:100'],

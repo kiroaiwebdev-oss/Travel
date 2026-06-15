@@ -2,7 +2,7 @@
 
 ## Overview
 
-TravelCash is a **modular monolith**. Laravel 12 owns all business logic and is the system
+TripCash is a **modular monolith**. Laravel 12 owns all business logic and is the system
 of record. Python/FastAPI is a **sidecar** for AI and heavy data jobs only. Everything runs
 on one VPS via Docker Compose.
 

@@ -50,7 +50,7 @@
         <p class="text-xs text-muted">SMTP host/port/credentials are set in <code>.env</code> (MAIL_*). Here you set the sender identity.</p>
         <div class="grid sm:grid-cols-2 gap-4">
             <div><label class="text-sm font-semibold">From address</label><input name="mail_from_address" value="{{ $get('integrations.mail_from_address') }}" class="input mt-1" placeholder="hello@yourdomain.com"></div>
-            <div><label class="text-sm font-semibold">From name</label><input name="mail_from_name" value="{{ $get('integrations.mail_from_name', 'TravelCash') }}" class="input mt-1"></div>
+            <div><label class="text-sm font-semibold">From name</label><input name="mail_from_name" value="{{ $get('integrations.mail_from_name', 'TripCash') }}" class="input mt-1"></div>
         </div>
     </div>
 

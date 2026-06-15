@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="TravelCash">
+<meta name="apple-mobile-web-app-title" content="TripCash">
 
 {{-- Early: flag standalone (installed-app) mode so CSS/JS can adapt before paint --}}
 <script>
@@ -50,7 +50,7 @@
             '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 3 21 3c-.5-.5-3.5 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>' +
           '</span>' +
           '<div style="flex:1;min-width:0">' +
-            '<p style="font-weight:700;font-size:.9rem;color:#1E293B">Install TravelCash</p>' +
+            '<p style="font-weight:700;font-size:.9rem;color:#1E293B">Install TripCash</p>' +
             '<p style="font-size:.76rem;color:#64748B">' + (isIOS ? 'Tap Share then "Add to Home Screen"' : 'Add to home screen for the full app') + '</p>' +
           '</div>' +
           (isIOS ? '' : '<button id="tc-install-btn" class="btn btn-brand" style="padding:.5rem .9rem;font-size:.8rem">Install</button>') +

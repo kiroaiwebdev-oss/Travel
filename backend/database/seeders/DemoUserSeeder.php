@@ -18,16 +18,16 @@ class DemoUserSeeder extends Seeder
         $access = Permission::firstOrCreate(['name' => 'admin.access'], ['group' => 'dashboard', 'label' => 'Access admin panel']);
         $adminRole->permissions()->syncWithoutDetaching([$access->id]);
 
-        $admin = User::updateOrCreate(['email' => 'admin@travelcash.test'], [
+        $admin = User::updateOrCreate(['email' => 'admin@tripcash.test'], [
             'name' => 'Platform Admin', 'email_verified_at' => now(), 'status' => 'active',
         ]);
-        $user = User::updateOrCreate(['email' => 'user@travelcash.test'], [
+        $user = User::updateOrCreate(['email' => 'user@tripcash.test'], [
             'name' => 'Demo Traveller', 'email_verified_at' => now(), 'status' => 'active',
         ]);
 
         // Set passwords at the DB level (exact bcrypt) — bypasses any cast edge case
         // so the seeded login ALWAYS works.
-        DB::table('users')->whereIn('email', ['admin@travelcash.test', 'user@travelcash.test'])
+        DB::table('users')->whereIn('email', ['admin@tripcash.test', 'user@tripcash.test'])
             ->update(['password' => bcrypt('password')]);
 
         $admin->roles()->syncWithoutDetaching([$adminRole->id]);

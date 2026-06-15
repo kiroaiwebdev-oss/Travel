@@ -26,7 +26,7 @@
                 <span class="grid place-items-center w-9 h-9 rounded-xl text-white" style="background:linear-gradient(150deg,#14b8a6,#0d9488)">
                     <i data-lucide="plane" class="w-5 h-5"></i>
                 </span>
-                Travel<span style="color:#2dd4cb">Cash</span>
+                Trip<span style="color:#2dd4cb">Cash</span>
             </div>
             <p class="mt-4 text-sm text-slate-400 max-w-xs leading-relaxed">
                 {{ \App\Models\Setting::get('site.tagline', 'India\'s first travel meta-search engine with built-in cashback. Compare prices, book as usual, earn real money back.') }}
@@ -75,7 +75,7 @@
                 <li><a class="hover:text-white transition" href="{{ route('about') }}">About us</a></li>
                 <li><a class="hover:text-white transition" href="#how-it-works">How it works</a></li>
                 <li><a class="hover:text-white transition" href="{{ route('contact') }}">Contact us</a></li>
-                <li><a class="hover:text-white transition" href="{{ route('register') }}">Join TravelCash</a></li>
+                <li><a class="hover:text-white transition" href="{{ route('register') }}">Join TripCash</a></li>
             </ul>
         </div>
 
@@ -90,7 +90,7 @@
 
             <h4 class="text-white font-semibold text-sm mt-6">Support</h4>
             <ul class="mt-3 space-y-2.5 text-sm">
-                <li><a class="hover:text-white transition flex items-center gap-2" href="{{ route('contact') }}"><i data-lucide="mail" class="w-3.5 h-3.5 opacity-50"></i> help@travelcash.in</a></li>
+                <li><a class="hover:text-white transition flex items-center gap-2" href="{{ route('contact') }}"><i data-lucide="mail" class="w-3.5 h-3.5 opacity-50"></i> help@tripcash.in</a></li>
             </ul>
         </div>
     </div>

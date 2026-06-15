@@ -6,7 +6,7 @@
 <div class="card p-6" x-data="{ copied:false }">
     <div class="grid sm:grid-cols-3 gap-6 items-center">
         <div class="sm:col-span-2">
-            <h2 class="font-display font-bold text-lg">Invite friends, earn ₹{{ number_format((float) config('travelcash.referral.reward_amount'), 0) }} each</h2>
+            <h2 class="font-display font-bold text-lg">Invite friends, earn ₹{{ number_format((float) config('tripcash.referral.reward_amount'), 0) }} each</h2>
             <p class="text-muted text-sm mt-1">Share your link. You earn once they make their first confirmed booking.</p>
             <div class="flex gap-2 mt-4">
                 <input readonly value="{{ $link }}" class="input" x-ref="link">

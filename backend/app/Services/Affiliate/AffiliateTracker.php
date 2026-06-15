@@ -44,7 +44,7 @@ class AffiliateTracker
             'category' => $params['category'] ?? null,
             'offer_ref' => $params['offer_ref'] ?? null,
             'expected_amount' => $params['amount'] ?? null,
-            'currency' => $params['currency'] ?? config('travelcash.currency'),
+            'currency' => $params['currency'] ?? config('tripcash.currency'),
             'session_id' => $request->session()->getId(),
             'ip_address' => $request->ip(),
             'user_agent' => (string) $request->userAgent(),
@@ -114,7 +114,7 @@ class AffiliateTracker
             'details' => $payload['details'] ?? null,
             'amount' => $amount,
             'commission_amount' => (float) ($payload['commission'] ?? 0),
-            'currency' => $payload['currency'] ?? $click?->currency ?? config('travelcash.currency'),
+            'currency' => $payload['currency'] ?? $click?->currency ?? config('tripcash.currency'),
             'status' => $this->mapStatus($status),
             'booked_at' => now(),
         ])->save();

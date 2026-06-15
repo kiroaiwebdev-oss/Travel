@@ -38,7 +38,7 @@ class RazorpayGateway implements PayoutGateway
             'fund_account' => $this->fundAccount($withdrawal, $details),
             'queue_if_low_balance' => true,
             'reference_id' => 'wd_'.$withdrawal->id,
-            'narration' => 'TravelCash cashback payout',
+            'narration' => 'TripCash cashback payout',
         ];
 
         try {

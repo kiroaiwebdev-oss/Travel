@@ -23,7 +23,7 @@ class EmailChannel implements MessagingChannel
     public function send(string $to, string $message, array $opts = []): array
     {
         try {
-            $subject = $opts['subject'] ?? 'TravelCash';
+            $subject = $opts['subject'] ?? 'TripCash';
             Mail::raw($message, function ($m) use ($to, $subject) {
                 $m->to($to)->subject($subject);
             });

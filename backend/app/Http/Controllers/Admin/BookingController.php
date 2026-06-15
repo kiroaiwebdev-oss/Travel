@@ -22,7 +22,7 @@ class BookingController extends Controller
 
         return view('admin.bookings.index', [
             'bookings' => $bookings,
-            'categories' => config('travelcash.categories'),
+            'categories' => config('tripcash.categories'),
         ]);
     }
 

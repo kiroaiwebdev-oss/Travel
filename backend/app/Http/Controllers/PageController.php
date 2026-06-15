@@ -35,7 +35,7 @@ class PageController extends Controller
                 ['Cashback lifecycle', 'Cashback starts as Pending when a booking is detected, becomes Confirmed once the provider validates the booking, and turns Withdrawable after the provider’s cancellation/return window (typically 30–90 days).'],
                 ['When cashback is rejected', 'If a booking is cancelled, returned or deemed ineligible by the provider, the related cashback is reversed. Pending cashback is not guaranteed until confirmed.'],
                 ['Withdrawals', 'Confirmed (withdrawable) balance can be withdrawn to UPI, bank or PayPal after completing KYC, subject to the minimum withdrawal amount. Payouts are processed after admin verification.'],
-                ['Booking refunds', 'Refunds for the booking itself are handled by the provider you booked with, per their policy. TravelCash only manages the cashback layer.'],
+                ['Booking refunds', 'Refunds for the booking itself are handled by the provider you booked with, per their policy. TripCash only manages the cashback layer.'],
             ],
         ]);
     }
@@ -46,10 +46,10 @@ class PageController extends Controller
             'title' => 'Terms & Conditions',
             'subtitle' => 'Last updated: '.now()->format('F Y'),
             'sections' => [
-                ['Acceptance', 'By using TravelCash you agree to these terms. If you do not agree, please do not use the platform.'],
+                ['Acceptance', 'By using TripCash you agree to these terms. If you do not agree, please do not use the platform.'],
                 ['Accounts', 'You are responsible for your account security. One account per person. We may suspend accounts involved in fraud or abuse.'],
                 ['Cashback', 'Cashback rates are set per offer/provider and may change. Cashback is subject to provider confirmation and our Cashback & Refund Policy.'],
-                ['Affiliate bookings', 'Bookings are made with third-party providers. TravelCash is not responsible for the provider’s service, pricing or fulfilment.'],
+                ['Affiliate bookings', 'Bookings are made with third-party providers. TripCash is not responsible for the provider’s service, pricing or fulfilment.'],
                 ['Fraud', 'Any attempt to manipulate clicks, postbacks, referrals or cashback will result in forfeiture of balance and account termination.'],
                 ['Liability', 'The platform is provided “as is”. Our liability is limited to the cashback balance in your wallet.'],
             ],

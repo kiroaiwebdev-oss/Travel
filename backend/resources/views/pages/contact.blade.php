@@ -32,7 +32,7 @@
     </form>
 
     <div class="grid sm:grid-cols-3 gap-4 mt-6">
-        @foreach ([['mail','Email','support@travelcash.test'],['clock','Hours','Mon–Sat, 10–7'],['shield','Response','Within 24–48h']] as [$ic,$t,$v])
+        @foreach ([['mail','Email','support@tripcash.test'],['clock','Hours','Mon–Sat, 10–7'],['shield','Response','Within 24–48h']] as [$ic,$t,$v])
             <div class="card p-4 text-center">
                 <i data-lucide="{{ $ic }}" class="w-5 h-5 text-brand mx-auto"></i>
                 <p class="font-semibold text-sm mt-2">{{ $t }}</p>

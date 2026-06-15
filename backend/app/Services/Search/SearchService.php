@@ -33,7 +33,7 @@ class SearchService
 
         $offers = Cache::remember(
             $cacheKey,
-            (int) config('travelcash.search.cache_ttl', 300),
+            (int) config('tripcash.search.cache_ttl', 300),
             fn () => $this->fanOut($query)
         );
 
@@ -64,7 +64,7 @@ class SearchService
     private function fanOut(SearchQuery $query): array
     {
         $providers = $this->providers->activeFor($query->category);
-        $perProvider = (int) config('travelcash.search.per_provider_limit', 50);
+        $perProvider = (int) config('tripcash.search.per_provider_limit', 50);
         $all = [];
 
         foreach ($providers as $provider) {

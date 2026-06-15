@@ -108,6 +108,6 @@
         </button>
     </form>
 
-    <p class="text-center text-xs text-muted pt-2">TravelCash · v1.0 · Made with ♥ in India</p>
+    <p class="text-center text-xs text-muted pt-2">TripCash · v1.0 · Made with ♥ in India</p>
 </div>
 @endsection

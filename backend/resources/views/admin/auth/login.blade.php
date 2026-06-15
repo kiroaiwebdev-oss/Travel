@@ -32,7 +32,7 @@
                 @csrf
                 <div>
                     <label class="text-sm font-semibold">Admin email</label>
-                    <input type="email" name="email" value="{{ old('email') }}" required autofocus class="input mt-1" placeholder="admin@travelcash.test">
+                    <input type="email" name="email" value="{{ old('email') }}" required autofocus class="input mt-1" placeholder="admin@tripcash.test">
                 </div>
                 <div>
                     <label class="text-sm font-semibold">Password</label>

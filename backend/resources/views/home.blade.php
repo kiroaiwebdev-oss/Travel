@@ -183,12 +183,12 @@
 <section class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
     <div class="grid lg:grid-cols-2 gap-12 items-center">
         <div>
-            <span class="pill pill-brand">What is TravelCash?</span>
+            <span class="pill pill-brand">What is TripCash?</span>
             <h2 class="mt-3 font-display text-3xl sm:text-4xl font-extrabold leading-tight">
                 The travel platform that <span class="text-gradient">pays you back</span>
             </h2>
             <p class="mt-4 text-muted text-lg leading-relaxed">
-                TravelCash is India's first travel meta-search engine with built-in cashback. We aggregate deals from
+                TripCash is India's first travel meta-search engine with built-in cashback. We aggregate deals from
                 all major travel providers &mdash; flights, hotels, trains, cabs, and holiday packages &mdash; and show you
                 the best prices in one place.
             </p>
@@ -286,15 +286,15 @@
 <section id="how-it-works" class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
     <div class="text-center max-w-2xl mx-auto">
         <span class="pill pill-brand">Simple & transparent</span>
-        <h2 class="mt-3 font-display text-3xl sm:text-4xl font-extrabold">How TravelCash works</h2>
+        <h2 class="mt-3 font-display text-3xl sm:text-4xl font-extrabold">How TripCash works</h2>
         <p class="text-muted mt-3 text-lg">Three simple steps to start earning real cashback on every trip. No hidden tricks, no complicated processes.</p>
     </div>
 
     <div class="mt-12 grid md:grid-cols-3 gap-8">
         @foreach ([
             ['search', 'Search & Compare', 'Enter your destination, dates, and preferences. We instantly compare prices across 9+ providers like MakeMyTrip, Booking.com, Goibibo, Cleartrip, and more to find you the best deals.', 'bg-teal-50 text-teal-600 border-teal-100', '01'],
-            ['mouse-pointer-click', 'Book via TravelCash', 'Found a great deal? Click through to the provider and complete your booking exactly as you normally would. Same price, same provider, same experience — we just track the referral.', 'bg-blue-50 text-blue-600 border-blue-100', '02'],
-            ['wallet', 'Earn Real Cashback', 'Once your booking is confirmed by the provider, cashback lands in your TravelCash wallet. Withdraw it to UPI, bank account, or PayPal — it\'s your real money.', 'bg-green-50 text-green-600 border-green-100', '03'],
+            ['mouse-pointer-click', 'Book via TripCash', 'Found a great deal? Click through to the provider and complete your booking exactly as you normally would. Same price, same provider, same experience — we just track the referral.', 'bg-blue-50 text-blue-600 border-blue-100', '02'],
+            ['wallet', 'Earn Real Cashback', 'Once your booking is confirmed by the provider, cashback lands in your TripCash wallet. Withdraw it to UPI, bank account, or PayPal — it\'s your real money.', 'bg-green-50 text-green-600 border-green-100', '03'],
         ] as $step)
             <div class="card card-hover p-6 sm:p-8 relative overflow-hidden group">
                 <div class="absolute top-4 right-4 text-5xl font-extrabold font-display text-slate-100 group-hover:text-brand/10 transition">{{ $step[4] }}</div>
@@ -320,7 +320,7 @@
 <section class="py-12 sm:py-20 bg-white border-y border-slate-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="text-center max-w-2xl mx-auto">
-            <span class="pill pill-brand">Why TravelCash?</span>
+            <span class="pill pill-brand">Why TripCash?</span>
             <h2 class="mt-3 font-display text-3xl sm:text-4xl font-extrabold">Everything you need for smarter travel</h2>
             <p class="text-muted mt-3 text-lg">We built the platform we wished existed as travellers ourselves.</p>
         </div>
@@ -508,10 +508,10 @@
     <div class="mt-10 grid md:grid-cols-3 gap-6 max-md:flex max-md:overflow-x-auto max-md:no-scrollbar max-md:-mx-4 max-md:px-4 max-md:snap-x">
         @foreach ([
             ['Aarav S.', 'Goa Trip', '₹3,200 cashback', 'Got ₹3,200 back on my Goa trip. The booking experience was exactly the same as booking directly on MakeMyTrip. Money hit my UPI in 2 days after confirmation.', '5'],
-            ['Meera K.', 'Dubai Holiday', '₹8,500 cashback', 'Used TravelCash for my Dubai family trip. Compared flight + hotel prices in one place and earned ₹8,500 cashback. The AI even suggested the best areas to stay!', '5'],
+            ['Meera K.', 'Dubai Holiday', '₹8,500 cashback', 'Used TripCash for my Dubai family trip. Compared flight + hotel prices in one place and earned ₹8,500 cashback. The AI even suggested the best areas to stay!', '5'],
             ['Dev P.', 'Manali Weekend', '₹1,800 cashback', 'Was skeptical at first but tried it for a Manali trip. Found cheaper hotels than what I saw on apps, plus got ₹1,800 back. Now I always check here first.', '5'],
-            ['Priya R.', 'Kerala Backwaters', '₹4,100 cashback', 'Booked a houseboat and flights through TravelCash. The whole family loved Kerala and I loved the ₹4,100 that came back into my wallet! So simple.', '5'],
-            ['Rahul M.', 'Business Travel', '₹12,000 cashback', 'I travel for work almost weekly. Started using TravelCash and I\'ve earned over ₹12,000 in just 3 months. It adds up fast when you travel often.', '5'],
+            ['Priya R.', 'Kerala Backwaters', '₹4,100 cashback', 'Booked a houseboat and flights through TripCash. The whole family loved Kerala and I loved the ₹4,100 that came back into my wallet! So simple.', '5'],
+            ['Rahul M.', 'Business Travel', '₹12,000 cashback', 'I travel for work almost weekly. Started using TripCash and I\'ve earned over ₹12,000 in just 3 months. It adds up fast when you travel often.', '5'],
             ['Ananya T.', 'Rajasthan Road Trip', '₹2,600 cashback', 'Booked cabs and hotels for our Rajasthan road trip. The compare feature saved us time and the cashback saved us money. Win-win!', '5'],
         ] as $t)
             <figure class="card card-hover p-6 max-md:w-[82%] max-md:shrink-0 max-md:snap-start">
@@ -563,12 +563,12 @@
     <div class="text-center mb-10">
         <span class="pill pill-brand">Got questions?</span>
         <h2 class="mt-3 font-display text-2xl sm:text-3xl font-extrabold">Frequently asked questions</h2>
-        <p class="text-muted mt-2">Everything you need to know about TravelCash</p>
+        <p class="text-muted mt-2">Everything you need to know about TripCash</p>
     </div>
     <div class="space-y-3">
         @foreach ([
-            ['Is the cashback real money?', 'Yes, absolutely! We earn an affiliate commission when you book through us, and we share a significant percentage of it back to your TravelCash wallet. This is real money — you can withdraw it to UPI (Google Pay, PhonePe, Paytm), bank transfer, or PayPal.'],
-            ['Do I pay more when booking through TravelCash?', 'No. You pay the exact same price as you would on the provider\'s website directly. The cashback comes from the commission the provider pays us — it doesn\'t affect your booking price at all.'],
+            ['Is the cashback real money?', 'Yes, absolutely! We earn an affiliate commission when you book through us, and we share a significant percentage of it back to your TripCash wallet. This is real money — you can withdraw it to UPI (Google Pay, PhonePe, Paytm), bank transfer, or PayPal.'],
+            ['Do I pay more when booking through TripCash?', 'No. You pay the exact same price as you would on the provider\'s website directly. The cashback comes from the commission the provider pays us — it doesn\'t affect your booking price at all.'],
             ['When does cashback get confirmed?', 'Cashback starts as "pending" when your booking is detected. Once the provider confirms your booking wasn\'t cancelled (typically 30-90 days), it becomes "confirmed" and is available for withdrawal.'],
             ['Which providers are supported?', 'We support Booking.com, Agoda, Expedia, MakeMyTrip, Goibibo, Cleartrip, Uber, Ola, Tripadvisor, and many more. We continuously add new providers to give you more options and better deals.'],
             ['How do I withdraw my cashback?', 'Go to your Wallet > Withdrawals, enter the amount, and choose UPI, bank transfer, or PayPal. After KYC verification, payouts are processed within 24-48 hours.'],

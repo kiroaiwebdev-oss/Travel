@@ -30,6 +30,6 @@ class SearchApiController extends Controller
 
     public function categories(): JsonResponse
     {
-        return response()->json(['data' => config('travelcash.categories')]);
+        return response()->json(['data' => config('tripcash.categories')]);
     }
 }

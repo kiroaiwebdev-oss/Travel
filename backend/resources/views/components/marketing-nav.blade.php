@@ -6,7 +6,7 @@
             <span class="grid place-items-center w-9 h-9 rounded-xl text-white shadow-lift" style="background:linear-gradient(150deg,#14b8a6,#0d9488)">
                 <i data-lucide="plane" class="w-5 h-5"></i>
             </span>
-            <span>Travel<span class="text-brand">Cash</span></span>
+            <span>Trip<span class="text-brand">Cash</span></span>
         </a>
 
         <div class="hidden md:flex items-center gap-0.5">

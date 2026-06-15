@@ -59,7 +59,7 @@ class AIManager:
     def _demo_reply(user: str) -> str:
         """Rule-based reply used when no provider key is set (keeps the demo working)."""
         return (
-            "Here are smart picks based on live TravelCash offers. "
+            "Here are smart picks based on live TripCash offers. "
             "Sort by 'Highest cashback' to maximise your wallet, or 'Best value' to "
             "balance price and cashback. Tip: hotels currently carry the highest cashback share. "
             f"(You asked: \"{user[:160]}\")"

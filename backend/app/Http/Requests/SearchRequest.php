@@ -14,7 +14,7 @@ class SearchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category' => ['required', 'string', 'in:'.implode(',', array_keys(config('travelcash.categories')))],
+            'category' => ['required', 'string', 'in:'.implode(',', array_keys(config('tripcash.categories')))],
             'origin' => ['nullable', 'string', 'max:120'],
             'destination' => ['nullable', 'string', 'max:120'],
             'depart_date' => ['nullable', 'date'],

@@ -71,7 +71,7 @@ class IntegrationController extends Controller
             'to' => ['required', 'string', 'max:190'],
         ]);
 
-        $result = $messaging->channel($data['channel'])->send($data['to'], 'TravelCash test message ✅', ['subject' => 'TravelCash test']);
+        $result = $messaging->channel($data['channel'])->send($data['to'], 'TripCash test message ✅', ['subject' => 'TripCash test']);
 
         return back()->with('status', ($result['ok'] ? 'Test sent: ' : 'Test failed: ').$result['info']);
     }

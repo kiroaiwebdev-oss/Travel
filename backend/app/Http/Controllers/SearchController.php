@@ -25,7 +25,7 @@ class SearchController extends Controller
             'query' => $query,
             'offers' => $result['offers'],
             'meta' => $result['meta'],
-            'categories' => config('travelcash.categories'),
+            'categories' => config('tripcash.categories'),
         ]);
     }
 }

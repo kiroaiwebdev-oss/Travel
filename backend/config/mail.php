@@ -29,7 +29,7 @@ return [
     ],
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@travelcash.test'),
-        'name' => env('MAIL_FROM_NAME', 'TravelCash'),
+        'address' => env('MAIL_FROM_ADDRESS', 'hello@tripcash.test'),
+        'name' => env('MAIL_FROM_NAME', 'TripCash'),
     ],
 ];

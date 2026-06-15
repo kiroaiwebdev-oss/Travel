@@ -34,7 +34,7 @@ class CashbackCalculator
         $rule = $this->resolver->resolve($provider->id, $category, $bookingAmount);
 
         if ($rule === null) {
-            $share = (float) config('travelcash.cashback.default_share_percent', 40);
+            $share = (float) config('tripcash.cashback.default_share_percent', 40);
             $amount = $commission * $share / 100;
 
             return ['amount' => round($amount, 2), 'commission' => $commission, 'rule_id' => null];

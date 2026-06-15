@@ -74,7 +74,7 @@ class CashbackService
         if ($cashback->status !== Cashback::PENDING) {
             return $cashback;
         }
-        $holdDays = (int) config('travelcash.cashback.hold_days', 30);
+        $holdDays = (int) config('tripcash.cashback.hold_days', 30);
         $cashback->update([
             'status' => Cashback::CONFIRMED,
             'confirmed_at' => now(),

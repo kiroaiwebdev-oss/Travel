@@ -32,7 +32,7 @@ final class SearchQuery
             returnDate: $data['return_date'] ?? null,
             travellers: (int) ($data['travellers'] ?? 1),
             rooms: (int) ($data['rooms'] ?? 1),
-            currency: (string) ($data['currency'] ?? config('travelcash.currency', 'INR')),
+            currency: (string) ($data['currency'] ?? config('tripcash.currency', 'INR')),
             filters: (array) ($data['filters'] ?? []),
             sort: (string) ($data['sort'] ?? 'best_value'),
             limit: (int) ($data['limit'] ?? 50),

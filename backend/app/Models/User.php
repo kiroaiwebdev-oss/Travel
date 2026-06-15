@@ -55,7 +55,7 @@ class User extends Authenticatable
             $user->referral_code ??= self::generateReferralCode();
             // Defaults must be set in-memory (DB defaults aren't reflected on the
             // model yet), otherwise the wallet below gets a null currency.
-            $user->currency ??= config('travelcash.currency', 'INR');
+            $user->currency ??= config('tripcash.currency', 'INR');
             $user->locale ??= config('app.locale', 'en');
         });
 

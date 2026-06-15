@@ -33,7 +33,7 @@
                         <td class="p-4 text-muted">{{ $cb->matures_at?->format('d M Y') ?? '—' }}</td>
                     </tr>
                 @empty
-                    <tr><td colspan="6"><x-empty-state icon="badge-percent" text="No cashback yet. Book through TravelCash to start earning." /></td></tr>
+                    <tr><td colspan="6"><x-empty-state icon="badge-percent" text="No cashback yet. Book through TripCash to start earning." /></td></tr>
                 @endforelse
             </tbody>
         </table>

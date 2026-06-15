@@ -32,7 +32,7 @@ class HomeController extends Controller
         ];
 
         return view('home', [
-            'categories' => config('travelcash.categories'),
+            'categories' => config('tripcash.categories'),
             'featured' => $featured,
             'destinations' => $destinations,
         ]);
