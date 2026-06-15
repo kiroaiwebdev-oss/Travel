@@ -30,6 +30,7 @@
 
     <x-marketing-footer />
     <x-bottom-nav />
+    <x-ai-launcher />
 
     <script>
         // Render Lucide icons after DOM + Alpine paints.
