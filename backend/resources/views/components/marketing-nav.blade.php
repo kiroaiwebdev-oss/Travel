@@ -18,10 +18,16 @@
 
         <div class="flex items-center gap-2">
             @auth
-                <a href="{{ route('dashboard.index') }}" class="btn btn-ghost text-sm hidden sm:inline-flex">Dashboard</a>
-                <a href="{{ route('dashboard.wallet') }}" class="btn btn-primary text-sm">
-                    <i data-lucide="wallet" class="w-4 h-4"></i> Wallet
-                </a>
+                @if (auth()->user()->hasPermission('admin.access'))
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-dark text-sm">
+                        <i data-lucide="shield" class="w-4 h-4"></i> Admin Panel
+                    </a>
+                @else
+                    <a href="{{ route('dashboard.index') }}" class="btn btn-ghost text-sm hidden sm:inline-flex">Dashboard</a>
+                    <a href="{{ route('dashboard.wallet') }}" class="btn btn-primary text-sm">
+                        <i data-lucide="wallet" class="w-4 h-4"></i> Wallet
+                    </a>
+                @endif
             @else
                 <a href="{{ route('login') }}" class="btn btn-ghost text-sm">Sign in</a>
                 <a href="{{ route('register') }}" class="btn btn-primary text-sm">Get started <i data-lucide="arrow-right" class="w-4 h-4"></i></a>

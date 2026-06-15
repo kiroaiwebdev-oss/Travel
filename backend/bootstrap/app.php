@@ -3,6 +3,7 @@
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\AuditLogger;
 use App\Http\Middleware\EnsurePermission;
+use App\Http\Middleware\EnsureRegularUser;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -29,6 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => AdminMiddleware::class,
             'permission' => EnsurePermission::class,
+            'user.area' => EnsureRegularUser::class,
         ]);
 
         // Audit privileged actions globally (no-op on read-only/guest traffic)

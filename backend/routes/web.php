@@ -44,8 +44,8 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth')->name('logout');
 
-// --- Authenticated user dashboard ---
-Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(function () {
+// --- Authenticated user dashboard (regular users only — admins redirected to /admin) ---
+Route::middleware(['auth', 'user.area'])->prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
     Route::get('/wallet', [WalletController::class, 'index'])->name('wallet');
     Route::get('/cashback', [WalletController::class, 'cashback'])->name('cashback');
