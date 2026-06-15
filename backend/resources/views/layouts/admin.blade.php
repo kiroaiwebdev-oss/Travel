@@ -25,10 +25,13 @@
             @php $nav = [
                 ['admin.dashboard','layout-dashboard','Dashboard', null],
                 ['admin.analytics','bar-chart-3','Analytics', 'analytics.view'],
+                ['admin.bookings.index','ticket','Bookings', 'analytics.view'],
+                ['admin.cashbacks.index','badge-dollar-sign','Cashback ledger', 'cashback.manage'],
                 ['admin.providers.index','plug','Providers', 'providers.manage'],
                 ['admin.cashback-rules.index','badge-percent','Cashback rules', 'cashback.manage'],
                 ['admin.users.index','users','Users', 'users.view'],
                 ['admin.withdrawals.index','banknote','Withdrawals', 'withdrawals.approve'],
+                ['admin.audit.index','scroll-text','Audit logs', 'audit.view'],
                 ['admin.settings.index','settings','Settings', 'settings.manage'],
             ]; @endphp
             @foreach ($nav as [$route, $icon, $label, $perm])
@@ -41,6 +44,10 @@
             @endforeach
         </nav>
         <a href="{{ route('home') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 hover:text-white text-sm"><i data-lucide="external-link" class="w-[18px] h-[18px]"></i> Visit site</a>
+        <form method="POST" action="{{ route('admin.logout') }}" class="mt-1">
+            @csrf
+            <button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 hover:text-white text-sm text-left"><i data-lucide="log-out" class="w-[18px] h-[18px]"></i> Sign out</button>
+        </form>
     </aside>
 
     <div @click="open=false" x-show="open" class="fixed inset-0 bg-black/40 z-30 lg:hidden"></div>

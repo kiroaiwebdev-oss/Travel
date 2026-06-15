@@ -40,9 +40,6 @@
                     <i data-lucide="{{ $icon }}" class="w-[18px] h-[18px]"></i> {{ $label }}
                 </a>
             @endforeach
-            @if (auth()->user()?->hasPermission('admin.access'))
-                <a href="{{ route('admin.dashboard') }}" class="nav-link"><i data-lucide="shield" class="w-[18px] h-[18px]"></i> Admin panel</a>
-            @endif
         </nav>
         <form method="POST" action="{{ route('logout') }}" class="pt-2 border-t border-slate-100">
             @csrf
