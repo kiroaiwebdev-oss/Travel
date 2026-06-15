@@ -162,8 +162,14 @@ class DemoDataSeeder extends Seeder
         // --- Admin broadcast notifications for all users ---
         $this->seedNotifications($allUsers);
 
+        // --- Extra affiliate networks (for the Networks admin page) ---
+        $this->seedNetworks();
+
         // --- Search logs (last 14 days) for analytics charts ---
         $this->seedSearchLogs($categories);
+
+        // --- Audit logs (admin activity trail) ---
+        $this->seedAuditLogs();
 
         $this->command?->info('Demo data seeded across all sections.');
     }
@@ -243,5 +249,39 @@ class DemoDataSeeder extends Seeder
         foreach (array_chunk($rows, 500) as $chunk) {
             DB::table('search_logs')->insert($chunk);
         }
+    }
+
+    private function seedNetworks(): void
+    {
+        foreach ([
+            ['Admitad', false], ['Cuelinks', true], ['vCommission', true], ['CJ Affiliate', true],
+        ] as [$name, $active]) {
+            \App\Models\AffiliateNetwork::updateOrCreate(
+                ['slug' => Str::slug($name)],
+                ['name' => $name, 'postback_secret' => Str::random(40), 'is_active' => $active]
+            );
+        }
+    }
+
+    private function seedAuditLogs(): void
+    {
+        $admin = User::where('email', 'admin@travelcash.test')->first();
+        $actions = [
+            'admin.login.success', 'PUT admin/providers/1', 'PUT admin/withdrawals/1/approve',
+            'PUT admin/kyc/3/approve', 'POST admin/offers', 'PUT admin/cashbacks/2/confirm',
+            'POST admin/notifications', 'PUT admin/settings', 'PUT admin/integrations',
+        ];
+        $rows = [];
+        foreach ($actions as $i => $action) {
+            $rows[] = [
+                'user_id' => $admin?->id,
+                'action' => $action,
+                'new_values' => json_encode(['demo' => true]),
+                'ip_address' => '103.0.0.'.rand(1, 254),
+                'user_agent' => 'Mozilla/5.0 (Admin Demo)',
+                'created_at' => now()->subHours($i * 3),
+            ];
+        }
+        DB::table('audit_logs')->insert($rows);
     }
 }
