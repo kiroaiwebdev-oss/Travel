@@ -208,14 +208,18 @@ class DemoDataSeeder extends Seeder
     private function seedStaff(): void
     {
         $manager = User::updateOrCreate(['email' => 'manager@travelcash.test'], [
-            'name' => 'Ops Manager', 'password' => 'password', 'email_verified_at' => now(), 'status' => 'active',
+            'name' => 'Ops Manager', 'email_verified_at' => now(), 'status' => 'active',
         ]);
         $manager->roles()->syncWithoutDetaching([Role::where('name', 'manager')->value('id')]);
 
         $support = User::updateOrCreate(['email' => 'support@travelcash.test'], [
-            'name' => 'Support Agent', 'password' => 'password', 'email_verified_at' => now(), 'status' => 'active',
+            'name' => 'Support Agent', 'email_verified_at' => now(), 'status' => 'active',
         ]);
         $support->roles()->syncWithoutDetaching([Role::where('name', 'support')->value('id')]);
+
+        // Exact-bcrypt passwords at the DB level so staff logins always work.
+        DB::table('users')->whereIn('email', ['manager@travelcash.test', 'support@travelcash.test'])
+            ->update(['password' => bcrypt('password')]);
     }
 
     private function seedNotifications($users): void
