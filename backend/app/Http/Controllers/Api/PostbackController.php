@@ -23,6 +23,12 @@ class PostbackController extends Controller
             return response()->json(['ok' => false, 'reason' => 'network inactive'], 422);
         }
 
+        // Never accept a postback for a network without a configured secret — otherwise
+        // an empty/blank secret could let an attacker forge conversions (cashback fraud).
+        if (blank($network->postback_secret)) {
+            return response()->json(['ok' => false, 'reason' => 'network not configured'], 422);
+        }
+
         $payload = $request->all();
         $signature = (string) ($request->header('X-Signature') ?? $request->input('sig') ?? '');
 

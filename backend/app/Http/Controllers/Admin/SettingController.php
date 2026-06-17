@@ -30,8 +30,8 @@ class SettingController extends Controller
     {
         $request->validate([
             'settings' => ['sometimes', 'array'],
-            'logo' => ['nullable', 'file', 'mimes:png,jpg,jpeg,webp,svg', 'max:2048'],
-            'icon' => ['nullable', 'file', 'mimes:png,jpg,jpeg,webp,svg,ico', 'max:1024'],
+            'logo' => ['nullable', 'file', 'mimes:png,jpg,jpeg,webp', 'max:2048'],
+            'icon' => ['nullable', 'file', 'mimes:png,jpg,jpeg,webp', 'max:1024'],
         ]);
 
         // Plain key/value settings

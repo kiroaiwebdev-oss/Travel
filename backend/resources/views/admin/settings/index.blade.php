@@ -18,7 +18,7 @@
             {{-- Logo --}}
             <div>
                 <label class="text-sm font-semibold">Logo</label>
-                <p class="text-xs text-muted mb-2">Shown in the header &amp; footer. PNG / SVG / WEBP, wide format, max 2MB.</p>
+                <p class="text-xs text-muted mb-2">Shown in the header &amp; footer. PNG / JPG / WEBP, wide format, max 2MB.</p>
                 <div class="rounded-xl border border-slate-200 p-4 flex items-center justify-center bg-slate-50 h-24">
                     @if ($logo)
                         <img src="{{ $logo }}" alt="Current logo" class="max-h-14 w-auto object-contain">
@@ -26,7 +26,7 @@
                         <span class="text-xs text-muted flex items-center gap-2"><i data-lucide="info" class="w-4 h-4"></i> Using default TripCash logo</span>
                     @endif
                 </div>
-                <input type="file" name="logo" accept="image/png,image/jpeg,image/webp,image/svg+xml" class="input mt-3 text-sm">
+                <input type="file" name="logo" accept="image/png,image/jpeg,image/webp" class="input mt-3 text-sm">
                 @if ($logo)
                     <button type="submit" form="remove-logo" class="text-xs text-danger font-semibold mt-2 inline-flex items-center gap-1"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Remove &amp; use default</button>
                 @endif
@@ -35,7 +35,7 @@
             {{-- Icon --}}
             <div>
                 <label class="text-sm font-semibold">App Icon / Favicon</label>
-                <p class="text-xs text-muted mb-2">Browser tab + installed app icon. Square PNG / SVG, 512×512 recommended, max 1MB.</p>
+                <p class="text-xs text-muted mb-2">Browser tab + installed app icon. Square PNG / JPG / WEBP, 512×512 recommended, max 1MB.</p>
                 <div class="rounded-xl border border-slate-200 p-4 flex items-center justify-center bg-slate-50 h-24">
                     @if ($icon)
                         <img src="{{ $icon }}" alt="Current icon" class="h-14 w-14 rounded-xl object-cover">
@@ -43,7 +43,7 @@
                         <span class="text-xs text-muted flex items-center gap-2"><i data-lucide="info" class="w-4 h-4"></i> Using default icon</span>
                     @endif
                 </div>
-                <input type="file" name="icon" accept="image/png,image/jpeg,image/webp,image/svg+xml,image/x-icon" class="input mt-3 text-sm">
+                <input type="file" name="icon" accept="image/png,image/jpeg,image/webp" class="input mt-3 text-sm">
                 @if ($icon)
                     <button type="submit" form="remove-icon" class="text-xs text-danger font-semibold mt-2 inline-flex items-center gap-1"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Remove &amp; use default</button>
                 @endif
