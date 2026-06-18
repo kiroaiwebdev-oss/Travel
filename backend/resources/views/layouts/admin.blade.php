@@ -56,6 +56,7 @@
                     'Overview' => [
                         ['admin.dashboard','layout-dashboard','Dashboard', null],
                         ['admin.analytics','bar-chart-3','Analytics', 'analytics.view'],
+                        ['admin.guide.index','book-open','Guide & Help', null],
                     ],
                     'Catalog' => [
                         ['admin.offers.index','tag','Offers & Deals', 'cms.manage'],

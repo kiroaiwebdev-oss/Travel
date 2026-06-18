@@ -30,6 +30,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 // --- Admin control center (admin middleware = auth + active + admin.access) ---
 Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/guide', [\App\Http\Controllers\Admin\GuideController::class, 'index'])->name('guide.index');
     Route::get('/analytics', [AdminDashboardController::class, 'analytics'])->middleware('permission:analytics.view')->name('analytics');
 
     // Providers + encrypted API keys (active instantly on save)
