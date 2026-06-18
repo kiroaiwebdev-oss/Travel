@@ -113,11 +113,15 @@ class CashbackService
 
         return DB::transaction(function () use ($cashback, $reason) {
             // Reverse the pending credit (only if it had not yet matured/withdrawn).
+            // Row-locked + idempotent so duplicate cancellation postbacks can't double-reverse.
             if (in_array($cashback->status, [Cashback::PENDING, Cashback::CONFIRMED], true)) {
-                $wallet = $this->wallet->walletFor($cashback->user);
-                $wallet->pending_balance = max(0, (float) $wallet->pending_balance - (float) $cashback->amount);
-                $wallet->lifetime_earned = max(0, (float) $wallet->lifetime_earned - (float) $cashback->amount);
-                $wallet->save();
+                $this->wallet->reversePending(
+                    user: $cashback->user,
+                    amount: (float) $cashback->amount,
+                    source: $cashback,
+                    idempotencyKey: 'cb_reverse_'.$cashback->id,
+                    description: "Cashback reversed — {$reason}",
+                );
             }
             $cashback->update([
                 'status' => Cashback::REJECTED,
