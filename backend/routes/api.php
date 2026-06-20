@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AiController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\PostbackController;
 use App\Http\Controllers\Api\SearchApiController;
 use App\Http\Controllers\Api\WalletApiController;
@@ -15,6 +16,7 @@ Route::prefix('v1')->group(function () {
     // --- Public search ---
     Route::get('search', [SearchApiController::class, 'search'])->middleware('throttle:120,1');
     Route::get('categories', [SearchApiController::class, 'categories']);
+    Route::get('cities', [CityController::class, 'search'])->middleware('throttle:240,1');
 
     // --- AI travel assistant (proxied to FastAPI sidecar) ---
     Route::post('ai/assistant', [AiController::class, 'assistant'])->middleware('throttle:30,1');

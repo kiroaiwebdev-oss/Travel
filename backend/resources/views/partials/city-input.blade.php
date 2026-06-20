@@ -1,8 +1,8 @@
-{{-- Reusable city autocomplete field. Props: name, placeholder, icon, value. --}}
+{{-- Reusable city autocomplete field (server-backed). Props: name, placeholder, icon, value. --}}
 <div x-data="cityField(@js($value ?? ''))" class="relative mt-1">
     <i data-lucide="{{ $icon ?? 'map-pin' }}" class="w-4 h-4 text-muted absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10"></i>
     <input type="text" name="{{ $name }}" autocomplete="off" x-model="q"
-           @input="filter()" @focus="filter(); open = true" @keydown.escape="open = false"
+           @input="search()" @focus="open = true; search()" @keydown.escape="open = false"
            @blur="setTimeout(() => open = false, 150)"
            class="input pl-9" placeholder="{{ $placeholder }}">
     <ul x-show="open && results.length" x-cloak
@@ -19,19 +19,20 @@
 @once
 @push('scripts')
 <script>
-    window.TC_CITIES = @json(config('cities.list', []));
     document.addEventListener('alpine:init', () => {
         Alpine.data('cityField', (initial) => ({
             q: initial || '',
             open: false,
             results: [],
-            filter() {
-                const all = window.TC_CITIES || [];
-                const t = this.q.trim().toLowerCase();
-                this.results = (t === ''
-                    ? all
-                    : all.filter(c => c.toLowerCase().includes(t))
-                ).slice(0, 8);
+            _timer: null,
+            search() {
+                clearTimeout(this._timer);
+                this._timer = setTimeout(() => {
+                    fetch(@json(url('/api/v1/cities')) + '?q=' + encodeURIComponent(this.q.trim()), { headers: { 'Accept': 'application/json' } })
+                        .then(r => r.json())
+                        .then(d => { this.results = Array.isArray(d) ? d : []; })
+                        .catch(() => { this.results = []; });
+                }, 160);
             },
             pick(c) { this.q = c; this.open = false; },
         }));
