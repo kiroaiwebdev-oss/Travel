@@ -22,9 +22,10 @@
             <input type="hidden" name="category" value="{{ $key }}">
 
             @if (in_array($key, ['flights', 'trains', 'cabs', 'transfers']))
+                @php $originIcon = ['flights' => 'plane-takeoff', 'trains' => 'train-front', 'cabs' => 'car', 'transfers' => 'car'][$key] ?? 'map-pin'; @endphp
                 <div>
                     <label class="text-xs font-semibold text-muted px-1">From</label>
-                    @include('partials.city-input', ['name' => 'origin', 'placeholder' => 'Origin city', 'icon' => 'plane-takeoff', 'value' => request('origin')])
+                    @include('partials.city-input', ['name' => 'origin', 'placeholder' => 'Origin city', 'icon' => $originIcon, 'value' => request('origin')])
                 </div>
                 <div>
                     <label class="text-xs font-semibold text-muted px-1">To</label>
