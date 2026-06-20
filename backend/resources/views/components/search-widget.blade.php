@@ -24,17 +24,11 @@
             @if (in_array($key, ['flights', 'trains', 'cabs', 'transfers']))
                 <div>
                     <label class="text-xs font-semibold text-muted px-1">From</label>
-                    <div class="relative mt-1">
-                        <i data-lucide="plane-takeoff" class="w-4 h-4 text-muted absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
-                        <input name="origin" class="input pl-9" placeholder="Origin city" value="{{ request('origin') }}">
-                    </div>
+                    @include('partials.city-input', ['name' => 'origin', 'placeholder' => 'Origin city', 'icon' => 'plane-takeoff', 'value' => request('origin')])
                 </div>
                 <div>
                     <label class="text-xs font-semibold text-muted px-1">To</label>
-                    <div class="relative mt-1">
-                        <i data-lucide="map-pin" class="w-4 h-4 text-muted absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
-                        <input name="destination" class="input pl-9" placeholder="Destination" value="{{ request('destination') }}">
-                    </div>
+                    @include('partials.city-input', ['name' => 'destination', 'placeholder' => 'Destination', 'icon' => 'map-pin', 'value' => request('destination')])
                 </div>
                 <div>
                     <label class="text-xs font-semibold text-muted px-1">Depart</label>
@@ -46,10 +40,7 @@
             @else
                 <div>
                     <label class="text-xs font-semibold text-muted px-1">Destination / City</label>
-                    <div class="relative mt-1">
-                        <i data-lucide="map-pin" class="w-4 h-4 text-muted absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
-                        <input name="destination" class="input pl-9" placeholder="Where to?" value="{{ request('destination') }}">
-                    </div>
+                    @include('partials.city-input', ['name' => 'destination', 'placeholder' => 'Where to?', 'icon' => 'map-pin', 'value' => request('destination')])
                 </div>
                 <div>
                     <label class="text-xs font-semibold text-muted px-1">Check-in</label>
