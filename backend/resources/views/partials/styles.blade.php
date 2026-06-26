@@ -299,4 +299,136 @@ select.input{ appearance:none; background-image:url("data:image/svg+xml,%3Csvg x
   body{ overscroll-behavior:none; }
 }
 html.standalone .hide-in-app{ display:none !important; }
+
+/* ============================================================
+   ===== NEOMORPHISM + SKEUOMORPHISM PREMIUM LAYER ============
+   Adds tactile depth (soft neumorphic dual shadows) + skeuomorphic
+   gloss / highlights across the shared component system, so the
+   entire frontend (marketing, dashboard, admin) gets a premium,
+   physical "soft UI" feel at once. Loaded last so it refines the
+   base components via the cascade. Text contrast is preserved.
+   ============================================================ */
+:root{
+  --neo-bg:#e8edf4;                 /* neomorphic base surface (page) */
+  --neo-surface:#eef2f8;            /* raised element surface */
+  --neo-light:#ffffff;              /* top-left highlight */
+  --neo-dark:#c4cde0;               /* bottom-right shadow */
+  /* raised (extruded) */
+  --neo-raised-sm:-3px -3px 7px var(--neo-light), 3px 3px 8px var(--neo-dark);
+  --neo-raised:-6px -6px 14px var(--neo-light), 7px 7px 18px var(--neo-dark);
+  --neo-raised-lg:-10px -10px 26px var(--neo-light), 12px 12px 30px var(--neo-dark);
+  /* inset (pressed / well) */
+  --neo-inset:inset 3px 3px 6px var(--neo-dark), inset -3px -3px 6px var(--neo-light);
+  --neo-inset-deep:inset 5px 5px 11px var(--neo-dark), inset -4px -4px 9px var(--neo-light);
+  /* skeuomorphic gloss overlays */
+  --gloss-soft:linear-gradient(180deg, rgba(255,255,255,.6), rgba(255,255,255,0) 48%);
+  --gloss-strong:linear-gradient(180deg, rgba(255,255,255,.45) 0%, rgba(255,255,255,.12) 42%, rgba(0,0,0,.06) 100%);
+  /* refresh palette shadows to feel softer over the neo base */
+  --shadow-sm:0 1px 2px rgba(20,30,55,.06);
+}
+
+body{ background:var(--neo-bg) !important; }
+.bg-bg{ background:var(--neo-bg) !important; }
+.hero-aurora{ background:
+  radial-gradient(60% 50% at 8% -10%, rgba(0,184,169,.20), transparent 55%),
+  radial-gradient(55% 50% at 100% -10%, rgba(15,98,254,.16), transparent 55%),
+  radial-gradient(40% 40% at 60% 0%, rgba(34,197,94,.10), transparent 60%),
+  linear-gradient(180deg,#f4f7fc 0%, var(--neo-bg) 70%); }
+
+/* ===== Cards → neomorphic raised + skeuomorphic gloss ===== */
+.card{
+  background:linear-gradient(145deg, #ffffff, var(--neo-surface));
+  border:1px solid rgba(255,255,255,.7);
+  border-radius:1.35rem;
+  box-shadow:var(--neo-raised);
+  position:relative;
+}
+.card::before{
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:var(--gloss-soft); opacity:.5;
+}
+.card > *{ position:relative; }
+.card-hover{ transition:transform .26s cubic-bezier(.2,.7,.3,1), box-shadow .26s; }
+.card-hover:hover{ transform:translateY(-5px); box-shadow:var(--neo-raised-lg); border-color:rgba(0,184,169,.3); }
+.list-group{ background:linear-gradient(145deg,#ffffff,var(--neo-surface)); border:1px solid rgba(255,255,255,.7); box-shadow:var(--neo-raised); border-radius:1.25rem; }
+
+/* ===== Glass → add inner highlight for tactile depth ===== */
+.glass{ box-shadow:var(--neo-raised-sm), inset 0 1px 0 rgba(255,255,255,.7); }
+
+/* ===== Buttons → skeuomorphic gloss + neumorphic press ===== */
+.btn{ position:relative; overflow:hidden; border:none; isolation:isolate; }
+.btn::after{ content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:var(--gloss-strong); opacity:.85; mix-blend-mode:soft-light; }
+.btn:active{ transform:translateY(1px) scale(.99); }
+.btn-primary,.btn-pay{ box-shadow:0 10px 22px -10px rgba(15,98,254,.6), inset 0 1px 0 rgba(255,255,255,.45), inset 0 -2px 4px rgba(7,40,110,.4); }
+.btn-primary:hover,.btn-pay:hover{ box-shadow:0 16px 30px -12px rgba(15,98,254,.66), inset 0 1px 0 rgba(255,255,255,.5), inset 0 -2px 4px rgba(7,40,110,.4); }
+.btn-primary:active,.btn-pay:active{ box-shadow:0 3px 8px -4px rgba(15,98,254,.5), inset 0 2px 6px rgba(7,40,110,.5); }
+.btn-brand{ box-shadow:0 10px 22px -10px rgba(0,184,169,.55), inset 0 1px 0 rgba(255,255,255,.45), inset 0 -2px 4px rgba(0,90,82,.4); }
+.btn-brand:active{ box-shadow:0 3px 8px -4px rgba(0,184,169,.5), inset 0 2px 6px rgba(0,90,82,.5); }
+.btn-dark{ box-shadow:0 10px 22px -10px rgba(13,24,44,.6), inset 0 1px 0 rgba(255,255,255,.14), inset 0 -2px 4px rgba(0,0,0,.4); }
+.btn-white{ background:linear-gradient(180deg,#ffffff,var(--neo-surface)); box-shadow:var(--neo-raised-sm); }
+.btn-white:hover{ box-shadow:var(--neo-raised); }
+.btn-white:active{ box-shadow:var(--neo-inset); }
+.btn-ghost{ box-shadow:none; }
+.btn-ghost::after{ opacity:0; }
+.btn-ghost:active{ box-shadow:var(--neo-inset); background:rgba(30,41,59,.04); }
+
+/* ===== Inputs → inset neumorphic wells ===== */
+.input{
+  background:var(--neo-bg);
+  border:1px solid rgba(255,255,255,.6);
+  box-shadow:var(--neo-inset);
+  transition:box-shadow .18s, border-color .18s;
+}
+.input::placeholder{ color:#8b97ab; }
+.input:focus{ border-color:rgba(0,184,169,.5); box-shadow:var(--neo-inset-deep), 0 0 0 3px rgba(0,184,169,.18); }
+select.input{ background-color:var(--neo-bg); }
+
+/* ===== Pills → soft raised chips ===== */
+.pill{ box-shadow:var(--neo-raised-sm); }
+.pill-muted{ background:linear-gradient(145deg,#fff,var(--neo-surface)); color:#475569; }
+
+/* ===== Sidebar nav → tactile active state ===== */
+.nav-link:hover{ box-shadow:var(--neo-inset); background:transparent; }
+.nav-link.active{ box-shadow:var(--neo-raised-sm); background:linear-gradient(145deg,#fff,#eaf0fb); }
+
+/* ===== Segmented control → inset track, raised selected ===== */
+.segmented{ background:var(--neo-bg); box-shadow:var(--neo-inset); }
+.segmented button.on{ background:linear-gradient(145deg,#fff,var(--neo-surface)); box-shadow:var(--neo-raised-sm); }
+
+/* ===== Toggle switch → inset track + glossy raised knob ===== */
+.switch{ background:var(--neo-bg); box-shadow:var(--neo-inset); }
+.switch::after{ background:linear-gradient(145deg,#fff,#e9eef6); box-shadow:var(--neo-raised-sm); }
+.switch.on{ background:linear-gradient(180deg,#16c8b8,var(--brand)); box-shadow:var(--neo-inset), inset 0 1px 2px rgba(0,90,82,.3); }
+
+/* ===== Bottom nav → glossy raised bar + tactile icons ===== */
+.bnav{ background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(244,247,252,.94)); box-shadow:0 -6px 26px -10px rgba(13,42,72,.22), inset 0 1px 0 rgba(255,255,255,.8); }
+.bnav a.active .bnav-ic{ box-shadow:var(--neo-inset); background:var(--neo-bg); }
+.bnav-fab a{ box-shadow:0 12px 24px -8px rgba(15,98,254,.6), inset 0 2px 3px rgba(255,255,255,.45), inset 0 -3px 5px rgba(7,40,110,.4); }
+.bnav-fab a:active{ transform:translateX(-50%) scale(.94); }
+
+/* ===== Quick-action / list / app icons → neumorphic tiles ===== */
+.qa-ic{ box-shadow:var(--neo-raised-sm); position:relative; }
+.qa-ic::after{ content:""; position:absolute; inset:0; border-radius:inherit; background:var(--gloss-soft); opacity:.5; pointer-events:none; }
+.list-row-ic,.app-row-ic{ box-shadow:var(--neo-raised-sm); }
+.app-iconbtn{ background:linear-gradient(145deg,#fff,var(--neo-surface)); box-shadow:var(--neo-raised-sm); }
+.app-iconbtn:active{ box-shadow:var(--neo-inset); transform:scale(.94); }
+
+/* ===== App headers / topbars → subtle gloss edge ===== */
+.app-header,.app-topbar{ box-shadow:inset 0 1px 0 rgba(255,255,255,.75), 0 4px 18px -12px rgba(13,42,72,.25); }
+
+/* ===== Balance card → glossy skeuomorphic sheen ===== */
+.app-balance{ box-shadow:0 18px 40px -18px rgba(7,40,80,.6), inset 0 1px 0 rgba(255,255,255,.18); }
+.app-balance::before{ content:""; position:absolute; left:0; right:0; top:0; height:42%; border-radius:1.25rem 1.25rem 0 0; background:linear-gradient(180deg,rgba(255,255,255,.16),transparent); pointer-events:none; }
+
+/* ===== Sheet / drawer → soft top highlight ===== */
+.sheet{ box-shadow:0 -24px 60px -20px rgba(13,42,72,.4), inset 0 1px 0 rgba(255,255,255,.8); }
+.install-banner{ background:linear-gradient(145deg,#fff,var(--neo-surface)); box-shadow:var(--neo-raised-lg); }
+
+/* ===== Skeleton tuned to neo base ===== */
+.skeleton{ background:#dfe6f0; box-shadow:var(--neo-inset); }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .btn,.card-hover,.hover-lift,.hover-scale{ transition:none !important; }
+}
 </style>

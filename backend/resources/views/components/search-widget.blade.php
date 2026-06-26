@@ -2,7 +2,7 @@
 
 {{-- Premium multi-tab search. App-style on mobile, full multi-field on desktop.
      Pure HTML works without JS; Alpine powers the tabs. --}}
-<div x-data="{ tab: '{{ $active }}' }" class="card p-2.5 sm:p-3" style="box-shadow:0 30px 60px -24px rgba(13,42,72,.35)">
+<div x-data="{ tab: '{{ $active }}' }" class="card p-2.5 sm:p-3" style="box-shadow:-10px -10px 26px #ffffff, 14px 16px 40px rgba(13,42,72,.22)">
 
     {{-- Tabs --}}
     <div class="flex gap-1 overflow-x-auto no-scrollbar p-1 mb-2">
